@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chesscoach.local/pedagogy.schema.json",
+  "title": "Subcapitol în 8 pași",
+  "description": "Profesorul stabilește diagramele, prin lessonId către lecția existentă sau prin fen. Textele sunt { ro, en, fr } sau șiruri. AI-ul prezintă pașii, nu inventează poziții.",
+  "type": "object",
+  "required": ["subchapter_id", "title", "sections"],
+  "properties": {
+    "subchapter_id": { "type": "string" },
+    "title": { "oneOf": [{ "type": "string" }, { "type": "object" }] },
+    "sections": {
+      "type": "object",
+      "required": ["learn", "examples", "practice", "self_reflection", "evaluation", "remediation"],
+      "properties": {
+        "learn": {
+          "type": "object",
+          "properties": {
+            "lessonId": { "type": ["string", "null"] },
+            "diagram_fen": { "type": "string" },
+            "explanation": { "oneOf": [{ "type": "string" }, { "type": "object" }] },
+            "rules": { "type": "array", "items": { "type": "string" } },
+            "what_to_observe": { "oneOf": [{ "type": "string" }, { "type": "object" }] },
+            "how_i_think": { "type": "array", "items": { "type": "string" } },
+            "vocabulary": { "type": "array" }
+          }
+        },
+        "examples": { "type": "array", "maxItems": 3 },
+        "practice": {
+          "type": "object",
+          "properties": {
+            "max_attempts": { "type": "integer", "const": 3 },
+            "exercises": { "type": "array", "maxItems": 12 }
+          }
+        },
+        "self_reflection": {
+          "type": "object",
+          "properties": { "questions": { "type": "array", "items": { "type": "string" } } }
+        },
+        "evaluation": {
+          "type": "object",
+          "properties": {
+            "pass_score": { "type": "integer" },
+            "tests": { "type": "array", "maxItems": 12 }
+          }
+        },
+        "remediation": {
+          "type": "object",
+          "properties": {
+            "trigger_under_score": { "type": "integer" },
+            "micro_explanation": { "oneOf": [{ "type": "string" }, { "type": "object" }] },
+            "exercises": { "type": "array" },
+            "reserve": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    }
+  }
+}

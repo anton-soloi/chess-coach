@@ -1,0 +1,1532 @@
+{
+  "modules": [
+    {
+      "moduleId": "tabla",
+      "title": {
+        "ro": "Tabla",
+        "en": "Board",
+        "fr": "Échiquier"
+      },
+      "summary": {
+        "ro": "Competențele centurii",
+        "en": "The belt skills",
+        "fr": "Les compétences de la ceinture"
+      },
+      "subchapters": [
+        {
+          "subchapterId": "tabla-1",
+          "title": "",
+          "lessons": [
+            {
+              "id": "orientare",
+              "title": {
+                "ro": "Tabla, câmpurile și orientarea",
+                "en": "The board, the squares and orientation",
+                "fr": "L’échiquier, les cases et l’orientation"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "fisiere",
+              "title": {
+                "ro": "Coloane, linii și diagonale",
+                "en": "Files, ranks and diagonals",
+                "fr": "Colonnes, rangées et diagonales"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "linii",
+              "title": {
+                "ro": "Linii, coloane și diagonale",
+                "en": "Ranks, files and diagonals",
+                "fr": "Rangées, colonnes et diagonales"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "notatie",
+              "title": {
+                "ro": "Notația și identificarea câmpurilor",
+                "en": "Notation and naming squares",
+                "fr": "Notation et identification des cases"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "culoare",
+              "title": {
+                "ro": "Identificarea culorii unui câmp",
+                "en": "Identifying the colour of a square",
+                "fr": "Identifier la couleur d’une case"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "initial",
+              "title": {
+                "ro": "Poziția inițială",
+                "en": "The starting position",
+                "fr": "La position initiale"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "pat",
+              "title": {
+                "ro": "Patul și elementele fundamentale ale regulilor",
+                "en": "Stalemate and the basic rules",
+                "fr": "Le pat et les règles de base"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "test",
+              "title": {
+                "ro": "Test final măsurabil",
+                "en": "Measurable final test",
+                "fr": "Test final mesurable"
+              },
+              "engine": "app"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "moduleId": "pion",
+      "title": {
+        "ro": "Pion",
+        "en": "Pawn",
+        "fr": "Pion"
+      },
+      "summary": {
+        "ro": "Mutări, șah, mat și legalitatea mutării.",
+        "en": "Moves, check, mate and whether a move is legal.",
+        "fr": "Coups, échec, mat et légalité du coup."
+      },
+      "subchapters": [
+        {
+          "subchapterId": "pion-1",
+          "title": "",
+          "lessons": [
+            {
+              "id": "reguli",
+              "title": {
+                "ro": "Mutările pieselor și regulile de bază",
+                "en": "How the pieces move and the basic rules",
+                "fr": "Les mouvements des pièces et les règles de base"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "valoare",
+              "title": {
+                "ro": "Valoarea relativă a pieselor",
+                "en": "The relative value of the pieces",
+                "fr": "La valeur relative des pièces"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "sah",
+              "title": {
+                "ro": "Șah, mat și apărarea împotriva șahului",
+                "en": "Check, mate and defending against check",
+                "fr": "Échec, mat et défense contre l’échec"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "maturi",
+              "title": {
+                "ro": "Mat cu regină, două turnuri, turn și doi nebuni",
+                "en": "Mate with queen, two rooks, rook and two bishops",
+                "fr": "Mat avec dame, deux tours, tour et deux fous"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "legalitate",
+              "title": {
+                "ro": "Verificarea legalității mutării adversarului și a propriei mutări",
+                "en": "Checking that the opponent’s move and your own move are legal",
+                "fr": "Vérifier que le coup adverse et le tien sont légaux"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "deschidere",
+              "title": {
+                "ro": "Principii de deschidere",
+                "en": "Opening principles",
+                "fr": "Principes d’ouverture"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "finaluri",
+              "title": {
+                "ro": "Elemente de final",
+                "en": "Endgame elements",
+                "fr": "Éléments de finale"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "repetare",
+              "title": {
+                "ro": "Repetarea poziției",
+                "en": "Repeating the position",
+                "fr": "Répétition de la position"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "ceas",
+              "title": {
+                "ro": "Ceasul de șah; bullet, blitz și clasic",
+                "en": "The chess clock; bullet, blitz and classical",
+                "fr": "La pendule ; bullet, blitz et classique"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "ordine",
+              "title": {
+                "ro": "Ordinea gândirii: mat → șah → captură → amenințare → plan",
+                "en": "The order of thinking: mate → check → capture → threat → plan",
+                "fr": "L’ordre de la pensée : mat → échec → capture → menace → plan"
+              },
+              "engine": "app"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "moduleId": "cal",
+      "title": {
+        "ro": "Cal",
+        "en": "Knight",
+        "fr": "Cavalier"
+      },
+      "summary": {
+        "ro": "Tactică elementară și sacrificiul.",
+        "en": "Elementary tactics and the sacrifice.",
+        "fr": "Tactique élémentaire et le sacrifice."
+      },
+      "subchapters": [
+        {
+          "subchapterId": "cal-1",
+          "title": "",
+          "lessons": [
+            {
+              "id": "furculita",
+              "title": {
+                "ro": "Atacul dublu / furculița.",
+                "en": "The double attack / the fork.",
+                "fr": "La double attaque / la fourchette."
+              },
+              "engine": "app"
+            },
+            {
+              "id": "descoperire",
+              "title": {
+                "ro": "Atacul sau șahul prin descoperire.",
+                "en": "The discovered attack or discovered check.",
+                "fr": "L’attaque ou l’échec à la découverte."
+              },
+              "engine": "app"
+            },
+            {
+              "id": "lectie_sah_001",
+              "title": {
+                "ro": "Atacul prin Descoperire și Amenințări Duble",
+                "en": "The Discovered Attack and Double Threats",
+                "fr": "L’attaque à la découverte et les menaces doubles"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "ultima",
+              "title": {
+                "ro": "Slăbiciunea ultimei linii.",
+                "en": "The weakness of the back rank.",
+                "fr": "La faiblesse de la dernière rangée."
+              },
+              "engine": "app"
+            },
+            {
+              "id": "supraincarcare",
+              "title": {
+                "ro": "Supraîncărcarea.",
+                "en": "Overload.",
+                "fr": "La surcharge."
+              },
+              "engine": "app"
+            },
+            {
+              "id": "deflectie",
+              "title": {
+                "ro": "Deflecția apărătorului.",
+                "en": "Deflection of the defender.",
+                "fr": "La déviation du défenseur."
+              },
+              "engine": "app"
+            },
+            {
+              "id": "sahdublu",
+              "title": {
+                "ro": "Șahul dublu după deflecție.",
+                "en": "Double check after a deflection.",
+                "fr": "L’échec double après une déviation."
+              },
+              "engine": "app"
+            },
+            {
+              "id": "analiza",
+              "title": {
+                "ro": "Analiza tactică de la piesa cu valoare mai mare spre cea cu valoare mai mică.",
+                "en": "Tactical analysis from the higher-value piece down to the lower-value one.",
+                "fr": "L’analyse tactique de la pièce la plus chère vers la moins chère."
+              },
+              "engine": "app"
+            },
+            {
+              "id": "modele",
+              "title": {
+                "ro": "Modele de mat: nebun + cal, mat sufocat, Legal, Anastasia și ultima linie.",
+                "en": "Mate patterns: bishop and knight, smothered mate, Legal, Anastasia and the back rank.",
+                "fr": "Schémas de mat : fou et cavalier, mat étouffé, Legal, Anastasia et la dernière rangée."
+              },
+              "engine": "app"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "moduleId": "nebun",
+      "title": {
+        "ro": "Nebun",
+        "en": "Bishop",
+        "fr": "Fou"
+      },
+      "summary": {
+        "ro": "Nebunul extinde repertoriul de modele și introduce procedee tactice mai complexe.",
+        "en": "The bishop extends the pattern repertoire and introduces more complex tactical devices.",
+        "fr": "Le fou élargit le répertoire des schémas et introduit des procédés tactiques plus complexes."
+      },
+      "subchapters": [
+        {
+          "subchapterId": "nebun-1",
+          "title": {
+            "ro": "Tipare de mat",
+            "en": "Mate patterns",
+            "fr": "Schémas de mat"
+          },
+          "lessons": [
+            {
+              "id": "nb-hook",
+              "title": {
+                "ro": "Hook",
+                "en": "Hook",
+                "fr": "Hook"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-swine",
+              "title": {
+                "ro": "Blind Swine",
+                "en": "Blind Swine",
+                "fr": "Blind Swine"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-balestra",
+              "title": {
+                "ro": "Balestra",
+                "en": "Balestra",
+                "fr": "Balestra"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-opera",
+              "title": {
+                "ro": "Opera",
+                "en": "Opera",
+                "fr": "Opera"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-kill",
+              "title": {
+                "ro": "Kill Box",
+                "en": "Kill Box",
+                "fr": "Kill Box"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-guerrilla",
+              "title": {
+                "ro": "Guerrilla",
+                "en": "Guerrilla",
+                "fr": "Guerrilla"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-swallow",
+              "title": {
+                "ro": "Swallow-tail",
+                "en": "Swallow-tail",
+                "fr": "Swallow-tail"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-blackburne",
+              "title": {
+                "ro": "Blackburne",
+                "en": "Blackburne",
+                "fr": "Blackburne"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-corner",
+              "title": {
+                "ro": "Corner",
+                "en": "Corner",
+                "fr": "Corner"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-cozio",
+              "title": {
+                "ro": "Cozio",
+                "en": "Cozio",
+                "fr": "Cozio"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-david",
+              "title": {
+                "ro": "David & Goliath",
+                "en": "David & Goliath",
+                "fr": "David & Goliath"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-lange",
+              "title": {
+                "ro": "Max Lange",
+                "en": "Max Lange",
+                "fr": "Max Lange"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-mayet",
+              "title": {
+                "ro": "Mayet's",
+                "en": "Mayet's",
+                "fr": "Mayet"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-morphy",
+              "title": {
+                "ro": "Morphy's",
+                "en": "Morphy's",
+                "fr": "Morphy"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-reti",
+              "title": {
+                "ro": "Réti's",
+                "en": "Réti's",
+                "fr": "Réti"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-vukovic",
+              "title": {
+                "ro": "Vukovic",
+                "en": "Vukovic",
+                "fr": "Vukovic"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-anderssen",
+              "title": {
+                "ro": "Anderssen",
+                "en": "Anderssen",
+                "fr": "Anderssen"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-ultima",
+              "title": {
+                "ro": "ultima linie",
+                "en": "back rank",
+                "fr": "dernière rangée"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-sufocat",
+              "title": {
+                "ro": "sufocat",
+                "en": "smothered",
+                "fr": "étouffé"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-arab",
+              "title": {
+                "ro": "Arab",
+                "en": "Arab",
+                "fr": "Arabe"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-anastasia",
+              "title": {
+                "ro": "Anastasia",
+                "en": "Anastasia",
+                "fr": "Anastasia"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-boden",
+              "title": {
+                "ro": "Boden",
+                "en": "Boden",
+                "fr": "Boden"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-dovetail",
+              "title": {
+                "ro": "Dovetail",
+                "en": "Dovetail",
+                "fr": "Dovetail"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-epaulette",
+              "title": {
+                "ro": "Epaulette",
+                "en": "Epaulette",
+                "fr": "Épaulette"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-damiano",
+              "title": {
+                "ro": "Damiano",
+                "en": "Damiano",
+                "fr": "Damiano"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-greco",
+              "title": {
+                "ro": "Greco",
+                "en": "Greco",
+                "fr": "Greco"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-legal",
+              "title": {
+                "ro": "Legal",
+                "en": "Legal",
+                "fr": "Legal"
+              },
+              "engine": "app"
+            }
+          ]
+        },
+        {
+          "subchapterId": "nebun-2",
+          "title": {
+            "ro": "Procedee tactice",
+            "en": "Tactical devices",
+            "fr": "Procédés tactiques"
+          },
+          "lessons": [
+            {
+              "id": "nb-intermediar",
+              "title": {
+                "ro": "mutarea intermediară",
+                "en": "the zwischenzug",
+                "fr": "le coup intermédiaire"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-contraatac",
+              "title": {
+                "ro": "contraatacul",
+                "en": "the counterattack",
+                "fr": "la contre-attaque"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-prindere",
+              "title": {
+                "ro": "prinderea unei piese valoroase",
+                "en": "trapping a valuable piece",
+                "fr": "la prise au piège d’une pièce de valeur"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-raze",
+              "title": {
+                "ro": "atacul prin raze X",
+                "en": "the X-ray attack",
+                "fr": "l’attaque par rayons X"
+              },
+              "engine": "app"
+            }
+          ]
+        },
+        {
+          "subchapterId": "nebun-3",
+          "title": {
+            "ro": "Idei de combinație",
+            "en": "Combination ideas",
+            "fr": "Idées de combinaison"
+          },
+          "lessons": [
+            {
+              "id": "nb-fortat",
+              "title": {
+                "ro": "mutări forțate",
+                "en": "forcing moves",
+                "fr": "coups forcés"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-limitare",
+              "title": {
+                "ro": "limitarea opțiunilor adversarului",
+                "en": "limiting the opponent’s options",
+                "fr": "limiter les options de l’adversaire"
+              },
+              "engine": "app"
+            },
+            {
+              "id": "nb-ascuns",
+              "title": {
+                "ro": "identificarea motivului ascuns",
+                "en": "spotting the hidden motif",
+                "fr": "identifier le motif caché"
+              },
+              "engine": "app"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "moduleId": "turn",
+      "title": {
+        "ro": "Turn",
+        "en": "Rook",
+        "fr": "Tour"
+      },
+      "summary": {
+        "ro": "Gândire și decizie, procedee, tipare, combinații, atac la rege, finaluri de pioni și de turn.",
+        "en": "Thinking and decision, devices, patterns, combinations, the attack on the king, pawn endings and rook endings.",
+        "fr": "Pensée et décision, procédés, schémas, combinaisons, attaque du roi, finales de pions et de tours."
+      },
+      "subchapters": [
+        {
+          "subchapterId": "turn-1",
+          "title": {
+            "ro": "A. Gândirea și decizia",
+            "en": "A. Thinking and decision",
+            "fr": "A. Pensée et décision"
+          },
+          "lessons": [
+            {
+              "id": "tn-a1",
+              "title": {
+                "ro": "A1. Identificarea mutărilor forțate",
+                "en": "A1. Spotting forcing moves",
+                "fr": "A1. Repérer les coups forcés"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-a2",
+              "title": {
+                "ro": "A2. Identificarea amenințării adversarului",
+                "en": "A2. Spotting the opponent’s threat",
+                "fr": "A2. Repérer la menace adverse"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-a3",
+              "title": {
+                "ro": "A3. Stabilirea mutărilor candidate",
+                "en": "A3. Choosing candidate moves",
+                "fr": "A3. Choisir les coups candidats"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-a4",
+              "title": {
+                "ro": "A4. Calculul variantelor și al celui mai bun răspuns al adversarului",
+                "en": "A4. Calculating lines and the opponent’s best reply",
+                "fr": "A4. Calculer les variantes et la meilleure réponse adverse"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-a5",
+              "title": {
+                "ro": "A5. Calculul până la poziția stabilă",
+                "en": "A5. Calculating until the position is stable",
+                "fr": "A5. Calculer jusqu’à la position stable"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-a6",
+              "title": {
+                "ro": "A6. Compararea variantelor",
+                "en": "A6. Comparing the lines",
+                "fr": "A6. Comparer les variantes"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-a7",
+              "title": {
+                "ro": "A7. Schimbul pieselor",
+                "en": "A7. Trading pieces",
+                "fr": "A7. L’échange des pièces"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-a8",
+              "title": {
+                "ro": "A8. Verificarea mutării înainte de executare",
+                "en": "A8. Checking the move before you play it",
+                "fr": "A8. Vérifier le coup avant de le jouer"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-a9",
+              "title": {
+                "ro": "A9. Calculul fără mutarea pieselor",
+                "en": "A9. Calculating without moving the pieces",
+                "fr": "A9. Calculer sans déplacer les pièces"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-a10",
+              "title": {
+                "ro": "A10. Recunoașterea momentului în care trebuie să calculeze",
+                "en": "A10. Recognising when you must calculate",
+                "fr": "A10. Reconnaître le moment où il faut calculer"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-a11",
+              "title": {
+                "ro": "A11. Evaluarea rezultatului calculului",
+                "en": "A11. Judging the result of the calculation",
+                "fr": "A11. Évaluer le résultat du calcul"
+              },
+              "engine": "turn"
+            }
+          ]
+        },
+        {
+          "subchapterId": "turn-2",
+          "title": {
+            "ro": "B. Procedee tactice elementare",
+            "en": "B. Elementary tactical devices",
+            "fr": "B. Procédés tactiques élémentaires"
+          },
+          "lessons": [
+            {
+              "id": "tn-b1",
+              "title": {
+                "ro": "B1. Legarea",
+                "en": "B1. The pin",
+                "fr": "B1. Le clouage"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-b2",
+              "title": {
+                "ro": "B2. Eliminarea apărătorului",
+                "en": "B2. Removing the defender",
+                "fr": "B2. Éliminer le défenseur"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-b3",
+              "title": {
+                "ro": "B3. Ademenirea",
+                "en": "B3. Attraction",
+                "fr": "B3. L’attraction"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-b4",
+              "title": {
+                "ro": "B4. Intercepția",
+                "en": "B4. Interception",
+                "fr": "B4. L’interception"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-b5",
+              "title": {
+                "ro": "B5. Eliberarea unei linii",
+                "en": "B5. Clearing a line",
+                "fr": "B5. Libérer une ligne"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-b6",
+              "title": {
+                "ro": "B6. Eliberarea unui câmp",
+                "en": "B6. Clearing a square",
+                "fr": "B6. Libérer une case"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-b7",
+              "title": {
+                "ro": "B7. Sacrificiul pentru un avantaj concret",
+                "en": "B7. The sacrifice for a concrete advantage",
+                "fr": "B7. Le sacrifice pour un avantage concret"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-b8",
+              "title": {
+                "ro": "B8. Șahul perpetuu",
+                "en": "B8. Perpetual check",
+                "fr": "B8. L’échec perpétuel"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-b9",
+              "title": {
+                "ro": "B9. Patul ca resursă tactică",
+                "en": "B9. Stalemate as a tactical resource",
+                "fr": "B9. Le pat comme ressource tactique"
+              },
+              "engine": "turn"
+            }
+          ]
+        },
+        {
+          "subchapterId": "turn-3",
+          "title": {
+            "ro": "C. Tipare simple de mat",
+            "en": "C. Simple mate patterns",
+            "fr": "C. Schémas de mat simples"
+          },
+          "lessons": [
+            {
+              "id": "tn-c1",
+              "title": {
+                "ro": "C1. Matul lui Lolli",
+                "en": "C1. Lolli’s mate",
+                "fr": "C1. Le mat de Lolli"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-c2",
+              "title": {
+                "ro": "C2. Matul Kiss of Death",
+                "en": "C2. Kiss of Death mate",
+                "fr": "C2. Le mat Kiss of Death"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-c3",
+              "title": {
+                "ro": "C3. Matul cu sacrificiu pe h7",
+                "en": "C3. The mate with a sacrifice on h7",
+                "fr": "C3. Le mat avec sacrifice en h7"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-c4",
+              "title": {
+                "ro": "C4. Matul prin restrângerea câmpurilor",
+                "en": "C4. Mate by taking away the squares",
+                "fr": "C4. Le mat en restreignant les cases"
+              },
+              "engine": "turn"
+            }
+          ]
+        },
+        {
+          "subchapterId": "turn-4",
+          "title": {
+            "ro": "D. Combinații simple",
+            "en": "D. Simple combinations",
+            "fr": "D. Combinaisons simples"
+          },
+          "lessons": [
+            {
+              "id": "tn-d1",
+              "title": {
+                "ro": "D1. Structura unei combinații",
+                "en": "D1. The shape of a combination",
+                "fr": "D1. La structure d’une combinaison"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-d2",
+              "title": {
+                "ro": "D2. Combinații pentru câștig material",
+                "en": "D2. Combinations to win material",
+                "fr": "D2. Combinaisons pour gagner du matériel"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-d3",
+              "title": {
+                "ro": "D3. Combinații pentru atacul regelui",
+                "en": "D3. Combinations to attack the king",
+                "fr": "D3. Combinaisons pour attaquer le roi"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-d4",
+              "title": {
+                "ro": "D4. Combinații defensive",
+                "en": "D4. Defensive combinations",
+                "fr": "D4. Combinaisons défensives"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-d5",
+              "title": {
+                "ro": "D5. Combinația și calculul",
+                "en": "D5. The combination and calculation",
+                "fr": "D5. La combinaison et le calcul"
+              },
+              "engine": "turn"
+            }
+          ]
+        },
+        {
+          "subchapterId": "turn-5",
+          "title": {
+            "ro": "E. Atacul la rege",
+            "en": "E. The attack on the king",
+            "fr": "E. L’attaque du roi"
+          },
+          "lessons": [
+            {
+              "id": "tn-e1",
+              "title": {
+                "ro": "E1. Regele în centru",
+                "en": "E1. The king in the centre",
+                "fr": "E1. Le roi au centre"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-e2",
+              "title": {
+                "ro": "E2. Regele rocat pe aceeași parte",
+                "en": "E2. Kings castled on the same side",
+                "fr": "E2. Rois roqués du même côté"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-e3",
+              "title": {
+                "ro": "E3. Regii rocați pe părți opuse",
+                "en": "E3. Kings castled on opposite sides",
+                "fr": "E3. Rois roqués de côtés opposés"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-e4",
+              "title": {
+                "ro": "E4. Construirea atacului la rege",
+                "en": "E4. Building the attack on the king",
+                "fr": "E4. Construire l’attaque du roi"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-e5",
+              "title": {
+                "ro": "E5. Apărarea împotriva atacului la rege",
+                "en": "E5. Defending against the attack on the king",
+                "fr": "E5. Se défendre contre l’attaque du roi"
+              },
+              "engine": "turn"
+            }
+          ]
+        },
+        {
+          "subchapterId": "turn-6",
+          "title": {
+            "ro": "F. Finaluri de pioni",
+            "en": "F. Pawn endings",
+            "fr": "F. Finales de pions"
+          },
+          "lessons": [
+            {
+              "id": "tn-f1",
+              "title": {
+                "ro": "F1. Regula pătratului",
+                "en": "F1. The square rule",
+                "fr": "F1. La règle du carré"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-f2",
+              "title": {
+                "ro": "F2. Opoziția",
+                "en": "F2. The opposition",
+                "fr": "F2. L’opposition"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-f3",
+              "title": {
+                "ro": "F3. Pătrate corespondente",
+                "en": "F3. Corresponding squares",
+                "fr": "F3. Les cases correspondantes"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-f4",
+              "title": {
+                "ro": "F4. Regula pionului de turn",
+                "en": "F4. The rook-pawn rule",
+                "fr": "F4. La règle du pion tour"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-f5",
+              "title": {
+                "ro": "F5. Zugzwang",
+                "en": "F5. Zugzwang",
+                "fr": "F5. Le zugzwang"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-f6",
+              "title": {
+                "ro": "F6. Crearea și utilizarea pionului liber",
+                "en": "F6. Creating and using a passed pawn",
+                "fr": "F6. Créer et utiliser un pion passé"
+              },
+              "engine": "turn"
+            }
+          ]
+        },
+        {
+          "subchapterId": "turn-7",
+          "title": {
+            "ro": "G. Finaluri simple de turn",
+            "en": "G. Simple rook endings",
+            "fr": "G. Finales simples de tours"
+          },
+          "lessons": [
+            {
+              "id": "tn-g1",
+              "title": {
+                "ro": "G1. Principiile generale ale finalului de turn",
+                "en": "G1. General principles of the rook ending",
+                "fr": "G1. Principes généraux de la finale de tours"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-g2",
+              "title": {
+                "ro": "G2. Turn contra pion",
+                "en": "G2. Rook against pawn",
+                "fr": "G2. Tour contre pion"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-g3",
+              "title": {
+                "ro": "G3. Regele și turnul împotriva regelui și pionului",
+                "en": "G3. King and rook against king and pawn",
+                "fr": "G3. Roi et tour contre roi et pion"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-g4",
+              "title": {
+                "ro": "G4. Turn și pion contra turn",
+                "en": "G4. Rook and pawn against rook",
+                "fr": "G4. Tour et pion contre tour"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-g5",
+              "title": {
+                "ro": "G5. Poziția Lucena",
+                "en": "G5. The Lucena position",
+                "fr": "G5. La position de Lucena"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-g6",
+              "title": {
+                "ro": "G6. Poziția Philidor",
+                "en": "G6. The Philidor position",
+                "fr": "G6. La position de Philidor"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-g7",
+              "title": {
+                "ro": "G7. Șahurile din spate și din lateral",
+                "en": "G7. Checks from behind and from the side",
+                "fr": "G7. Les échecs par-derrière et de côté"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-g8",
+              "title": {
+                "ro": "G8. Turnul împotriva pionilor",
+                "en": "G8. The rook against pawns",
+                "fr": "G8. La tour contre les pions"
+              },
+              "engine": "turn"
+            },
+            {
+              "id": "tn-g9",
+              "title": {
+                "ro": "G9. Poziții de remiză în finalurile de turn",
+                "en": "G9. Drawn positions in rook endings",
+                "fr": "G9. Positions nulles dans les finales de tours"
+              },
+              "engine": "turn"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "moduleId": "dama",
+      "title": {
+        "ro": "Damă",
+        "en": "Queen",
+        "fr": "Dame"
+      },
+      "summary": {
+        "ro": "Planul pe termen lung: strategia jocului de mijloc, profilaxia și transformarea avantajului.",
+        "en": "The long-term plan: middlegame strategy, prophylaxis and converting an advantage.",
+        "fr": "Le plan à long terme : stratégie du milieu de partie, prophylaxie et transformation de l’avantage."
+      },
+      "subchapters": [
+        {
+          "subchapterId": "dama-1",
+          "title": {
+            "ro": "A. Strategia jocului de mijloc",
+            "en": "A. Middlegame strategy",
+            "fr": "A. Stratégie du milieu de partie"
+          },
+          "lessons": [
+            {
+              "id": "dm-a1",
+              "title": {
+                "ro": "A1. Evaluarea poziției",
+                "en": "A1. Judging the position",
+                "fr": "A1. Évaluer la position"
+              },
+              "engine": "dama"
+            },
+            {
+              "id": "dm-a2",
+              "title": {
+                "ro": "A2. Planul, nu mutarea izolată",
+                "en": "A2. The plan, not the isolated move",
+                "fr": "A2. Le plan, pas le coup isolé"
+              },
+              "engine": "dama"
+            },
+            {
+              "id": "dm-a3",
+              "title": {
+                "ro": "A3. Pionul izolat",
+                "en": "A3. The isolated pawn",
+                "fr": "A3. Le pion isolé"
+              },
+              "engine": "dama"
+            },
+            {
+              "id": "dm-a4",
+              "title": {
+                "ro": "A4. Pionii suspendați",
+                "en": "A4. Hanging pawns",
+                "fr": "A4. Les pions suspendus"
+              },
+              "engine": "dama"
+            },
+            {
+              "id": "dm-a5",
+              "title": {
+                "ro": "A5. Pionii dublați",
+                "en": "A5. Doubled pawns",
+                "fr": "A5. Les pions doublés"
+              },
+              "engine": "dama"
+            },
+            {
+              "id": "dm-a6",
+              "title": {
+                "ro": "A6. Majoritatea de pioni",
+                "en": "A6. The pawn majority",
+                "fr": "A6. La majorité de pions"
+              },
+              "engine": "dama"
+            },
+            {
+              "id": "dm-a7",
+              "title": {
+                "ro": "A7. Coloane deschise și semi-deschise",
+                "en": "A7. Open and half-open files",
+                "fr": "A7. Colonnes ouvertes et semi-ouvertes"
+              },
+              "engine": "dama"
+            },
+            {
+              "id": "dm-a8",
+              "title": {
+                "ro": "A8. Avanpostul",
+                "en": "A8. The outpost",
+                "fr": "A8. L’avant-poste"
+              },
+              "engine": "dama"
+            },
+            {
+              "id": "dm-a9",
+              "title": {
+                "ro": "A9. Perechea de nebuni",
+                "en": "A9. The bishop pair",
+                "fr": "A9. La paire de fous"
+              },
+              "engine": "dama"
+            }
+          ]
+        },
+        {
+          "subchapterId": "dama-2",
+          "title": {
+            "ro": "B. Profilaxia și gândirea defensivă",
+            "en": "B. Prophylaxis and defensive thinking",
+            "fr": "B. Prophylaxie et pensée défensive"
+          },
+          "lessons": [
+            {
+              "id": "dm-b1",
+              "title": {
+                "ro": "B1. Gândirea profilactică",
+                "en": "B1. Prophylactic thinking",
+                "fr": "B1. La pensée prophylactique"
+              },
+              "engine": "dama"
+            },
+            {
+              "id": "dm-b2",
+              "title": {
+                "ro": "B2. Apărarea fără slăbiciuni noi",
+                "en": "B2. Defending without new weaknesses",
+                "fr": "B2. Défendre sans nouvelles faiblesses"
+              },
+              "engine": "dama"
+            },
+            {
+              "id": "dm-b3",
+              "title": {
+                "ro": "B3. Ghidul schimburilor",
+                "en": "B3. The guide to exchanges",
+                "fr": "B3. Le guide des échanges"
+              },
+              "engine": "dama"
+            }
+          ]
+        },
+        {
+          "subchapterId": "dama-3",
+          "title": {
+            "ro": "C. Calcul și manevrarea pieselor",
+            "en": "C. Calculation and manoeuvring",
+            "fr": "C. Calcul et manœuvre des pièces"
+          },
+          "lessons": [
+            {
+              "id": "dm-c1",
+              "title": {
+                "ro": "C1. Regruparea",
+                "en": "C1. Regrouping",
+                "fr": "C1. Le regroupement"
+              },
+              "engine": "dama"
+            },
+            {
+              "id": "dm-c2",
+              "title": {
+                "ro": "C2. Calculul în adâncime",
+                "en": "C2. Deep calculation",
+                "fr": "C2. Le calcul en profondeur"
+              },
+              "engine": "dama"
+            },
+            {
+              "id": "dm-c3",
+              "title": {
+                "ro": "C3. Lichidarea spre final",
+                "en": "C3. Liquidating into an ending",
+                "fr": "C3. Liquider vers la finale"
+              },
+              "engine": "dama"
+            }
+          ]
+        },
+        {
+          "subchapterId": "dama-4",
+          "title": {
+            "ro": "D. Deschiderile, pe idei",
+            "en": "D. Openings, by ideas",
+            "fr": "D. Les ouvertures, par les idées"
+          },
+          "lessons": [
+            {
+              "id": "dm-d1",
+              "title": {
+                "ro": "D1. De la deschidere la plan",
+                "en": "D1. From the opening to a plan",
+                "fr": "D1. De l’ouverture au plan"
+              },
+              "engine": "dama"
+            },
+            {
+              "id": "dm-d2",
+              "title": {
+                "ro": "D2. Centrul clasic și centrul hipermodern",
+                "en": "D2. The classical centre and the hypermodern centre",
+                "fr": "D2. Le centre classique et le centre hypermoderne"
+              },
+              "engine": "dama"
+            }
+          ]
+        },
+        {
+          "subchapterId": "dama-5",
+          "title": {
+            "ro": "E. Finaluri legate de jocul de mijloc",
+            "en": "E. Endings connected to the middlegame",
+            "fr": "E. Finales liées au milieu de partie"
+          },
+          "lessons": [
+            {
+              "id": "dm-e1",
+              "title": {
+                "ro": "E1. Tăierea regelui",
+                "en": "E1. Cutting off the king",
+                "fr": "E1. Couper le roi"
+              },
+              "engine": "dama"
+            },
+            {
+              "id": "dm-e2",
+              "title": {
+                "ro": "E2. Nebun bun și nebun rău",
+                "en": "E2. Good bishop and bad bishop",
+                "fr": "E2. Bon fou et mauvais fou"
+              },
+              "engine": "dama"
+            },
+            {
+              "id": "dm-e3",
+              "title": {
+                "ro": "E3. Nebuni de culori opuse",
+                "en": "E3. Opposite-coloured bishops",
+                "fr": "E3. Fous de couleurs opposées"
+              },
+              "engine": "dama"
+            },
+            {
+              "id": "dm-e4",
+              "title": {
+                "ro": "E4. Calul și nebunul",
+                "en": "E4. Knight and bishop",
+                "fr": "E4. Cavalier et fou"
+              },
+              "engine": "dama"
+            }
+          ]
+        },
+        {
+          "subchapterId": "dama-6",
+          "title": {
+            "ro": "F. Tipuri de avantaj și transformarea lor",
+            "en": "F. Types of advantage and converting them",
+            "fr": "F. Types d’avantage et leur transformation"
+          },
+          "lessons": [
+            {
+              "id": "dm-f1",
+              "title": {
+                "ro": "F1. Avantaj material",
+                "en": "F1. Material advantage",
+                "fr": "F1. Avantage matériel"
+              },
+              "engine": "dama"
+            },
+            {
+              "id": "dm-f2",
+              "title": {
+                "ro": "F2. Avantaj de dezvoltare",
+                "en": "F2. Development advantage",
+                "fr": "F2. Avantage de développement"
+              },
+              "engine": "dama"
+            },
+            {
+              "id": "dm-f3",
+              "title": {
+                "ro": "F3. Avantaj de spațiu",
+                "en": "F3. Space advantage",
+                "fr": "F3. Avantage d’espace"
+              },
+              "engine": "dama"
+            },
+            {
+              "id": "dm-f4",
+              "title": {
+                "ro": "F4. Avantaj de activitate",
+                "en": "F4. Activity advantage",
+                "fr": "F4. Avantage d’activité"
+              },
+              "engine": "dama"
+            },
+            {
+              "id": "dm-f5",
+              "title": {
+                "ro": "F5. Avantaj structural",
+                "en": "F5. Structural advantage",
+                "fr": "F5. Avantage de structure"
+              },
+              "engine": "dama"
+            },
+            {
+              "id": "dm-f6",
+              "title": {
+                "ro": "F6. Avantaj de inițiativă",
+                "en": "F6. Initiative",
+                "fr": "F6. Avantage d’initiative"
+              },
+              "engine": "dama"
+            },
+            {
+              "id": "dm-f7",
+              "title": {
+                "ro": "F7. Avantajul perechii de nebuni",
+                "en": "F7. The bishop-pair advantage",
+                "fr": "F7. L’avantage de la paire de fous"
+              },
+              "engine": "dama"
+            },
+            {
+              "id": "dm-f8",
+              "title": {
+                "ro": "F8. Avantajul pionului liber",
+                "en": "F8. The passed-pawn advantage",
+                "fr": "F8. L’avantage du pion passé"
+              },
+              "engine": "dama"
+            },
+            {
+              "id": "dm-f9",
+              "title": {
+                "ro": "F9. Transformarea avantajului",
+                "en": "F9. Converting the advantage",
+                "fr": "F9. Transformer l’avantage"
+              },
+              "engine": "dama"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

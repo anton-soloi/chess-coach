@@ -1,0 +1,3576 @@
+{
+  "levels": [
+    {
+      "id": "tabla",
+      "icon": "🏁",
+      "modules": [
+        "tabla"
+      ],
+      "title": {
+        "ro": "Tabla de Șah",
+        "en": "Chessboard",
+        "fr": "L'Échiquier"
+      },
+      "summary": {
+        "ro": "Bazele tablei, pătrățele, coordonate, așezarea inițială",
+        "en": "Board basics, squares, coordinates, the starting position",
+        "fr": "Les bases de l’échiquier, les cases, les coordonnées, la position de départ"
+      },
+      "subchapters": [
+        {
+          "id": "orientare",
+          "title": {
+            "ro": "Tabla, câmpurile și orientarea",
+            "en": "The board, the squares and orientation",
+            "fr": "L’échiquier, les cases et l’orientation"
+          },
+          "lessons": [
+            "orientare"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "orientare",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "fisiere",
+          "title": {
+            "ro": "Coloane, linii și diagonale",
+            "en": "Files, ranks and diagonals",
+            "fr": "Colonnes, rangées et diagonales"
+          },
+          "lessons": [
+            "fisiere"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "fisiere",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "linii",
+          "title": {
+            "ro": "Linii, coloane și diagonale",
+            "en": "Ranks, files and diagonals",
+            "fr": "Rangées, colonnes et diagonales"
+          },
+          "lessons": [
+            "linii"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "linii",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "notatie",
+          "title": {
+            "ro": "Notația și identificarea câmpurilor",
+            "en": "Notation and naming squares",
+            "fr": "Notation et identification des cases"
+          },
+          "lessons": [
+            "notatie"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "notatie",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "culoare",
+          "title": {
+            "ro": "Identificarea culorii unui câmp",
+            "en": "Identifying the colour of a square",
+            "fr": "Identifier la couleur d’une case"
+          },
+          "lessons": [
+            "culoare"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "culoare",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "initial",
+          "title": {
+            "ro": "Poziția inițială",
+            "en": "The starting position",
+            "fr": "La position initiale"
+          },
+          "lessons": [
+            "initial"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "initial",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "pat",
+          "title": {
+            "ro": "Patul și elementele fundamentale ale regulilor",
+            "en": "Stalemate and the basic rules",
+            "fr": "Le pat et les règles de base"
+          },
+          "lessons": [
+            "pat"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "pat",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "test",
+          "title": {
+            "ro": "Test final măsurabil",
+            "en": "Measurable final test",
+            "fr": "Test final mesurable"
+          },
+          "lessons": [
+            "test"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "test",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "pion",
+      "icon": "♟️",
+      "modules": [
+        "pion"
+      ],
+      "title": {
+        "ro": "Nivelul Pion",
+        "en": "Pawn Level",
+        "fr": "Niveau Pion"
+      },
+      "summary": {
+        "ro": "Mutările pionului, captura, en-passant, promovarea",
+        "en": "Pawn moves, capture, en passant, promotion",
+        "fr": "Les coups du pion, la prise, la prise en passant, la promotion"
+      },
+      "subchapters": [
+        {
+          "id": "reguli",
+          "title": {
+            "ro": "Mutările pieselor și regulile de bază",
+            "en": "How the pieces move and the basic rules",
+            "fr": "Les mouvements des pièces et les règles de base"
+          },
+          "lessons": [
+            "reguli"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "reguli",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "valoare",
+          "title": {
+            "ro": "Valoarea relativă a pieselor",
+            "en": "The relative value of the pieces",
+            "fr": "La valeur relative des pièces"
+          },
+          "lessons": [
+            "valoare"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "valoare",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "sah",
+          "title": {
+            "ro": "Șah, mat și apărarea împotriva șahului",
+            "en": "Check, mate and defending against check",
+            "fr": "Échec, mat et défense contre l’échec"
+          },
+          "lessons": [
+            "sah"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "sah",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "maturi",
+          "title": {
+            "ro": "Mat cu regină, două turnuri, turn și doi nebuni",
+            "en": "Mate with queen, two rooks, rook and two bishops",
+            "fr": "Mat avec dame, deux tours, tour et deux fous"
+          },
+          "lessons": [
+            "maturi"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "maturi",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "legalitate",
+          "title": {
+            "ro": "Verificarea legalității mutării adversarului și a propriei mutări",
+            "en": "Checking that the opponent’s move and your own move are legal",
+            "fr": "Vérifier que le coup adverse et le tien sont légaux"
+          },
+          "lessons": [
+            "legalitate"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "legalitate",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "deschidere",
+          "title": {
+            "ro": "Principii de deschidere",
+            "en": "Opening principles",
+            "fr": "Principes d’ouverture"
+          },
+          "lessons": [
+            "deschidere"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "deschidere",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "finaluri",
+          "title": {
+            "ro": "Elemente de final",
+            "en": "Endgame elements",
+            "fr": "Éléments de finale"
+          },
+          "lessons": [
+            "finaluri"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "finaluri",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "repetare",
+          "title": {
+            "ro": "Repetarea poziției",
+            "en": "Repeating the position",
+            "fr": "Répétition de la position"
+          },
+          "lessons": [
+            "repetare"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "repetare",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "ceas",
+          "title": {
+            "ro": "Ceasul de șah; bullet, blitz și clasic",
+            "en": "The chess clock; bullet, blitz and classical",
+            "fr": "La pendule ; bullet, blitz et classique"
+          },
+          "lessons": [
+            "ceas"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "ceas",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "ordine",
+          "title": {
+            "ro": "Ordinea gândirii: mat → șah → captură → amenințare → plan",
+            "en": "The order of thinking: mate → check → capture → threat → plan",
+            "fr": "L’ordre de la pensée : mat → échec → capture → menace → plan"
+          },
+          "lessons": [
+            "ordine"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "ordine",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "cal",
+      "icon": "🐴",
+      "modules": [
+        "cal"
+      ],
+      "title": {
+        "ro": "Nivelul Cal",
+        "en": "Knight Level",
+        "fr": "Niveau Cavalier"
+      },
+      "summary": {
+        "ro": "Mutarea în L, furculițe, tactica elementară",
+        "en": "The L-shaped move, forks, elementary tactics",
+        "fr": "Le coup en L, les fourchettes, la tactique élémentaire"
+      },
+      "subchapters": [
+        {
+          "id": "furculita",
+          "title": {
+            "ro": "Atacul dublu / furculița.",
+            "en": "The double attack / the fork.",
+            "fr": "La double attaque / la fourchette."
+          },
+          "lessons": [
+            "furculita"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "furculita",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "descoperire",
+          "title": {
+            "ro": "Atacul sau șahul prin descoperire.",
+            "en": "The discovered attack or discovered check.",
+            "fr": "L’attaque ou l’échec à la découverte."
+          },
+          "lessons": [
+            "descoperire"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "descoperire",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "lectie_sah_001",
+          "author": "Profesor Anton Soloi",
+          "created_at": "2026-11-03",
+          "title": {
+            "ro": "Atacul prin Descoperire și Amenințări Duble",
+            "en": "The Discovered Attack and Double Threats",
+            "fr": "L’attaque à la découverte et les menaces doubles"
+          },
+          "lessons": [
+            "lectie_sah_001"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "lectie_sah_001",
+              "diagram_fen": "r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
+              "explanation": {
+                "ro": "Observă poziția centrală și presiunea exercitată asupra câmpului f7.",
+                "en": "Look at the central position and the pressure on the f7-square.",
+                "fr": "Observe la position centrale et la pression exercée sur la case f7."
+              },
+              "what_to_observe": {
+                "ro": "Negrul are piese pe c6 și f6. Nebunul din c4 privește direct spre f7.",
+                "en": "Black has pieces on c6 and f6. The bishop on c4 looks straight at f7.",
+                "fr": "Les Noirs ont des pièces en c6 et f6. Le fou en c4 vise directement f7."
+              },
+              "annotations": {
+                "arrows": [
+                  { "start": "c4", "end": "f7", "color": "red" }
+                ],
+                "highlights": [
+                  { "square": "f7", "color": "yellow", "type": "circle-ring" }
+                ]
+              },
+              "rules": ["oneIdea", "opponent", "observe"],
+              "how_i_think": ["checks", "threat", "candidates", "after"]
+            },
+            "examples": [
+              {
+                "id": 1,
+                "type": "interactive_fen",
+                "demo": true,
+                "title": {
+                  "ro": "Explicații / Demonstrator",
+                  "en": "Explanation / Demonstration",
+                  "fr": "Explications / Démonstration"
+                },
+                "explanation": {
+                  "ro": "Urmărește secvența de mutări demonstrative.",
+                  "en": "Follow the demonstration sequence.",
+                  "fr": "Suis la séquence de coups de démonstration."
+                },
+                "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
+                "moves": ["Ng5", "d5", "exd5", "Nxd5"],
+                "solutie": ["f3g5", "d7d5", "e4d5", "f6d5"],
+                "correctMove": "f3g5 d7d5 e4d5 f6d5",
+                "annotations": { "arrows": [], "highlights": [] },
+                "audioUrl": "/assets/audio/l1_p2.mp3",
+                "scriptText": {
+                  "ro": "Calul din f3 sare la g5 atacând punctul f7!",
+                  "en": "The knight on f3 jumps to g5, attacking f7!",
+                  "fr": "Le cavalier en f3 saute en g5 et attaque f7 !"
+                },
+                "timeline": [
+                  { "time": 0.0, "avatarState": "pointing", "action": "highlight", "target": "g5" },
+                  { "time": 2.5, "avatarState": "talking", "action": "draw_arrow", "from": "f3", "to": "g5" },
+                  { "time": 4.8, "avatarState": "thinking", "action": "move_piece", "from": "f3", "to": "g5" }
+                ],
+                "stepType": "practice",
+                "promptText": {
+                  "ro": "Unde trebuie să sară Calul din f3 pentru a ataca punctul f7?",
+                  "en": "Where should the knight on f3 jump to attack f7?",
+                  "fr": "Où le cavalier en f3 doit-il sauter pour attaquer f7 ?"
+                },
+                "targetMove": { "from": "f3", "to": "g5" },
+                "practiceHint": {
+                  "avatarState": "pointing",
+                  "highlightSquare": "f7",
+                  "text": {
+                    "ro": "Fii atent la pionul neapărat din f7!",
+                    "en": "Watch the undefended pawn on f7!",
+                    "fr": "Surveille le pion sans défense en f7 !"
+                  }
+                },
+                "feedback": {
+                  "correct": {
+                    "avatarState": "idle",
+                    "audioUrl": "/assets/audio/correct.mp3",
+                    "text": {
+                      "ro": "Bravo! Ai găsit mutarea corectă!",
+                      "en": "Well done! You found the right move!",
+                      "fr": "Bravo ! Tu as trouvé le bon coup !"
+                    }
+                  },
+                  "wrong": {
+                    "avatarState": "thinking",
+                    "audioUrl": "/assets/audio/try_again.mp3",
+                    "text": {
+                      "ro": "Nu aceasta este mutarea. Mai încearcă!",
+                      "en": "That is not the move. Try again!",
+                      "fr": "Ce n'est pas le bon coup. Réessaie !"
+                    }
+                  }
+                }
+              }
+            ],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": [
+                {
+                  "id": 1,
+                  "type": "interactive_fen",
+                  "title": {
+                    "ro": "Antrenament",
+                    "en": "Practice",
+                    "fr": "Entraînement"
+                  },
+                  "hint": {
+                    "ro": "Găsește mutarea câștigătoare pentru alb!",
+                    "en": "Find the winning move for White!",
+                    "fr": "Trouve le coup gagnant pour les Blancs !"
+                  },
+                  "fen": "r1bqk2r/pppp1ppp/2n5/4p3/2B1P1n1/3P1N2/PPP2PPP/RNBQK2R w KQkq - 1 5",
+                  "solutionMoves": ["Bxf7+", "Kxf7", "Ng5+"],
+                  "solutie": ["c4f7", "e8f7", "f3g5"],
+                  "moves": ["c4f7", "e8f7", "f3g5"],
+                  "correctMove": "c4f7 e8f7 f3g5",
+                  "difficulty": "basic",
+                  "orientation": "white",
+                  "annotations": { "arrows": [], "highlights": [] }
+                }
+              ]
+            },
+            "self_reflection": {
+              "questions": ["noticed", "idea", "threat", "why", "after"]
+            },
+            "evaluation": {
+              "pass_score": 1,
+              "tests": [
+                {
+                  "id": "T1",
+                  "type": "find_move",
+                  "title": {
+                    "ro": "Evaluare / Test",
+                    "en": "Evaluation / Test",
+                    "fr": "Évaluation / Test"
+                  },
+                  "explanation": {
+                    "ro": "Rezolvă exercițiul final de evaluare.",
+                    "en": "Solve the final evaluation exercise.",
+                    "fr": "Résous l’exercice final d’évaluation."
+                  },
+                  "fen": "r1bqk2r/pppp1ppp/2n5/4p3/2B1P1n1/3P1N2/PPP2PPP/RNBQK2R w KQkq - 1 5",
+                  "testSolutionMoves": ["Bxf7+", "Kxf7", "Ng5+"],
+                  "solutie": ["c4f7", "e8f7", "f3g5"],
+                  "moves": ["c4f7", "e8f7", "f3g5"],
+                  "correctMove": "c4f7 e8f7 f3g5",
+                  "maxAttempts": 3,
+                  "timeLimitSec": 60,
+                  "timeLimitSeconds": 60,
+                  "scoreWeight": 2,
+                  "weight": 2,
+                  "level": "basic",
+                  "difficulty": "basic",
+                  "orientation": "white",
+                  "annotations": { "arrows": [], "highlights": [] }
+                }
+              ]
+            },
+            "remediation": {
+              "trigger_under_score": 1,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "ultima",
+          "title": {
+            "ro": "Slăbiciunea ultimei linii.",
+            "en": "The weakness of the back rank.",
+            "fr": "La faiblesse de la dernière rangée."
+          },
+          "lessons": [
+            "ultima"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "ultima",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "supraincarcare",
+          "title": {
+            "ro": "Supraîncărcarea.",
+            "en": "Overload.",
+            "fr": "La surcharge."
+          },
+          "lessons": [
+            "supraincarcare"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "supraincarcare",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "deflectie",
+          "title": {
+            "ro": "Deflecția apărătorului.",
+            "en": "Deflection of the defender.",
+            "fr": "La déviation du défenseur."
+          },
+          "lessons": [
+            "deflectie"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "deflectie",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "sahdublu",
+          "title": {
+            "ro": "Șahul dublu după deflecție.",
+            "en": "Double check after a deflection.",
+            "fr": "L’échec double après une déviation."
+          },
+          "lessons": [
+            "sahdublu"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "sahdublu",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "analiza",
+          "title": {
+            "ro": "Analiza tactică de la piesa cu valoare mai mare spre cea cu valoare mai mică.",
+            "en": "Tactical analysis from the higher-value piece down to the lower-value one.",
+            "fr": "L’analyse tactique de la pièce la plus chère vers la moins chère."
+          },
+          "lessons": [
+            "analiza"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "analiza",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "modele",
+          "title": {
+            "ro": "Modele de mat: nebun + cal, mat sufocat, Legal, Anastasia și ultima linie.",
+            "en": "Mate patterns: bishop and knight, smothered mate, Legal, Anastasia and the back rank.",
+            "fr": "Schémas de mat : fou et cavalier, mat étouffé, Legal, Anastasia et la dernière rangée."
+          },
+          "lessons": [
+            "modele"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "modele",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "nebun",
+      "icon": "🐘",
+      "modules": [
+        "nebun"
+      ],
+      "title": {
+        "ro": "Nivelul Nebun",
+        "en": "Bishop Level",
+        "fr": "Niveau Fou"
+      },
+      "summary": {
+        "ro": "Diagonale, piese ușoare, legături și atacuri prin descoperire",
+        "en": "Diagonals, minor pieces, pins and discovered attacks",
+        "fr": "Diagonales, pièces mineures, clouages et attaques à la découverte"
+      },
+      "subchapters": [
+        {
+          "id": "nebun-1",
+          "title": {
+            "ro": "Tipare de mat",
+            "en": "Mate patterns",
+            "fr": "Schémas de mat"
+          },
+          "lessons": [
+            "nb-hook",
+            "nb-swine",
+            "nb-balestra",
+            "nb-opera",
+            "nb-kill",
+            "nb-guerrilla",
+            "nb-swallow",
+            "nb-blackburne",
+            "nb-corner",
+            "nb-cozio",
+            "nb-david",
+            "nb-lange",
+            "nb-mayet",
+            "nb-morphy",
+            "nb-reti",
+            "nb-vukovic",
+            "nb-anderssen",
+            "nb-ultima",
+            "nb-sufocat",
+            "nb-arab",
+            "nb-anastasia",
+            "nb-boden",
+            "nb-dovetail",
+            "nb-epaulette",
+            "nb-damiano",
+            "nb-greco",
+            "nb-legal"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "nb-hook",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [
+              {
+                "id": 1,
+                "type": "lesson",
+                "lessonId": "nb-swine"
+              },
+              {
+                "id": 2,
+                "type": "lesson",
+                "lessonId": "nb-balestra"
+              },
+              {
+                "id": 3,
+                "type": "lesson",
+                "lessonId": "nb-opera"
+              }
+            ],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": [
+                {
+                  "id": 1,
+                  "lessonId": "nb-kill",
+                  "difficulty": "recognition"
+                },
+                {
+                  "id": 2,
+                  "lessonId": "nb-guerrilla",
+                  "difficulty": "recognition"
+                },
+                {
+                  "id": 3,
+                  "lessonId": "nb-swallow",
+                  "difficulty": "recognition"
+                },
+                {
+                  "id": 4,
+                  "lessonId": "nb-blackburne",
+                  "difficulty": "application"
+                },
+                {
+                  "id": 5,
+                  "lessonId": "nb-corner",
+                  "difficulty": "application"
+                },
+                {
+                  "id": 6,
+                  "lessonId": "nb-cozio",
+                  "difficulty": "application"
+                },
+                {
+                  "id": 7,
+                  "lessonId": "nb-david",
+                  "difficulty": "hidden"
+                },
+                {
+                  "id": 8,
+                  "lessonId": "nb-lange",
+                  "difficulty": "hidden"
+                },
+                {
+                  "id": 9,
+                  "lessonId": "nb-mayet",
+                  "difficulty": "hidden"
+                },
+                {
+                  "id": 10,
+                  "lessonId": "nb-morphy",
+                  "difficulty": "combined"
+                },
+                {
+                  "id": 11,
+                  "lessonId": "nb-reti",
+                  "difficulty": "combined"
+                },
+                {
+                  "id": 12,
+                  "lessonId": "nb-vukovic",
+                  "difficulty": "combined"
+                }
+              ]
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 11,
+              "tests": [
+                {
+                  "id": "T1",
+                  "lessonId": "nb-anderssen",
+                  "type": "find_move",
+                  "level": "basic"
+                },
+                {
+                  "id": "T2",
+                  "lessonId": "nb-ultima",
+                  "type": "find_move",
+                  "level": "basic"
+                },
+                {
+                  "id": "T3",
+                  "lessonId": "nb-sufocat",
+                  "type": "find_move",
+                  "level": "basic"
+                },
+                {
+                  "id": "T4",
+                  "lessonId": "nb-arab",
+                  "type": "find_move",
+                  "level": "basic"
+                },
+                {
+                  "id": "T5",
+                  "lessonId": "nb-anastasia",
+                  "type": "find_move",
+                  "level": "medium"
+                },
+                {
+                  "id": "T6",
+                  "lessonId": "nb-boden",
+                  "type": "find_move",
+                  "level": "medium"
+                },
+                {
+                  "id": "T7",
+                  "lessonId": "nb-dovetail",
+                  "type": "find_move",
+                  "level": "medium"
+                },
+                {
+                  "id": "T8",
+                  "lessonId": "nb-epaulette",
+                  "type": "find_move",
+                  "level": "medium"
+                },
+                {
+                  "id": "T9",
+                  "lessonId": "nb-damiano",
+                  "type": "find_move",
+                  "level": "advanced"
+                },
+                {
+                  "id": "T10",
+                  "lessonId": "nb-greco",
+                  "type": "find_move",
+                  "level": "advanced"
+                },
+                {
+                  "id": "T11",
+                  "lessonId": "nb-legal",
+                  "type": "find_move",
+                  "level": "advanced"
+                }
+              ]
+            },
+            "remediation": {
+              "trigger_under_score": 11,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "nebun-2",
+          "title": {
+            "ro": "Procedee tactice",
+            "en": "Tactical devices",
+            "fr": "Procédés tactiques"
+          },
+          "lessons": [
+            "nb-intermediar",
+            "nb-contraatac",
+            "nb-prindere",
+            "nb-raze"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "nb-intermediar",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [
+              {
+                "id": 1,
+                "type": "lesson",
+                "lessonId": "nb-contraatac"
+              },
+              {
+                "id": 2,
+                "type": "lesson",
+                "lessonId": "nb-prindere"
+              },
+              {
+                "id": 3,
+                "type": "lesson",
+                "lessonId": "nb-raze"
+              }
+            ],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "nebun-3",
+          "title": {
+            "ro": "Idei de combinație",
+            "en": "Combination ideas",
+            "fr": "Idées de combinaison"
+          },
+          "lessons": [
+            "nb-fortat",
+            "nb-limitare",
+            "nb-ascuns"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "nb-fortat",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [
+              {
+                "id": 1,
+                "type": "lesson",
+                "lessonId": "nb-limitare"
+              },
+              {
+                "id": 2,
+                "type": "lesson",
+                "lessonId": "nb-ascuns"
+              }
+            ],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "turn",
+      "icon": "🏰",
+      "modules": [
+        "turn"
+      ],
+      "title": {
+        "ro": "Nivelul Turn",
+        "en": "Rook Level",
+        "fr": "Niveau Tour"
+      },
+      "summary": {
+        "ro": "Linii deschise, coloane, atacuri pe linia a 7-a și coordonarea turnurilor",
+        "en": "Open files, ranks, attacks on the 7th rank and rook coordination",
+        "fr": "Colonnes ouvertes, rangées, attaques sur la 7e rangée et coordination des tours"
+      },
+      "subchapters": [
+        {
+          "id": "turn-1",
+          "title": {
+            "ro": "A. Gândirea și decizia",
+            "en": "A. Thinking and decision",
+            "fr": "A. Pensée et décision"
+          },
+          "lessons": [
+            "tn-a1",
+            "tn-a2",
+            "tn-a3",
+            "tn-a4",
+            "tn-a5",
+            "tn-a6",
+            "tn-a7",
+            "tn-a8",
+            "tn-a9",
+            "tn-a10",
+            "tn-a11"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "tn-a1",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [
+              {
+                "id": 1,
+                "type": "lesson",
+                "lessonId": "tn-a2"
+              },
+              {
+                "id": 2,
+                "type": "lesson",
+                "lessonId": "tn-a3"
+              },
+              {
+                "id": 3,
+                "type": "lesson",
+                "lessonId": "tn-a4"
+              }
+            ],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": [
+                {
+                  "id": 1,
+                  "lessonId": "tn-a5",
+                  "difficulty": "recognition"
+                },
+                {
+                  "id": 2,
+                  "lessonId": "tn-a6",
+                  "difficulty": "recognition"
+                },
+                {
+                  "id": 3,
+                  "lessonId": "tn-a7",
+                  "difficulty": "recognition"
+                },
+                {
+                  "id": 4,
+                  "lessonId": "tn-a8",
+                  "difficulty": "application"
+                }
+              ]
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 3,
+              "tests": [
+                {
+                  "id": "T1",
+                  "lessonId": "tn-a9",
+                  "type": "find_move",
+                  "level": "basic"
+                },
+                {
+                  "id": "T2",
+                  "lessonId": "tn-a10",
+                  "type": "find_move",
+                  "level": "basic"
+                },
+                {
+                  "id": "T3",
+                  "lessonId": "tn-a11",
+                  "type": "find_move",
+                  "level": "basic"
+                }
+              ]
+            },
+            "remediation": {
+              "trigger_under_score": 3,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "turn-2",
+          "title": {
+            "ro": "B. Procedee tactice elementare",
+            "en": "B. Elementary tactical devices",
+            "fr": "B. Procédés tactiques élémentaires"
+          },
+          "lessons": [
+            "tn-b1",
+            "tn-b2",
+            "tn-b3",
+            "tn-b4",
+            "tn-b5",
+            "tn-b6",
+            "tn-b7",
+            "tn-b8",
+            "tn-b9"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "tn-b1",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [
+              {
+                "id": 1,
+                "type": "lesson",
+                "lessonId": "tn-b2"
+              },
+              {
+                "id": 2,
+                "type": "lesson",
+                "lessonId": "tn-b3"
+              },
+              {
+                "id": 3,
+                "type": "lesson",
+                "lessonId": "tn-b4"
+              }
+            ],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": [
+                {
+                  "id": 1,
+                  "lessonId": "tn-b5",
+                  "difficulty": "recognition"
+                },
+                {
+                  "id": 2,
+                  "lessonId": "tn-b6",
+                  "difficulty": "recognition"
+                },
+                {
+                  "id": 3,
+                  "lessonId": "tn-b7",
+                  "difficulty": "recognition"
+                }
+              ]
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 2,
+              "tests": [
+                {
+                  "id": "T1",
+                  "lessonId": "tn-b8",
+                  "type": "find_move",
+                  "level": "basic"
+                },
+                {
+                  "id": "T2",
+                  "lessonId": "tn-b9",
+                  "type": "find_move",
+                  "level": "basic"
+                }
+              ]
+            },
+            "remediation": {
+              "trigger_under_score": 2,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "turn-3",
+          "title": {
+            "ro": "C. Tipare simple de mat",
+            "en": "C. Simple mate patterns",
+            "fr": "C. Schémas de mat simples"
+          },
+          "lessons": [
+            "tn-c1",
+            "tn-c2",
+            "tn-c3",
+            "tn-c4"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "tn-c1",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [
+              {
+                "id": 1,
+                "type": "lesson",
+                "lessonId": "tn-c2"
+              },
+              {
+                "id": 2,
+                "type": "lesson",
+                "lessonId": "tn-c3"
+              },
+              {
+                "id": 3,
+                "type": "lesson",
+                "lessonId": "tn-c4"
+              }
+            ],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "turn-4",
+          "title": {
+            "ro": "D. Combinații simple",
+            "en": "D. Simple combinations",
+            "fr": "D. Combinaisons simples"
+          },
+          "lessons": [
+            "tn-d1",
+            "tn-d2",
+            "tn-d3",
+            "tn-d4",
+            "tn-d5"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "tn-d1",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [
+              {
+                "id": 1,
+                "type": "lesson",
+                "lessonId": "tn-d2"
+              },
+              {
+                "id": 2,
+                "type": "lesson",
+                "lessonId": "tn-d3"
+              },
+              {
+                "id": 3,
+                "type": "lesson",
+                "lessonId": "tn-d4"
+              }
+            ],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 1,
+              "tests": [
+                {
+                  "id": "T1",
+                  "lessonId": "tn-d5",
+                  "type": "find_move",
+                  "level": "basic"
+                }
+              ]
+            },
+            "remediation": {
+              "trigger_under_score": 1,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "turn-5",
+          "title": {
+            "ro": "E. Atacul la rege",
+            "en": "E. The attack on the king",
+            "fr": "E. L’attaque du roi"
+          },
+          "lessons": [
+            "tn-e1",
+            "tn-e2",
+            "tn-e3",
+            "tn-e4",
+            "tn-e5"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "tn-e1",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [
+              {
+                "id": 1,
+                "type": "lesson",
+                "lessonId": "tn-e2"
+              },
+              {
+                "id": 2,
+                "type": "lesson",
+                "lessonId": "tn-e3"
+              },
+              {
+                "id": 3,
+                "type": "lesson",
+                "lessonId": "tn-e4"
+              }
+            ],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 1,
+              "tests": [
+                {
+                  "id": "T1",
+                  "lessonId": "tn-e5",
+                  "type": "find_move",
+                  "level": "basic"
+                }
+              ]
+            },
+            "remediation": {
+              "trigger_under_score": 1,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "turn-6",
+          "title": {
+            "ro": "F. Finaluri de pioni",
+            "en": "F. Pawn endings",
+            "fr": "F. Finales de pions"
+          },
+          "lessons": [
+            "tn-f1",
+            "tn-f2",
+            "tn-f3",
+            "tn-f4",
+            "tn-f5",
+            "tn-f6"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "tn-f1",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [
+              {
+                "id": 1,
+                "type": "lesson",
+                "lessonId": "tn-f2"
+              },
+              {
+                "id": 2,
+                "type": "lesson",
+                "lessonId": "tn-f3"
+              },
+              {
+                "id": 3,
+                "type": "lesson",
+                "lessonId": "tn-f4"
+              }
+            ],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": [
+                {
+                  "id": 1,
+                  "lessonId": "tn-f5",
+                  "difficulty": "recognition"
+                }
+              ]
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 1,
+              "tests": [
+                {
+                  "id": "T1",
+                  "lessonId": "tn-f6",
+                  "type": "find_move",
+                  "level": "basic"
+                }
+              ]
+            },
+            "remediation": {
+              "trigger_under_score": 1,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "turn-7",
+          "title": {
+            "ro": "G. Finaluri simple de turn",
+            "en": "G. Simple rook endings",
+            "fr": "G. Finales simples de tours"
+          },
+          "lessons": [
+            "tn-g1",
+            "tn-g2",
+            "tn-g3",
+            "tn-g4",
+            "tn-g5",
+            "tn-g6",
+            "tn-g7",
+            "tn-g8",
+            "tn-g9"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "tn-g1",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [
+              {
+                "id": 1,
+                "type": "lesson",
+                "lessonId": "tn-g2"
+              },
+              {
+                "id": 2,
+                "type": "lesson",
+                "lessonId": "tn-g3"
+              },
+              {
+                "id": 3,
+                "type": "lesson",
+                "lessonId": "tn-g4"
+              }
+            ],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": [
+                {
+                  "id": 1,
+                  "lessonId": "tn-g5",
+                  "difficulty": "recognition"
+                },
+                {
+                  "id": 2,
+                  "lessonId": "tn-g6",
+                  "difficulty": "recognition"
+                },
+                {
+                  "id": 3,
+                  "lessonId": "tn-g7",
+                  "difficulty": "recognition"
+                }
+              ]
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 2,
+              "tests": [
+                {
+                  "id": "T1",
+                  "lessonId": "tn-g8",
+                  "type": "find_move",
+                  "level": "basic"
+                },
+                {
+                  "id": "T2",
+                  "lessonId": "tn-g9",
+                  "type": "find_move",
+                  "level": "basic"
+                }
+              ]
+            },
+            "remediation": {
+              "trigger_under_score": 2,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "dama",
+      "icon": "👸",
+      "modules": [
+        "dama"
+      ],
+      "title": {
+        "ro": "Nivelul Damă",
+        "en": "Queen Level",
+        "fr": "Niveau Dame"
+      },
+      "summary": {
+        "ro": "Atac direct, puterea piesei grele, coordonarea damei cu alte piese",
+        "en": "Direct attack, the power of the heavy piece, coordinating the queen with other pieces",
+        "fr": "Attaque directe, la puissance de la pièce lourde, coordination de la dame avec les autres pièces"
+      },
+      "subchapters": [
+        {
+          "id": "dama-1",
+          "title": {
+            "ro": "A. Strategia jocului de mijloc",
+            "en": "A. Middlegame strategy",
+            "fr": "A. Stratégie du milieu de partie"
+          },
+          "lessons": [
+            "dm-a1",
+            "dm-a2",
+            "dm-a3",
+            "dm-a4",
+            "dm-a5",
+            "dm-a6",
+            "dm-a7",
+            "dm-a8",
+            "dm-a9"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "dm-a1",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [
+              {
+                "id": 1,
+                "type": "lesson",
+                "lessonId": "dm-a2"
+              },
+              {
+                "id": 2,
+                "type": "lesson",
+                "lessonId": "dm-a3"
+              },
+              {
+                "id": 3,
+                "type": "lesson",
+                "lessonId": "dm-a4"
+              }
+            ],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": [
+                {
+                  "id": 1,
+                  "lessonId": "dm-a5",
+                  "difficulty": "recognition"
+                },
+                {
+                  "id": 2,
+                  "lessonId": "dm-a6",
+                  "difficulty": "recognition"
+                },
+                {
+                  "id": 3,
+                  "lessonId": "dm-a7",
+                  "difficulty": "recognition"
+                }
+              ]
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 2,
+              "tests": [
+                {
+                  "id": "T1",
+                  "lessonId": "dm-a8",
+                  "type": "find_move",
+                  "level": "basic"
+                },
+                {
+                  "id": "T2",
+                  "lessonId": "dm-a9",
+                  "type": "find_move",
+                  "level": "basic"
+                }
+              ]
+            },
+            "remediation": {
+              "trigger_under_score": 2,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "dama-2",
+          "title": {
+            "ro": "B. Profilaxia și gândirea defensivă",
+            "en": "B. Prophylaxis and defensive thinking",
+            "fr": "B. Prophylaxie et pensée défensive"
+          },
+          "lessons": [
+            "dm-b1",
+            "dm-b2",
+            "dm-b3"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "dm-b1",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [
+              {
+                "id": 1,
+                "type": "lesson",
+                "lessonId": "dm-b2"
+              },
+              {
+                "id": 2,
+                "type": "lesson",
+                "lessonId": "dm-b3"
+              }
+            ],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "dama-3",
+          "title": {
+            "ro": "C. Calcul și manevrarea pieselor",
+            "en": "C. Calculation and manoeuvring",
+            "fr": "C. Calcul et manœuvre des pièces"
+          },
+          "lessons": [
+            "dm-c1",
+            "dm-c2",
+            "dm-c3"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "dm-c1",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [
+              {
+                "id": 1,
+                "type": "lesson",
+                "lessonId": "dm-c2"
+              },
+              {
+                "id": 2,
+                "type": "lesson",
+                "lessonId": "dm-c3"
+              }
+            ],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "dama-4",
+          "title": {
+            "ro": "D. Deschiderile, pe idei",
+            "en": "D. Openings, by ideas",
+            "fr": "D. Les ouvertures, par les idées"
+          },
+          "lessons": [
+            "dm-d1",
+            "dm-d2"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "dm-d1",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [
+              {
+                "id": 1,
+                "type": "lesson",
+                "lessonId": "dm-d2"
+              }
+            ],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "dama-5",
+          "title": {
+            "ro": "E. Finaluri legate de jocul de mijloc",
+            "en": "E. Endings connected to the middlegame",
+            "fr": "E. Finales liées au milieu de partie"
+          },
+          "lessons": [
+            "dm-e1",
+            "dm-e2",
+            "dm-e3",
+            "dm-e4"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "dm-e1",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [
+              {
+                "id": 1,
+                "type": "lesson",
+                "lessonId": "dm-e2"
+              },
+              {
+                "id": 2,
+                "type": "lesson",
+                "lessonId": "dm-e3"
+              },
+              {
+                "id": 3,
+                "type": "lesson",
+                "lessonId": "dm-e4"
+              }
+            ],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "dama-6",
+          "title": {
+            "ro": "F. Tipuri de avantaj și transformarea lor",
+            "en": "F. Types of advantage and converting them",
+            "fr": "F. Types d’avantage et leur transformation"
+          },
+          "lessons": [
+            "dm-f1",
+            "dm-f2",
+            "dm-f3",
+            "dm-f4",
+            "dm-f5",
+            "dm-f6",
+            "dm-f7",
+            "dm-f8",
+            "dm-f9"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "dm-f1",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [
+              {
+                "id": 1,
+                "type": "lesson",
+                "lessonId": "dm-f2"
+              },
+              {
+                "id": 2,
+                "type": "lesson",
+                "lessonId": "dm-f3"
+              },
+              {
+                "id": 3,
+                "type": "lesson",
+                "lessonId": "dm-f4"
+              }
+            ],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": [
+                {
+                  "id": 1,
+                  "lessonId": "dm-f5",
+                  "difficulty": "recognition"
+                },
+                {
+                  "id": 2,
+                  "lessonId": "dm-f6",
+                  "difficulty": "recognition"
+                },
+                {
+                  "id": 3,
+                  "lessonId": "dm-f7",
+                  "difficulty": "recognition"
+                }
+              ]
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 2,
+              "tests": [
+                {
+                  "id": "T1",
+                  "lessonId": "dm-f8",
+                  "type": "find_move",
+                  "level": "basic"
+                },
+                {
+                  "id": "T2",
+                  "lessonId": "dm-f9",
+                  "type": "find_move",
+                  "level": "basic"
+                }
+              ]
+            },
+            "remediation": {
+              "trigger_under_score": 2,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "rege",
+      "icon": "♔",
+      "modules": [
+        "modul-rege"
+      ],
+      "title": {
+        "ro": "Nivelul Rege",
+        "en": "King Level",
+        "fr": "Niveau Roi"
+      },
+      "summary": {
+        "ro": "Măiestria completă: jocul de mijloc, structuri, finaluri, psihologie și mare cultură șahistică",
+        "en": "Full mastery: the middlegame, structures, endings, psychology and chess culture",
+        "fr": "La maîtrise complète : milieu de jeu, structures, finales, psychologie et culture échiquéenne"
+      },
+      "subchapters": [
+        {
+          "id": "sub-1-sinteza",
+          "title": {
+            "ro": "1. Sinteza etapelor",
+            "en": "1. The phases, joined together",
+            "fr": "1. La synthèse des phases"
+          },
+          "lessons": [
+            "rg-a1",
+            "rg-a2",
+            "rg-a3"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "rg-a1",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [
+              {
+                "id": 1,
+                "type": "lesson",
+                "lessonId": "rg-a2"
+              },
+              {
+                "id": 2,
+                "type": "lesson",
+                "lessonId": "rg-a3"
+              }
+            ],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "sub-2-panteon",
+          "title": {
+            "ro": "2. Panteonul",
+            "en": "2. The pantheon",
+            "fr": "2. Le panthéon"
+          },
+          "lessons": [
+            "rg-b1",
+            "rg-b2",
+            "rg-b3",
+            "rg-b4",
+            "rg-b5",
+            "rg-b6",
+            "rg-b7",
+            "rg-b8",
+            "rg-b9",
+            "rg-b10",
+            "rg-b11",
+            "rg-b12",
+            "rg-b13",
+            "rg-b14",
+            "rg-b15",
+            "rg-b16",
+            "rg-b17",
+            "rg-b18",
+            "rg-b19"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "rg-b1",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [
+              {
+                "id": 1,
+                "type": "lesson",
+                "lessonId": "rg-b2"
+              },
+              {
+                "id": 2,
+                "type": "lesson",
+                "lessonId": "rg-b3"
+              },
+              {
+                "id": 3,
+                "type": "lesson",
+                "lessonId": "rg-b4"
+              }
+            ],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": [
+                {
+                  "id": 1,
+                  "lessonId": "rg-b5",
+                  "difficulty": "recognition"
+                },
+                {
+                  "id": 2,
+                  "lessonId": "rg-b6",
+                  "difficulty": "recognition"
+                },
+                {
+                  "id": 3,
+                  "lessonId": "rg-b7",
+                  "difficulty": "recognition"
+                },
+                {
+                  "id": 4,
+                  "lessonId": "rg-b8",
+                  "difficulty": "application"
+                },
+                {
+                  "id": 5,
+                  "lessonId": "rg-b9",
+                  "difficulty": "application"
+                },
+                {
+                  "id": 6,
+                  "lessonId": "rg-b10",
+                  "difficulty": "application"
+                },
+                {
+                  "id": 7,
+                  "lessonId": "rg-b11",
+                  "difficulty": "hidden"
+                },
+                {
+                  "id": 8,
+                  "lessonId": "rg-b12",
+                  "difficulty": "hidden"
+                }
+              ]
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 7,
+              "tests": [
+                {
+                  "id": "T1",
+                  "lessonId": "rg-b13",
+                  "type": "find_move",
+                  "level": "basic"
+                },
+                {
+                  "id": "T2",
+                  "lessonId": "rg-b14",
+                  "type": "find_move",
+                  "level": "basic"
+                },
+                {
+                  "id": "T3",
+                  "lessonId": "rg-b15",
+                  "type": "find_move",
+                  "level": "basic"
+                },
+                {
+                  "id": "T4",
+                  "lessonId": "rg-b16",
+                  "type": "find_move",
+                  "level": "basic"
+                },
+                {
+                  "id": "T5",
+                  "lessonId": "rg-b17",
+                  "type": "find_move",
+                  "level": "medium"
+                },
+                {
+                  "id": "T6",
+                  "lessonId": "rg-b18",
+                  "type": "find_move",
+                  "level": "medium"
+                },
+                {
+                  "id": "T7",
+                  "lessonId": "rg-b19",
+                  "type": "find_move",
+                  "level": "medium"
+                }
+              ]
+            },
+            "remediation": {
+              "trigger_under_score": 7,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "sub-3-blunder",
+          "title": {
+            "ro": "3. Anti-blunder",
+            "en": "3. Anti-blunder",
+            "fr": "3. Anti-blunder"
+          },
+          "lessons": [
+            "rg-c1",
+            "rg-c2",
+            "rg-c3"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "rg-c1",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [
+              {
+                "id": 1,
+                "type": "lesson",
+                "lessonId": "rg-c2"
+              },
+              {
+                "id": 2,
+                "type": "lesson",
+                "lessonId": "rg-c3"
+              }
+            ],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "sub-4-timp",
+          "title": {
+            "ro": "4. Timpul",
+            "en": "4. Time",
+            "fr": "4. Le temps"
+          },
+          "lessons": [
+            "rg-d1",
+            "rg-d2",
+            "rg-d3"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "rg-d1",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [
+              {
+                "id": 1,
+                "type": "lesson",
+                "lessonId": "rg-d2"
+              },
+              {
+                "id": 2,
+                "type": "lesson",
+                "lessonId": "rg-d3"
+              }
+            ],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "sub-5-antrenament",
+          "title": {
+            "ro": "5. Antrenamentul",
+            "en": "5. Training",
+            "fr": "5. L’entraînement"
+          },
+          "lessons": [
+            "rg-e1",
+            "rg-e2"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "rg-e1",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [
+              {
+                "id": 1,
+                "type": "lesson",
+                "lessonId": "rg-e2"
+              }
+            ],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": []
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 0,
+              "tests": []
+            },
+            "remediation": {
+              "trigger_under_score": 0,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        },
+        {
+          "id": "sub-6-test",
+          "title": {
+            "ro": "6. Testul final",
+            "en": "6. The final test",
+            "fr": "6. Le test final"
+          },
+          "lessons": [
+            "rg-t1",
+            "rg-t2",
+            "rg-t3",
+            "rg-t4",
+            "rg-t5",
+            "rg-t6",
+            "rg-t7",
+            "rg-t8",
+            "rg-t9",
+            "rg-t10"
+          ],
+          "sections": {
+            "learn": {
+              "lessonId": "rg-t1",
+              "rules": [
+                "oneIdea",
+                "opponent",
+                "observe"
+              ],
+              "how_i_think": [
+                "checks",
+                "threat",
+                "candidates",
+                "after"
+              ]
+            },
+            "examples": [
+              {
+                "id": 1,
+                "type": "lesson",
+                "lessonId": "rg-t2"
+              },
+              {
+                "id": 2,
+                "type": "lesson",
+                "lessonId": "rg-t3"
+              },
+              {
+                "id": 3,
+                "type": "lesson",
+                "lessonId": "rg-t4"
+              }
+            ],
+            "practice": {
+              "max_attempts": 3,
+              "exercises": [
+                {
+                  "id": 1,
+                  "lessonId": "rg-t5",
+                  "difficulty": "recognition"
+                },
+                {
+                  "id": 2,
+                  "lessonId": "rg-t6",
+                  "difficulty": "recognition"
+                },
+                {
+                  "id": 3,
+                  "lessonId": "rg-t7",
+                  "difficulty": "recognition"
+                }
+              ]
+            },
+            "self_reflection": {
+              "questions": [
+                "noticed",
+                "idea",
+                "threat",
+                "why",
+                "after"
+              ]
+            },
+            "evaluation": {
+              "pass_score": 3,
+              "tests": [
+                {
+                  "id": "T1",
+                  "lessonId": "rg-t8",
+                  "type": "find_move",
+                  "level": "basic"
+                },
+                {
+                  "id": "T2",
+                  "lessonId": "rg-t9",
+                  "type": "find_move",
+                  "level": "basic"
+                },
+                {
+                  "id": "T3",
+                  "lessonId": "rg-t10",
+                  "type": "find_move",
+                  "level": "basic"
+                }
+              ]
+            },
+            "remediation": {
+              "trigger_under_score": 3,
+              "reserve": [],
+              "exercises": []
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

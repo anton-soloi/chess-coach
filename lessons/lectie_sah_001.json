@@ -1,0 +1,102 @@
+{
+  "lessonId": "lectie_sah_001",
+  "title": "Atacul prin Descoperire și Amenințări Duble",
+  "author": "Profesor Anton Soloi",
+  "created_at": "2026-11-03",
+  "steps": [
+    {
+      "stepNumber": 1,
+      "title": "Prezentare / Introducere",
+      "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
+      "description": "Observă poziția centrală și presiunea exercitată asupra câmpului f7.",
+      "annotations": [
+        {
+          "type": "arrow",
+          "from": "c4",
+          "to": "f7",
+          "color": "red"
+        },
+        {
+          "type": "circle",
+          "square": "f7",
+          "color": "yellow"
+        }
+      ]
+    },
+    {
+      "stepNumber": 2,
+      "title": "Explicații / Demonstrator",
+      "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
+      "description": "Urmărește secvența de mutări demonstrative.",
+      "moves": [
+        "Ng5",
+        "d5",
+        "exd5",
+        "Nxd5"
+      ],
+      "annotations": [],
+      "audioUrl": "/assets/audio/l1_p2.mp3",
+      "scriptText": "Calul din f3 sare la g5 atacând punctul f7!",
+      "timeline": [
+        { "time": 0.0, "avatarState": "pointing", "action": "highlight", "target": "g5" },
+        { "time": 2.5, "avatarState": "talking", "action": "draw_arrow", "from": "f3", "to": "g5" },
+        { "time": 4.8, "avatarState": "thinking", "action": "move_piece", "from": "f3", "to": "g5" }
+      ],
+      "stepType": "practice",
+      "promptText": "Unde trebuie să sară Calul din f3 pentru a ataca punctul f7?",
+      "targetMove": { "from": "f3", "to": "g5" },
+      "hint": {
+        "avatarState": "pointing",
+        "highlightSquare": "f7",
+        "text": "Fii atent la pionul neapărat din f7!"
+      },
+      "feedback": {
+        "correct": {
+          "avatarState": "idle",
+          "audioUrl": "/assets/audio/correct.mp3",
+          "text": "Bravo! Ai găsit mutarea corectă!"
+        },
+        "wrong": {
+          "avatarState": "thinking",
+          "audioUrl": "/assets/audio/try_again.mp3",
+          "text": "Nu aceasta este mutarea. Mai încearcă!"
+        }
+      }
+    },
+    {
+      "stepNumber": 3,
+      "title": "Antrenament",
+      "fen": "r1bqk2r/pppp1ppp/2n5/4p3/2B1P1n1/3P1N2/PPP2PPP/RNBQK2R w KQkq - 1 5",
+      "description": "Găsește mutarea câștigătoare pentru alb!",
+      "solutionMoves": [
+        "Bxf7+",
+        "Kxf7",
+        "Ng5+"
+      ],
+      "solutie": [
+        "c4f7",
+        "e8f7",
+        "f3g5"
+      ]
+    },
+    {
+      "stepNumber": 4,
+      "title": "Evaluare / Test",
+      "fen": "r1bqk2r/pppp1ppp/2n5/4p3/2B1P1n1/3P1N2/PPP2PPP/RNBQK2R w KQkq - 1 5",
+      "description": "Rezolvă exercițiul final de evaluare.",
+      "testSolutionMoves": [
+        "Bxf7+",
+        "Kxf7",
+        "Ng5+"
+      ],
+      "solutie": [
+        "c4f7",
+        "e8f7",
+        "f3g5"
+      ],
+      "maxAttempts": 3,
+      "timeLimitSeconds": 60,
+      "weight": 2
+    }
+  ]
+}

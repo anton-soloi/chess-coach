@@ -1,0 +1,6 @@
+{
+  "include": [
+    "levels.json",
+    "rege.json"
+  ]
+}

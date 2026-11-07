@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chesscoach.local/curriculum.schema.json",
+  "title": "Curriculum ChessCoach",
+  "description": "curriculum/index.json listează fișierele. Textele de lecție sunt obiecte { ro, en, fr }. fen, pgn, correctMove, moduleId și id rămân șiruri, aceleași în orice limbă. Un subcapitol nou în JSON apare în meniu fără alt cod.",
+  "type": "object",
+  "properties": {
+    "include": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Doar în index.json. Căi relative la curriculum/."
+    },
+    "modules": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/module" }
+    }
+  },
+  "$defs": {
+    "text": {
+      "description": "Șir simplu, acceptat la încărcare, sau obiect cu cele trei limbi.",
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "required": ["ro", "en", "fr"],
+          "properties": {
+            "ro": { "type": "string" },
+            "en": { "type": "string" },
+            "fr": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "module": {
+      "type": "object",
+      "required": ["moduleId", "title", "subchapters"],
+      "properties": {
+        "moduleId": { "type": "string" },
+        "title": { "$ref": "#/$defs/text" },
+        "summary": { "$ref": "#/$defs/text" },
+        "subchapters": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/subchapter" }
+        }
+      }
+    },
+    "subchapter": {
+      "type": "object",
+      "required": ["subchapterId", "title", "lessons"],
+      "properties": {
+        "subchapterId": { "type": "string" },
+        "title": { "$ref": "#/$defs/text" },
+        "lessons": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/lesson" }
+        }
+      }
+    },
+    "lesson": {
+      "type": "object",
+      "required": ["id", "title"],
+      "properties": {
+        "id": { "type": "string" },
+        "code": { "type": "string" },
+        "parentId": { "type": "string", "description": "Id-ul temei părinte. Gol dacă tema stă direct în subcapitol." },
+        "subTopics": { "type": "array", "items": { "type": "string" }, "description": "Id-urile sub-temelor acestei teme." },
+        "title": { "$ref": "#/$defs/text" },
+        "concept": { "$ref": "#/$defs/text" },
+        "fen": { "type": "string" },
+        "pgn": { "type": "string", "description": "Partidă completă. Butonul Partida o derulează. Dacă lipsește fen, diagrama pornește din pgn, la exercise.ply." },
+        "engine": { "type": "string", "description": "app, turn sau dama. Lecția rămâne la motorul existent." },
+        "goldenRule": { "$ref": "#/$defs/text" },
+        "exercise": { "$ref": "#/$defs/exercise" }
+      }
+    },
+    "exercise": {
+      "type": "object",
+      "properties": {
+        "question": { "$ref": "#/$defs/text" },
+        "prompt": { "$ref": "#/$defs/text" },
+        "correctMove": { "type": "string", "description": "SAN, neschimbat de limbă. Destinația devine câmpul cerut dacă correctSquares lipsește." },
+        "explanation": { "$ref": "#/$defs/text" },
+        "correctSquares": { "type": "array", "items": { "type": "string" } },
+        "moves": { "type": "object", "additionalProperties": { "type": "string" }, "description": "Hartă câmp → SAN. Valorile rămân notație." },
+        "miss": { "$ref": "#/$defs/text" },
+        "traps": { "type": "object", "additionalProperties": { "$ref": "#/$defs/text" } },
+        "ply": { "type": "integer", "description": "Mutarea din PGN la care se deschide derularea." },
+        "choices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label", "correct"],
+            "properties": {
+              "label": { "$ref": "#/$defs/text" },
+              "correct": { "type": "boolean" },
+              "explanation": { "$ref": "#/$defs/text" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

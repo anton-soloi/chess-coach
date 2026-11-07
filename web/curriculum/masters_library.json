@@ -1,0 +1,1734 @@
+{
+  "categories": [
+    {
+      "id": "campioni",
+      "emoji": "👑",
+      "title": {
+        "ro": "Campioni mondiali",
+        "en": "World champions",
+        "fr": "Champions du monde"
+      }
+    },
+    {
+      "id": "campioane",
+      "emoji": "👑",
+      "title": {
+        "ro": "Campioanele Mondiale",
+        "en": "Women’s world champions",
+        "fr": "Championnes du monde"
+      }
+    },
+    {
+      "id": "candidati",
+      "emoji": "⚔️",
+      "title": {
+        "ro": "Eternii Candidați",
+        "en": "The eternal candidates",
+        "fr": "Les éternels candidats"
+      }
+    },
+    {
+      "id": "candidate",
+      "emoji": "⚔️",
+      "title": {
+        "ro": "Eternele Candidațe",
+        "en": "The eternal women candidates",
+        "fr": "Les éternelles candidates"
+      }
+    },
+    {
+      "id": "titani",
+      "emoji": "🦁",
+      "title": {
+        "ro": "Învingătorii Titanilor",
+        "en": "Giant-slayers",
+        "fr": "Vainqueurs des titans"
+      }
+    },
+    {
+      "id": "tineri",
+      "emoji": "🚀",
+      "title": {
+        "ro": "Tinerii Campioni de Astăzi",
+        "en": "Today’s young champions",
+        "fr": "Les jeunes champions d’aujourd’hui"
+      }
+    },
+    {
+      "id": "continente",
+      "emoji": "🌍",
+      "title": {
+        "ro": "Șahul pe Continente",
+        "en": "Chess across the continents",
+        "fr": "Les échecs sur les continents"
+      },
+      "summary": {
+        "ro": "Aceiași maeștri, așezați pe șase continente. Africa, America de Sud și Oceania au profilul lor.",
+        "en": "The same masters, placed on six continents. Africa, South America and Oceania have their own profile.",
+        "fr": "Les mêmes maîtres, rangés sur six continents. L’Afrique, l’Amérique du Sud et l’Océanie ont leur profil."
+      }
+    }
+  ],
+  "continents": [
+    {
+      "id": "europa",
+      "title": {
+        "ro": "Europa",
+        "en": "Europe",
+        "fr": "Europe"
+      }
+    },
+    {
+      "id": "asia",
+      "title": {
+        "ro": "Asia",
+        "en": "Asia",
+        "fr": "Asie"
+      }
+    },
+    {
+      "id": "africa",
+      "title": {
+        "ro": "Africa",
+        "en": "Africa",
+        "fr": "Afrique"
+      }
+    },
+    {
+      "id": "america-nord",
+      "title": {
+        "ro": "America de Nord",
+        "en": "North America",
+        "fr": "Amérique du Nord"
+      }
+    },
+    {
+      "id": "america-sud",
+      "title": {
+        "ro": "America de Sud",
+        "en": "South America",
+        "fr": "Amérique du Sud"
+      }
+    },
+    {
+      "id": "oceania",
+      "title": {
+        "ro": "Oceania",
+        "en": "Oceania",
+        "fr": "Océanie"
+      }
+    }
+  ],
+  "masters": [
+    {
+      "masterId": "steinitz",
+      "category": "campioni",
+      "name": "Wilhelm Steinitz",
+      "title": {
+        "ro": "Primul campion al planului",
+        "en": "The first champion of the plan",
+        "fr": "Le premier champion du plan"
+      },
+      "biographyShort": {
+        "ro": "Wilhelm Steinitz a fost primul campion mondial oficial. A mutat șahul de la atacul de poftă la întrebarea: ce cere poziția?",
+        "en": "Wilhelm Steinitz was the first official world champion. He moved chess from attacking for its own sake to the question: what does the position ask?",
+        "fr": "Wilhelm Steinitz fut le premier champion du monde officiel. Il a fait passer les échecs de l’attaque pour l’attaque à la question : que demande la position ?"
+      },
+      "playingStyle": {
+        "ro": "Pozițional, închis, piesa se îmbunătățește înaintea atacului",
+        "en": "Positional, closed, the piece improves before the attack",
+        "fr": "Positionnel, fermé, la pièce s’améliore avant l’attaque"
+      },
+      "signatureMovePattern": {
+        "ro": "Centrul închis nu se deschide lângă rege. Întâi calul sau nebunul ajunge pe un câmp mai bun.",
+        "en": "A closed centre is not opened next to the king. First the knight or the bishop reaches a better square.",
+        "fr": "Un centre fermé ne s’ouvre pas près du roi. D’abord le cavalier ou le fou atteint une meilleure case."
+      },
+      "quote": {
+        "ro": "O combinație nesănătoasă, oricât de spectaculoasă, îi producea oroare artistică.",
+        "en": "An unsound combination, however showy, filled him with artistic horror.",
+        "fr": "Une combinaison malsaine, aussi spectaculaire soit-elle, lui inspirait une horreur artistique."
+      },
+      "interactiveExercises": [
+        {
+          "lessonId": "steinitz-1",
+          "title": {
+            "ro": "Calul, nu pionul de lângă rege",
+            "en": "The knight, not the pawn next to the king",
+            "fr": "Le cavalier, pas le pion près du roi"
+          },
+          "fen": "4k3/ppp2ppp/8/3p4/3P4/8/PPP1PPPP/1N2K3 w - - 0 1",
+          "question": {
+            "ro": "Centrul e închis. Steinitz nu deschide regele. Unde merge calul?",
+            "en": "The centre is closed. Steinitz does not open the king. Where does the knight go?",
+            "fr": "Le centre est fermé. Steinitz n’ouvre pas le roi. Où va le cavalier ?"
+          },
+          "correctMove": "Nc3",
+          "goldenRule": {
+            "ro": "Fără motiv de atac, îmbunătățește piesa. Nc3, nu un pion lângă rege.",
+            "en": "With no reason to attack, improve the piece. Nc3, not a pawn next to the king.",
+            "fr": "Sans raison d’attaquer, améliore la pièce. Nc3, pas un pion près du roi."
+          }
+        },
+        {
+          "lessonId": "steinitz-2",
+          "title": {
+            "ro": "Dezvoltă, nu sări",
+            "en": "Develop, do not lunge",
+            "fr": "Développe, ne te jette pas"
+          },
+          "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+          "question": {
+            "ro": "Pionii s-au oprit în centru. Ce piesă scoate Steinitz?",
+            "en": "The pawns have stopped in the centre. Which piece does Steinitz bring out?",
+            "fr": "Les pions se sont arrêtés au centre. Quelle pièce Steinitz sort-il ?"
+          },
+          "correctMove": "Nf3",
+          "goldenRule": {
+            "ro": "Nf3 dezvoltă. Atacul vine după ce piesele sunt afară, nu înainte.",
+            "en": "Nf3 develops. The attack comes after the pieces are out, not before.",
+            "fr": "Nf3 développe. L’attaque vient après que les pièces sont sorties, pas avant."
+          }
+        }
+      ],
+      "continent": "europa"
+    },
+    {
+      "masterId": "capablanca",
+      "category": "campioni",
+      "name": "José Raúl Capablanca",
+      "title": {
+        "ro": "Claritatea când ești mai bine",
+        "en": "Clarity when you are better",
+        "fr": "La clarté quand tu es mieux"
+      },
+      "biographyShort": {
+        "ro": "Capablanca a fost campion mondial între 1921 și 1927. Când avea un pion în plus, schimba piesele și lăsa pionul pentru final.",
+        "en": "Capablanca was world champion from 1921 to 1927. When he was a pawn up, he traded pieces and left the pawn for the ending.",
+        "fr": "Capablanca fut champion du monde de 1921 à 1927. Quand il avait un pion de plus, il échangeait les pièces et laissait le pion pour la finale."
+      },
+      "playingStyle": {
+        "ro": "Simplificare, final tehnic, fără complicație de pris",
+        "en": "Simplification, technical ending, no needless complication",
+        "fr": "Simplification, finale technique, sans complication inutile"
+      },
+      "signatureMovePattern": {
+        "ro": "Schimbă piesele, păstrează pionii. Turnul sau dama care poate da șahuri pleacă de pe tablă.",
+        "en": "Trade the pieces, keep the pawns. The rook or queen that can give checks leaves the board.",
+        "fr": "Échange les pièces, garde les pions. La tour ou la dame qui peut donner des échecs quitte l’échiquier."
+      },
+      "quote": {
+        "ro": "Ca să joci mai bine, studiază finalul înainte de orice.",
+        "en": "To play better, study the ending before anything else.",
+        "fr": "Pour mieux jouer, étudie la finale avant toute chose."
+      },
+      "interactiveExercises": [
+        {
+          "lessonId": "capablanca-1",
+          "title": {
+            "ro": "Turnurile pleacă, pionul rămâne",
+            "en": "The rooks leave, the pawn stays",
+            "fr": "Les tours partent, le pion reste"
+          },
+          "fen": "4k3/8/8/8/8/8/P7/4KR1r w - - 0 1",
+          "question": {
+            "ro": "Ești un pion în plus. Capablanca schimbă turnurile. Ce captură joacă?",
+            "en": "You are a pawn up. Capablanca trades the rooks. What capture does he play?",
+            "fr": "Tu as un pion de plus. Capablanca échange les tours. Quelle capture joue-t-il ?"
+          },
+          "correctMove": "Rxh1",
+          "goldenRule": {
+            "ro": "Rxh1 lasă pionul de pe a2 fără turnul care te poate opri.",
+            "en": "Rxh1 leaves the pawn on a2 without the rook that can stop you.",
+            "fr": "Rxh1 laisse le pion en a2 sans la tour qui peut t’arrêter."
+          }
+        },
+        {
+          "lessonId": "capablanca-2",
+          "title": {
+            "ro": "Damele, la fel",
+            "en": "The queens, the same way",
+            "fr": "Les dames, de la même façon"
+          },
+          "fen": "4k3/8/8/8/8/8/P7/4KQq1 w - - 0 1",
+          "question": {
+            "ro": "Dama lui îți poate da șahuri. Ce schimb alege Capablanca?",
+            "en": "His queen can check you. What trade does Capablanca choose?",
+            "fr": "Sa dame peut te donner des échecs. Quel échange Capablanca choisit-il ?"
+          },
+          "correctMove": "Qxg1",
+          "goldenRule": {
+            "ro": "Qxg1 schimbă damele. Pionul rămâne. Nu căuta o combinație când schimbul câștigă.",
+            "en": "Qxg1 trades the queens. The pawn stays. Do not look for a combination when the trade wins.",
+            "fr": "Qxg1 échange les dames. Le pion reste. Ne cherche pas une combinaison quand l’échange gagne."
+          }
+        }
+      ],
+      "continent": "america-nord"
+    },
+    {
+      "masterId": "kasparov",
+      "category": "campioni",
+      "name": "Garry Kasparov",
+      "title": {
+        "ro": "Deschide când piesa e gata",
+        "en": "Open when the piece is ready",
+        "fr": "Ouvre quand la pièce est prête"
+      },
+      "biographyShort": {
+        "ro": "Kasparov a fost campion mondial din 1985. Ataca când turnul sau piesa era deja pe linie, nu înainte.",
+        "en": "Kasparov was world champion from 1985. He attacked when the rook or the piece was already on the line, not before.",
+        "fr": "Kasparov fut champion du monde à partir de 1985. Il attaquait quand la tour ou la pièce était déjà sur la ligne, pas avant."
+      },
+      "playingStyle": {
+        "ro": "Dinamic, ruptura la timp, inițiativă calculată",
+        "en": "Dynamic, the break on time, calculated initiative",
+        "fr": "Dynamique, la rupture à temps, initiative calculée"
+      },
+      "signatureMovePattern": {
+        "ro": "Piesa stă pe coloană. Apoi vine pionul care deschide în fața ei.",
+        "en": "The piece stands on the file. Then comes the pawn that opens in front of it.",
+        "fr": "La pièce est sur la colonne. Ensuite vient le pion qui ouvre devant elle."
+      },
+      "quote": {
+        "ro": "Șahul este luptă. Mutarea bună este cea pentru care piesa a fost adusă.",
+        "en": "Chess is a fight. The good move is the one the piece was brought for.",
+        "fr": "Les échecs sont un combat. Le bon coup est celui pour lequel la pièce a été amenée."
+      },
+      "interactiveExercises": [
+        {
+          "lessonId": "kasparov-1",
+          "title": {
+            "ro": "Turnul pe coloana d, apoi c4",
+            "en": "The rook on the d-file, then c4",
+            "fr": "La tour sur la colonne d, puis c4"
+          },
+          "fen": "6k1/pp3ppp/8/3p4/3P4/8/2P2PPP/3R2K1 w - - 0 1",
+          "question": {
+            "ro": "Turnul stă pe d. Kasparov deschide. Ce ruptură joacă?",
+            "en": "The rook stands on d. Kasparov opens. What break does he play?",
+            "fr": "La tour est sur d. Kasparov ouvre. Quelle rupture joue-t-il ?"
+          },
+          "correctMove": "c4",
+          "goldenRule": {
+            "ro": "c4 este ruptura, nu un sacrificiu. Turnul era deja pe coloană.",
+            "en": "c4 is the break, not a sacrifice. The rook was already on the file.",
+            "fr": "c4 est la rupture, pas un sacrifice. La tour était déjà sur la colonne."
+          }
+        },
+        {
+          "lessonId": "kasparov-2",
+          "title": {
+            "ro": "f4 în fața turnului",
+            "en": "f4 in front of the rook",
+            "fr": "f4 devant la tour"
+          },
+          "fen": "4k3/ppp2ppp/8/4p3/4P3/8/PPP2PPP/4R1K1 w - - 0 1",
+          "question": {
+            "ro": "Turnul e pe e. Ce pion deschide poziția?",
+            "en": "The rook is on e. Which pawn opens the position?",
+            "fr": "La tour est sur e. Quel pion ouvre la position ?"
+          },
+          "correctMove": "f4",
+          "goldenRule": {
+            "ro": "f4 deschide în fața turnului din e1. Piesa gata, apoi ruptura.",
+            "en": "f4 opens in front of the rook on e1. The piece is ready, then the break.",
+            "fr": "f4 ouvre devant la tour en e1. La pièce est prête, puis la rupture."
+          }
+        }
+      ],
+      "continent": "europa"
+    },
+    {
+      "masterId": "carlsen",
+      "category": "campioni",
+      "name": "Magnus Carlsen",
+      "title": {
+        "ro": "Piesa proastă devine bună",
+        "en": "The bad piece becomes good",
+        "fr": "La mauvaise pièce devient bonne"
+      },
+      "biographyShort": {
+        "ro": "Carlsen a fost campion mondial între 2013 și 2023. În poziții egale, fără tactică, făcea piesa cea mai proastă mai bună.",
+        "en": "Carlsen was world champion from 2013 to 2023. In equal positions, with no tactic, he made the worst piece better.",
+        "fr": "Carlsen fut champion du monde de 2013 à 2023. Dans les positions égales, sans tactique, il rendait meilleure la plus mauvaise pièce."
+      },
+      "playingStyle": {
+        "ro": "Practic, presiune mică, fără tactică inventată",
+        "en": "Practical, small pressure, no invented tactic",
+        "fr": "Pratique, petite pression, sans tactique inventée"
+      },
+      "signatureMovePattern": {
+        "ro": "Piesa de pe margine intră spre centru. Nu există captură și tot se joacă o mutare.",
+        "en": "The piece on the rim comes toward the centre. There is no capture, and a move is still played.",
+        "fr": "La pièce du bord vient vers le centre. Il n’y a pas de capture, et un coup se joue quand même."
+      },
+      "quote": {
+        "ro": "Alege mutarea cea mai neplăcută pentru cel din față.",
+        "en": "Choose the move that is most unpleasant for the player opposite.",
+        "fr": "Choisis le coup le plus désagréable pour celui d’en face."
+      },
+      "interactiveExercises": [
+        {
+          "lessonId": "carlsen-1",
+          "title": {
+            "ro": "Calul iese de pe h1",
+            "en": "The knight leaves h1",
+            "fr": "Le cavalier sort de h1"
+          },
+          "fen": "4k3/8/8/8/8/8/8/4K2N w - - 0 1",
+          "question": {
+            "ro": "Nu există șah. Carlsen tot joacă. Unde merge calul de pe margine?",
+            "en": "There is no check. Carlsen still plays. Where does the knight on the rim go?",
+            "fr": "Il n’y a pas d’échec. Carlsen joue quand même. Où va le cavalier du bord ?"
+          },
+          "correctMove": "Nf2",
+          "goldenRule": {
+            "ro": "Nf2 scoate calul de pe h1. Măiestria aici este piesa mai bună, nu o tactică inventată.",
+            "en": "Nf2 brings the knight off h1. Mastery here is a better piece, not an invented tactic.",
+            "fr": "Nf2 sort le cavalier de h1. La maîtrise ici est une meilleure pièce, pas une tactique inventée."
+          }
+        },
+        {
+          "lessonId": "carlsen-2",
+          "title": {
+            "ro": "Nebunul urcă de pe a2",
+            "en": "The bishop steps up from a2",
+            "fr": "Le fou monte depuis a2"
+          },
+          "fen": "4k3/8/8/8/8/8/B7/4K3 w - - 0 1",
+          "question": {
+            "ro": "Nebunul vede puțin de pe a2. Ce câmp mai bun alege Carlsen?",
+            "en": "The bishop sees little from a2. What better square does Carlsen choose?",
+            "fr": "Le fou voit peu depuis a2. Quelle meilleure case Carlsen choisit-il ?"
+          },
+          "correctMove": "Bc4",
+          "goldenRule": {
+            "ro": "Bc4 aduce nebunul spre centru. Poziția egală tot are o mutare bună.",
+            "en": "Bc4 brings the bishop toward the centre. An equal position still has a good move.",
+            "fr": "Bc4 amène le fou vers le centre. Une position égale a quand même un bon coup."
+          }
+        }
+      ],
+      "continent": "europa"
+    },
+    {
+      "masterId": "ding-liren",
+      "category": "campioni",
+      "name": "Ding Liren",
+      "title": {
+        "ro": "Mutarea exactă, fără panică",
+        "en": "The exact move, without panic",
+        "fr": "Le coup exact, sans panique"
+      },
+      "biographyShort": {
+        "ro": "Ding Liren a devenit campion mondial în 2023. În poziții grele caută mutarea exactă, nu fuga piesei.",
+        "en": "Ding Liren became world champion in 2023. In difficult positions he looks for the exact move, not the flight of the piece.",
+        "fr": "Ding Liren est devenu champion du monde en 2023. Dans les positions difficiles il cherche le coup exact, pas la fuite de la pièce."
+      },
+      "playingStyle": {
+        "ro": "Precis, calm, captura care rezolvă două probleme",
+        "en": "Precise, calm, the capture that solves two problems",
+        "fr": "Précis, calme, la capture qui règle deux problèmes"
+      },
+      "signatureMovePattern": {
+        "ro": "Piesa care te atacă și nu este apărată se ia. Fuga lasă piesa pe tablă.",
+        "en": "The piece that attacks you and is not defended is taken. Flight leaves the piece on the board.",
+        "fr": "La pièce qui t’attaque et n’est pas défendue se prend. La fuite laisse la pièce sur l’échiquier."
+      },
+      "quote": {
+        "ro": "Caută mutarea bună, una, și joac-o.",
+        "en": "Look for the good move, the one, and play it.",
+        "fr": "Cherche le bon coup, un seul, et joue-le."
+      },
+      "interactiveExercises": [
+        {
+          "lessonId": "ding-1",
+          "title": {
+            "ro": "Dama care atacă turnul",
+            "en": "The queen that attacks the rook",
+            "fr": "La dame qui attaque la tour"
+          },
+          "fen": "4k3/8/8/q7/8/8/8/R3K3 w - - 0 1",
+          "question": {
+            "ro": "Dama de pe a5 atacă turnul și nu este apărată. Ce joacă Ding?",
+            "en": "The queen on a5 attacks the rook and is not defended. What does Ding play?",
+            "fr": "La dame en a5 attaque la tour et n’est pas défendue. Que joue Ding ?"
+          },
+          "correctMove": "Rxa5",
+          "goldenRule": {
+            "ro": "Rxa5 rezolvă ambele: turnul nu se pierde, dama cade. Fuga lasă dama pe tablă.",
+            "en": "Rxa5 solves both: the rook is not lost, the queen falls. Flight leaves the queen on the board.",
+            "fr": "Rxa5 règle les deux : la tour n’est pas perdue, la dame tombe. La fuite laisse la dame sur l’échiquier."
+          }
+        },
+        {
+          "lessonId": "ding-2",
+          "title": {
+            "ro": "Calul care dă șah se ia",
+            "en": "The knight that gives check is taken",
+            "fr": "Le cavalier qui donne échec se prend"
+          },
+          "fen": "4k3/8/8/8/8/5n2/6Q1/4K3 w - - 0 1",
+          "question": {
+            "ro": "Calul dă șah și stă pe câmpul damei. Care este mutarea exactă?",
+            "en": "The knight gives check and stands on the queen’s square. What is the exact move?",
+            "fr": "Le cavalier donne échec et se tient sur la case de la dame. Quel est le coup exact ?"
+          },
+          "correctMove": "Qxf3",
+          "goldenRule": {
+            "ro": "Qxf3 ia șahul și calul. Panica mută regele și lasă calul pe tablă.",
+            "en": "Qxf3 takes the check and the knight. Panic moves the king and leaves the knight on the board.",
+            "fr": "Qxf3 prend l’échec et le cavalier. La panique bouge le roi et laisse le cavalier sur l’échiquier."
+          }
+        }
+      ],
+      "continent": "asia"
+    },
+    {
+      "masterId": "vera-menchik",
+      "category": "campioane",
+      "name": "Vera Menchik",
+      "title": {
+        "ro": "Șah sănătos, înainte de nume",
+        "en": "Healthy chess, before the name",
+        "fr": "Des échecs sains, avant le nom"
+      },
+      "biographyShort": {
+        "ro": "Vera Menchik a fost prima campioană mondială, din 1927. Bătea adversari celebri pentru că dezvolta piesele înainte să atace.",
+        "en": "Vera Menchik was the first women’s world champion, from 1927. She beat famous opponents because she developed the pieces before she attacked.",
+        "fr": "Vera Menchik fut la première championne du monde, dès 1927. Elle battait des adversaires célèbres parce qu’elle développait les pièces avant d’attaquer."
+      },
+      "playingStyle": {
+        "ro": "Sănătos, dezvoltare, fără saltul damei",
+        "en": "Healthy, development, no queen lunge",
+        "fr": "Sain, développement, sans sortie de dame"
+      },
+      "signatureMovePattern": {
+        "ro": "Calul sau nebunul iese. Dama nu sare la pionul apărat doar pentru că în față stă un nume mare.",
+        "en": "The knight or the bishop comes out. The queen does not jump at a defended pawn just because a big name sits opposite.",
+        "fr": "Le cavalier ou le fou sort. La dame ne saute pas sur un pion défendu seulement parce qu’un grand nom est en face."
+      },
+      "quote": {
+        "ro": "Poziția se joacă la fel și când în față stă un campion.",
+        "en": "The position is played the same way even when a champion sits opposite.",
+        "fr": "La position se joue de la même façon même quand un champion est en face."
+      },
+      "interactiveExercises": [
+        {
+          "lessonId": "menchik-1",
+          "title": {
+            "ro": "Calul, nu dama",
+            "en": "The knight, not the queen",
+            "fr": "Le cavalier, pas la dame"
+          },
+          "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+          "question": {
+            "ro": "Menchik nu sare cu dama. Ce cal dezvoltă?",
+            "en": "Menchik does not jump with the queen. Which knight does she develop?",
+            "fr": "Menchik ne sort pas la dame. Quel cavalier développe-t-elle ?"
+          },
+          "correctMove": "Nf3",
+          "goldenRule": {
+            "ro": "Nf3 scoate o piesă. Qh5 nu câștigă pionul din e5: dama din d8 îl apără.",
+            "en": "Nf3 brings a piece out. Qh5 does not win the pawn on e5: the queen on d8 defends it.",
+            "fr": "Nf3 sort une pièce. Qh5 ne gagne pas le pion en e5 : la dame en d8 le défend."
+          }
+        },
+        {
+          "lessonId": "menchik-2",
+          "title": {
+            "ro": "Nebunul pe diagonală",
+            "en": "The bishop on the diagonal",
+            "fr": "Le fou sur la diagonale"
+          },
+          "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3",
+          "question": {
+            "ro": "Calul e deja afară. Ce piesă mai scoate Menchik?",
+            "en": "The knight is already out. Which piece does Menchik bring out next?",
+            "fr": "Le cavalier est déjà sorti. Quelle pièce Menchik sort-elle ensuite ?"
+          },
+          "correctMove": "Bc4",
+          "goldenRule": {
+            "ro": "Bc4 dezvoltă nebunul spre centrul negru. Atacul așteaptă piesele.",
+            "en": "Bc4 develops the bishop toward the black centre. The attack waits for the pieces.",
+            "fr": "Bc4 développe le fou vers le centre noir. L’attaque attend les pièces."
+          }
+        }
+      ],
+      "continent": "europa"
+    },
+    {
+      "masterId": "judit-polgar",
+      "category": "candidate",
+      "name": "Judit Polgár",
+      "title": {
+        "ro": "Regina atacului direct",
+        "en": "The queen of direct attack",
+        "fr": "La reine de l’attaque directe"
+      },
+      "biographyShort": {
+        "ro": "Judit Polgár a fost cea mai bine clasată șahistă din istorie și a învins mulți campioni mondiali. Deschidea linia pe care avea deja turnul sau pionul.",
+        "en": "Judit Polgár was the highest-rated woman in chess history and she beat many world champions. She opened the line where she already had the rook or the pawn.",
+        "fr": "Judit Polgár fut la joueuse la mieux classée de l’histoire et elle a battu de nombreux champions du monde. Elle ouvrait la ligne où elle avait déjà la tour ou le pion."
+      },
+      "playingStyle": {
+        "ro": "Tactic, ultra-agresiv, calcul în complicații",
+        "en": "Tactical, ultra-aggressive, calculation in complications",
+        "fr": "Tactique, ultra-agressif, calcul dans les complications"
+      },
+      "signatureMovePattern": {
+        "ro": "Nu apără pionul mic dacă poate deschide linii. Timpul și inițiativa trec înaintea pionului.",
+        "en": "She does not defend the small pawn if she can open lines. Time and the initiative come before the pawn.",
+        "fr": "Elle ne défend pas le petit pion si elle peut ouvrir des lignes. Le temps et l’initiative passent avant le pion."
+      },
+      "quote": {
+        "ro": "Vreau să joc ca să câștig, nu ca să țin un pion.",
+        "en": "I want to play to win, not to hold a pawn.",
+        "fr": "Je veux jouer pour gagner, pas pour garder un pion."
+      },
+      "interactiveExercises": [
+        {
+          "lessonId": "polgar-1",
+          "title": {
+            "ro": "Pionul care deschide, nu cel apărat",
+            "en": "The pawn that opens, not the one that is defended",
+            "fr": "Le pion qui ouvre, pas celui qui est défendu"
+          },
+          "fen": "r1bqkb1r/pp3ppp/2n5/2ppP3/3P4/2P2N2/P1P2PPP/R1BQKB1R w KQkq - 0 1",
+          "question": {
+            "ro": "Judit nu a apărat pionul, a deschis liniile. Ce mutare de atac a ales?",
+            "en": "Judit did not defend the pawn, she opened lines. What attacking move did she choose?",
+            "fr": "Judit n’a pas défendu le pion, elle a ouvert les lignes. Quel coup d’attaque a-t-elle choisi ?"
+          },
+          "correctMove": "e6",
+          "goldenRule": {
+            "ro": "e6 se poate lua. Timpul și inițiativa valorează aici mai mult decât pionul. Nu este un pion gratis: este pana.",
+            "en": "e6 can be taken. Time and the initiative are worth more than the pawn here. It is not a free pawn: it is the wedge.",
+            "fr": "e6 peut se prendre. Le temps et l’initiative valent ici plus que le pion. Ce n’est pas un pion gratuit : c’est le coin."
+          }
+        },
+        {
+          "lessonId": "polgar-2",
+          "title": {
+            "ro": "Pionul din fața turnului",
+            "en": "The pawn in front of the rook",
+            "fr": "Le pion devant la tour"
+          },
+          "fen": "6k1/6pp/8/6p1/8/8/6PP/6RK w - - 0 1",
+          "question": {
+            "ro": "Turnul stă pe g. Ce pion deschide linia?",
+            "en": "The rook stands on g. Which pawn opens the line?",
+            "fr": "La tour est sur g. Quel pion ouvre la ligne ?"
+          },
+          "correctMove": "g4",
+          "goldenRule": {
+            "ro": "g4 este începutul, pentru că turnul este deja pe g1. Nu este mat. Este linia.",
+            "en": "g4 is the start, because the rook is already on g1. It is not mate. It is the file.",
+            "fr": "g4 est le début, parce que la tour est déjà en g1. Ce n’est pas mat. C’est la ligne."
+          }
+        }
+      ],
+      "continent": "europa"
+    },
+    {
+      "masterId": "hou-yifan",
+      "category": "campioane",
+      "name": "Hou Yifan",
+      "title": {
+        "ro": "Varianta pe care o vezi până la capăt",
+        "en": "The line you can see to the end",
+        "fr": "La variante que tu vois jusqu’au bout"
+      },
+      "biographyShort": {
+        "ro": "Hou Yifan a fost campioană mondială și cea mai tânără din istorie la titlu. Alege varianta limpede, nu pe cea spectaculoasă.",
+        "en": "Hou Yifan was women’s world champion and the youngest in history to take the title. She chooses the clear line, not the spectacular one.",
+        "fr": "Hou Yifan fut championne du monde et la plus jeune de l’histoire à prendre le titre. Elle choisit la variante claire, pas la spectaculaire."
+      },
+      "playingStyle": {
+        "ro": "Limpede, tehnic, schimbul care lasă pionul",
+        "en": "Clear, technical, the trade that leaves the pawn",
+        "fr": "Clair, technique, l’échange qui laisse le pion"
+      },
+      "signatureMovePattern": {
+        "ro": "Când ești un pion în plus, schimbi dama sau turnul pe care îl poți calcula. Finalul rămâne.",
+        "en": "When you are a pawn up, you trade the queen or the rook you can calculate. The ending remains.",
+        "fr": "Quand tu as un pion de plus, tu échanges la dame ou la tour que tu peux calculer. La finale reste."
+      },
+      "quote": {
+        "ro": "Joacă poziția pe care o poți calcula, nu pe cea pe care o visezi.",
+        "en": "Play the position you can calculate, not the one you dream.",
+        "fr": "Joue la position que tu peux calculer, pas celle que tu rêves."
+      },
+      "interactiveExercises": [
+        {
+          "lessonId": "hou-1",
+          "title": {
+            "ro": "Damele se schimbă",
+            "en": "The queens are traded",
+            "fr": "Les dames s’échangent"
+          },
+          "fen": "4k3/3q4/8/8/8/8/P7/3QK3 w - - 0 1",
+          "question": {
+            "ro": "Ești un pion în plus. Hou alege varianta limpede. Ce schimb joacă?",
+            "en": "You are a pawn up. Hou chooses the clear line. What trade does she play?",
+            "fr": "Tu as un pion de plus. Hou choisit la variante claire. Quel échange joue-t-elle ?"
+          },
+          "correctMove": "Qxd7+",
+          "goldenRule": {
+            "ro": "Qxd7+ schimbă damele. Regele ia înapoi, pionul de pe a2 rămâne. Nu este o damă gratis.",
+            "en": "Qxd7+ trades the queens. The king takes back, the pawn on a2 stays. It is not a free queen.",
+            "fr": "Qxd7+ échange les dames. Le roi reprend, le pion en a2 reste. Ce n’est pas une dame gratuite."
+          }
+        },
+        {
+          "lessonId": "hou-2",
+          "title": {
+            "ro": "Turnul pleacă, pionul c rămâne",
+            "en": "The rook leaves, the c-pawn stays",
+            "fr": "La tour part, le pion c reste"
+          },
+          "fen": "4k3/8/8/8/8/8/2P5/4KR1r w - - 0 1",
+          "question": {
+            "ro": "Aceeași idee, cu turnul. Ce captură lasă pionul?",
+            "en": "The same idea, with the rook. What capture leaves the pawn?",
+            "fr": "La même idée, avec la tour. Quelle capture laisse le pion ?"
+          },
+          "correctMove": "Rxh1",
+          "goldenRule": {
+            "ro": "Rxh1 schimbă turnurile. Pionul de pe c2 rămâne pentru final.",
+            "en": "Rxh1 trades the rooks. The pawn on c2 stays for the ending.",
+            "fr": "Rxh1 échange les tours. Le pion en c2 reste pour la finale."
+          }
+        }
+      ],
+      "continent": "asia"
+    },
+    {
+      "masterId": "ju-wenjun",
+      "category": "campioane",
+      "name": "Ju Wenjun",
+      "title": {
+        "ro": "Scutul regelui rămâne",
+        "en": "The king’s shield stays",
+        "fr": "Le bouclier du roi reste"
+      },
+      "biographyShort": {
+        "ro": "Ju Wenjun este campioană mondială. Nu slăbește pionii de lângă rege ca să „facă ceva”: mută piesa.",
+        "en": "Ju Wenjun is the women’s world champion. She does not weaken the pawns next to the king just to “do something”: she moves the piece.",
+        "fr": "Ju Wenjun est championne du monde. Elle n’affaiblit pas les pions près du roi pour « faire quelque chose » : elle bouge la pièce."
+      },
+      "playingStyle": {
+        "ro": "Profilactic, structural, piesa se mută, pionii stau",
+        "en": "Prophylactic, structural, the piece moves, the pawns stay",
+        "fr": "Prophylactique, structurel, la pièce bouge, les pions restent"
+      },
+      "signatureMovePattern": {
+        "ro": "f, g și h de lângă rege nu se împing fără piesă pe coloană. Calul sau nebunul pleacă spre centru.",
+        "en": "The f, g and h pawns next to the king are not pushed without a piece on the file. The knight or the bishop goes toward the centre.",
+        "fr": "Les pions f, g et h près du roi ne se poussent pas sans pièce sur la colonne. Le cavalier ou le fou va vers le centre."
+      },
+      "quote": {
+        "ro": "Piesa se mută. Pionii de acoperire stau.",
+        "en": "The piece moves. The covering pawns stay.",
+        "fr": "La pièce bouge. Les pions de couverture restent."
+      },
+      "interactiveExercises": [
+        {
+          "lessonId": "ju-1",
+          "title": {
+            "ro": "Calul pe e4, pionii stau",
+            "en": "The knight to e4, the pawns stay",
+            "fr": "Le cavalier en e4, les pions restent"
+          },
+          "fen": "6k1/5ppp/8/8/8/8/3N1PPP/6K1 w - - 0 1",
+          "question": {
+            "ro": "Ju nu atinge f2, g2, h2. Unde merge calul?",
+            "en": "Ju does not touch f2, g2, h2. Where does the knight go?",
+            "fr": "Ju ne touche pas f2, g2, h2. Où va le cavalier ?"
+          },
+          "correctMove": "Ne4",
+          "goldenRule": {
+            "ro": "Ne4 activează calul. f4, g4 sau h4 lângă regele din g1 sunt slăbiciuni, nu un plan.",
+            "en": "Ne4 activates the knight. f4, g4 or h4 next to the king on g1 are weaknesses, not a plan.",
+            "fr": "Ne4 active le cavalier. f4, g4 ou h4 près du roi en g1 sont des faiblesses, pas un plan."
+          }
+        },
+        {
+          "lessonId": "ju-2",
+          "title": {
+            "ro": "Nebunul iese, scutul rămâne",
+            "en": "The bishop comes out, the shield stays",
+            "fr": "Le fou sort, le bouclier reste"
+          },
+          "fen": "6k1/5ppp/8/8/8/8/5PPP/4B1K1 w - - 0 1",
+          "question": {
+            "ro": "Aceeași regulă, cu nebunul. Ce mutare nu atinge pionii?",
+            "en": "The same rule, with the bishop. Which move does not touch the pawns?",
+            "fr": "La même règle, avec le fou. Quel coup ne touche pas les pions ?"
+          },
+          "correctMove": "Bc3",
+          "goldenRule": {
+            "ro": "Bc3 scoate nebunul. Scutul f2, g2, h2 rămâne întreg.",
+            "en": "Bc3 brings the bishop out. The shield f2, g2, h2 stays whole.",
+            "fr": "Bc3 sort le fou. Le bouclier f2, g2, h2 reste entier."
+          }
+        }
+      ],
+      "continent": "asia"
+    },
+    {
+      "masterId": "korchnoi",
+      "category": "candidati",
+      "name": "Viktor Korchnoi",
+      "title": {
+        "ro": "Contraatac, nu doar apărare",
+        "en": "Counterattack, not only defence",
+        "fr": "Contre-attaque, pas seulement la défense"
+      },
+      "biographyShort": {
+        "ro": "Korchnoi a jucat două finale de campionat mondial și a rămas un luptător până târziu. Amenințarea o întâlnea cu o amenințare.",
+        "en": "Korchnoi played two world championship matches and stayed a fighter late into his career. He met a threat with a threat.",
+        "fr": "Korchnoi a joué deux matchs de championnat du monde et il est resté un combattant tard dans sa carrière. Il répondait à une menace par une menace."
+      },
+      "playingStyle": {
+        "ro": "Contraatac, șah în locul apărării pasive",
+        "en": "Counterattack, check instead of passive defence",
+        "fr": "Contre-attaque, échec au lieu de la défense passive"
+      },
+      "signatureMovePattern": {
+        "ro": "Pionul atacat nu se păzește doar. Dacă există șah sigur, șahul vine întâi.",
+        "en": "The attacked pawn is not only guarded. If a safe check exists, the check comes first.",
+        "fr": "Le pion attaqué ne se garde pas seulement. Si un échec sûr existe, l’échec vient d’abord."
+      },
+      "quote": {
+        "ro": "Întâi șahul, apoi pionul.",
+        "en": "First the check, then the pawn.",
+        "fr": "D’abord l’échec, ensuite le pion."
+      },
+      "interactiveExercises": [
+        {
+          "lessonId": "korchnoi-1",
+          "title": {
+            "ro": "Șah pe coloana d",
+            "en": "Check on the d-file",
+            "fr": "Échec sur la colonne d"
+          },
+          "fen": "6k1/8/8/8/3R4/8/r6P/6K1 w - - 0 1",
+          "question": {
+            "ro": "Turnul din a2 atacă h2. Korchnoi nu stă doar în apărare. Ce șah dă?",
+            "en": "The rook on a2 attacks h2. Korchnoi does not only sit in defence. What check does he give?",
+            "fr": "La tour en a2 attaque h2. Korchnoi ne reste pas seulement en défense. Quel échec donne-t-il ?"
+          },
+          "correctMove": "Rd8+",
+          "goldenRule": {
+            "ro": "Rd8+ este șah, iar regele din g8 nu ia turnul. El trebuie să răspundă. Apoi te ocupi de pion.",
+            "en": "Rd8+ is check, and the king on g8 does not take the rook. He has to answer. Then you deal with the pawn.",
+            "fr": "Rd8+ est un échec, et le roi en g8 ne prend pas la tour. Il doit répondre. Ensuite tu t’occupes du pion."
+          }
+        },
+        {
+          "lessonId": "korchnoi-2",
+          "title": {
+            "ro": "Șahul de pe ultima linie",
+            "en": "The check on the back rank",
+            "fr": "L’échec sur la dernière rangée"
+          },
+          "fen": "4k3/8/8/8/8/8/8/R3K3 w - - 0 1",
+          "question": {
+            "ro": "Nu există pion de apărat. Tot există mutarea activă. Care?",
+            "en": "There is no pawn to defend. The active move still exists. Which one?",
+            "fr": "Il n’y a pas de pion à défendre. Le coup actif existe quand même. Lequel ?"
+          },
+          "correctMove": "Ra8+",
+          "goldenRule": {
+            "ro": "Ra8+ este activitatea. Korchnoi caută șahul, nu așteptarea.",
+            "en": "Ra8+ is activity. Korchnoi looks for the check, not for waiting.",
+            "fr": "Ra8+ est l’activité. Korchnoi cherche l’échec, pas l’attente."
+          }
+        }
+      ],
+      "continent": "europa"
+    },
+    {
+      "masterId": "keres",
+      "category": "candidati",
+      "name": "Paul Keres",
+      "title": {
+        "ro": "Piesa spre rege, apoi ruptura",
+        "en": "The piece toward the king, then the break",
+        "fr": "La pièce vers le roi, puis la rupture"
+      },
+      "biographyShort": {
+        "ro": "Paul Keres a fost unul dintre cei mai puternici jucători care nu au devenit campioni mondiali. Îndrepta piesele spre rege înainte de rupturile de pioni.",
+        "en": "Paul Keres was one of the strongest players who never became world champion. He pointed the pieces at the king before the pawn breaks.",
+        "fr": "Paul Keres fut l’un des plus forts joueurs qui ne sont jamais devenus champions du monde. Il dirigeait les pièces vers le roi avant les ruptures de pions."
+      },
+      "playingStyle": {
+        "ro": "Atac construit, piesa întâi, pionul după",
+        "en": "Built attack, the piece first, the pawn after",
+        "fr": "Attaque construite, la pièce d’abord, le pion ensuite"
+      },
+      "signatureMovePattern": {
+        "ro": "Calul sau nebunul se apropie de rege. Abia apoi vin pionii.",
+        "en": "The knight or the bishop comes near the king. Only then come the pawns.",
+        "fr": "Le cavalier ou le fou s’approche du roi. Ensuite seulement viennent les pions."
+      },
+      "quote": {
+        "ro": "Întâi piesa la locul ei. Atacul nu începe din gol.",
+        "en": "First the piece on its square. The attack does not start from nothing.",
+        "fr": "D’abord la pièce à sa place. L’attaque ne commence pas de rien."
+      },
+      "interactiveExercises": [
+        {
+          "lessonId": "keres-1",
+          "title": {
+            "ro": "Calul spre rege",
+            "en": "The knight toward the king",
+            "fr": "Le cavalier vers le roi"
+          },
+          "fen": "6k1/5ppp/8/8/8/8/4N1B1/6K1 w - - 0 1",
+          "question": {
+            "ro": "Keres aduce piesa înainte de ruptură. Unde merge calul?",
+            "en": "Keres brings the piece before the break. Where does the knight go?",
+            "fr": "Keres amène la pièce avant la rupture. Où va le cavalier ?"
+          },
+          "correctMove": "Nf4",
+          "goldenRule": {
+            "ro": "Nf4 apropie calul de regele din g8. Nu este mat. Piesa și-a luat locul.",
+            "en": "Nf4 brings the knight near the king on g8. It is not mate. The piece has taken its place.",
+            "fr": "Nf4 approche le cavalier du roi en g8. Ce n’est pas mat. La pièce a pris sa place."
+          }
+        },
+        {
+          "lessonId": "keres-2",
+          "title": {
+            "ro": "Nebunul spre rege",
+            "en": "The bishop toward the king",
+            "fr": "Le fou vers le roi"
+          },
+          "fen": "6k1/5ppp/8/8/8/8/8/2B3K1 w - - 0 1",
+          "question": {
+            "ro": "Aceeași idee, cu nebunul din c1. Ce câmp îl apropie de rege?",
+            "en": "The same idea, with the bishop on c1. Which square brings it near the king?",
+            "fr": "La même idée, avec le fou en c1. Quelle case l’approche du roi ?"
+          },
+          "correctMove": "Bf4",
+          "goldenRule": {
+            "ro": "Bf4 pune nebunul spre rege. Pionii vin după ce piesa stă bine.",
+            "en": "Bf4 puts the bishop toward the king. The pawns come after the piece stands well.",
+            "fr": "Bf4 met le fou vers le roi. Les pions viennent après que la pièce est bien placée."
+          }
+        }
+      ],
+      "continent": "europa"
+    },
+    {
+      "masterId": "caruana",
+      "category": "candidati",
+      "name": "Fabiano Caruana",
+      "title": {
+        "ro": "Ruptura pentru care ai construit",
+        "en": "The break you built for",
+        "fr": "La rupture pour laquelle tu as construit"
+      },
+      "biographyShort": {
+        "ro": "Fabiano Caruana a jucat finala de campionat mondial din 2018. Când structura îi spune mutarea, o joacă, nu o amână.",
+        "en": "Fabiano Caruana played the 2018 world championship match. When the structure tells him the move, he plays it, he does not postpone it.",
+        "fr": "Fabiano Caruana a joué le match de championnat du monde de 2018. Quand la structure lui dit le coup, il le joue, il ne le reporte pas."
+      },
+      "playingStyle": {
+        "ro": "Concret, ruptura pregătită, fără mutare de așteptare",
+        "en": "Concrete, the prepared break, no waiting move",
+        "fr": "Concret, la rupture préparée, sans coup d’attente"
+      },
+      "signatureMovePattern": {
+        "ro": "d4 contra d5 cere e4. Majoritatea sau pionul din centru se împinge când piesele sunt gata.",
+        "en": "d4 against d5 asks for e4. The majority or the central pawn pushes when the pieces are ready.",
+        "fr": "d4 contre d5 demande e4. La majorité ou le pion du centre se pousse quand les pièces sont prêtes."
+      },
+      "quote": {
+        "ro": "Când structura îți spune mutarea, o joci.",
+        "en": "When the structure tells you the move, you play it.",
+        "fr": "Quand la structure te dit le coup, tu le joues."
+      },
+      "interactiveExercises": [
+        {
+          "lessonId": "caruana-1",
+          "title": {
+            "ro": "e4 contra d5",
+            "en": "e4 against d5",
+            "fr": "e4 contre d5"
+          },
+          "fen": "4k3/pp3ppp/8/3p4/3P4/8/PP2PPPP/4K3 w - - 0 1",
+          "question": {
+            "ro": "Structura așteaptă o ruptură. Caruana o joacă acum. Care?",
+            "en": "The structure is waiting for one break. Caruana plays it now. Which one?",
+            "fr": "La structure attend une rupture. Caruana la joue maintenant. Laquelle ?"
+          },
+          "correctMove": "e4",
+          "goldenRule": {
+            "ro": "e4 lovește d5. Asta este ruptura pentru care stau pionii, nu o mutare de pe margine.",
+            "en": "e4 strikes d5. That is the break the pawns are waiting for, not a move on the rim.",
+            "fr": "e4 frappe d5. C’est la rupture pour laquelle les pions sont là, pas un coup sur le bord."
+          }
+        },
+        {
+          "lessonId": "caruana-2",
+          "title": {
+            "ro": "c5, majoritatea",
+            "en": "c5, the majority",
+            "fr": "c5, la majorité"
+          },
+          "fen": "4k3/pp3ppp/8/3p4/2P5/8/PP2PPPP/4K3 w - - 0 1",
+          "question": {
+            "ro": "Pionul din c4 e gata. Ce înaintare joacă Caruana?",
+            "en": "The pawn on c4 is ready. What advance does Caruana play?",
+            "fr": "Le pion en c4 est prêt. Quelle avance Caruana joue-t-il ?"
+          },
+          "correctMove": "c5",
+          "goldenRule": {
+            "ro": "c5 este mutarea pe care structura o avea deja. Nu o amâni.",
+            "en": "c5 is the move the structure already had. You do not postpone it.",
+            "fr": "c5 est le coup que la structure avait déjà. Tu ne le reportes pas."
+          }
+        }
+      ],
+      "continent": "america-nord"
+    },
+    {
+      "masterId": "nana-alexandria",
+      "category": "candidate",
+      "name": "Nana Alexandria",
+      "title": {
+        "ro": "Piesa pe câmpul tare",
+        "en": "The piece on the strong square",
+        "fr": "La pièce sur la case forte"
+      },
+      "biographyShort": {
+        "ro": "Nana Alexandria a fost de două ori candidat la titlul mondial. Punea piesa pe câmpul tare înainte să împingă ceva.",
+        "en": "Nana Alexandria was twice a candidate for the world title. She put the piece on the strong square before she pushed anything.",
+        "fr": "Nana Alexandria fut deux fois candidate au titre mondial. Elle posait la pièce sur la case forte avant de pousser quoi que ce soit."
+      },
+      "playingStyle": {
+        "ro": "Pozițional, câmpul tare, planul după piesă",
+        "en": "Positional, the strong square, the plan after the piece",
+        "fr": "Positionnel, la case forte, le plan après la pièce"
+      },
+      "signatureMovePattern": {
+        "ro": "Slăbiciunea, de exemplu pionul din c6, primește calul sau nebunul lângă ea. Apoi vine planul.",
+        "en": "The weakness, for example the pawn on c6, receives the knight or the bishop beside it. Then comes the plan.",
+        "fr": "La faiblesse, par exemple le pion en c6, reçoit le cavalier ou le fou à côté d’elle. Ensuite vient le plan."
+      },
+      "quote": {
+        "ro": "Întâi câmpul tare. Spectacolul, cât piesa stă prost, nu există.",
+        "en": "First the strong square. The show, while the piece stands badly, does not exist.",
+        "fr": "D’abord la case forte. Le spectacle, tant que la pièce est mal placée, n’existe pas."
+      },
+      "interactiveExercises": [
+        {
+          "lessonId": "alexandria-1",
+          "title": {
+            "ro": "Calul lângă c6",
+            "en": "The knight beside c6",
+            "fr": "Le cavalier près de c6"
+          },
+          "fen": "4k3/8/2p5/8/8/1N6/8/4K3 w - - 0 1",
+          "question": {
+            "ro": "Pionul din c6 este ținta. Unde pune Alexandria calul?",
+            "en": "The pawn on c6 is the target. Where does Alexandria put the knight?",
+            "fr": "Le pion en c6 est la cible. Où Alexandria met-elle le cavalier ?"
+          },
+          "correctMove": "Nd4",
+          "goldenRule": {
+            "ro": "Nd4 atacă slăbiciunea din c6. De pe b3 calul nu lua c6. Întâi ajunge lângă pion.",
+            "en": "Nd4 attacks the weakness on c6. From b3 the knight did not take c6. First it arrives beside the pawn.",
+            "fr": "Nd4 attaque la faiblesse en c6. Depuis b3 le cavalier ne prenait pas c6. D’abord il arrive près du pion."
+          }
+        },
+        {
+          "lessonId": "alexandria-2",
+          "title": {
+            "ro": "Nebunul pe diagonala lungă",
+            "en": "The bishop on the long diagonal",
+            "fr": "Le fou sur la grande diagonale"
+          },
+          "fen": "4k3/8/2p5/8/8/8/8/2B1K3 w - - 0 1",
+          "question": {
+            "ro": "Înainte de orice împingere, unde stă nebunul?",
+            "en": "Before any push, where does the bishop stand?",
+            "fr": "Avant toute poussée, où se tient le fou ?"
+          },
+          "correctMove": "Bb2",
+          "goldenRule": {
+            "ro": "Bb2 pune nebunul pe diagonală. Planul vine după ce piesa stă bine.",
+            "en": "Bb2 puts the bishop on the diagonal. The plan comes after the piece stands well.",
+            "fr": "Bb2 met le fou sur la diagonale. Le plan vient après que la pièce est bien placée."
+          }
+        }
+      ],
+      "continent": "europa"
+    },
+    {
+      "masterId": "humpy-koneru",
+      "category": "candidate",
+      "name": "Humpy Koneru",
+      "title": {
+        "ro": "Pionul în plus se apără",
+        "en": "The extra pawn is defended",
+        "fr": "Le pion de plus se défend"
+      },
+      "biographyShort": {
+        "ro": "Humpy Koneru a fost vicecampioană mondială și una dintre cele mai puternice jucătoare ale epocii. Convertește tehnic: pionul în plus nu se abandonează pentru un atac.",
+        "en": "Humpy Koneru was a world championship runner-up and one of the strongest players of her era. She converts technically: the extra pawn is not abandoned for an attack.",
+        "fr": "Humpy Koneru fut finaliste du championnat du monde et l’une des plus fortes joueuses de son époque. Elle convertit techniquement : le pion de plus ne s’abandonne pas pour une attaque."
+      },
+      "playingStyle": {
+        "ro": "Tehnic, pionul rămâne apărat, fără atac care îl lasă",
+        "en": "Technical, the pawn stays defended, no attack that leaves it",
+        "fr": "Technique, le pion reste défendu, sans attaque qui l’abandonne"
+      },
+      "signatureMovePattern": {
+        "ro": "Turnul se întoarce la pion. Schimbul care lasă pionul pe tablă este convertirea.",
+        "en": "The rook comes back to the pawn. The trade that leaves the pawn on the board is the conversion.",
+        "fr": "La tour revient au pion. L’échange qui laisse le pion sur l’échiquier est la conversion."
+      },
+      "quote": {
+        "ro": "Păstrează pionul. Atacul care îl lasă îți anulează avantajul.",
+        "en": "Keep the pawn. The attack that leaves it cancels your advantage.",
+        "fr": "Garde le pion. L’attaque qui l’abandonne annule ton avantage."
+      },
+      "interactiveExercises": [
+        {
+          "lessonId": "humpy-1",
+          "title": {
+            "ro": "Turnul se întoarce la a2",
+            "en": "The rook comes back to a2",
+            "fr": "La tour revient à a2"
+          },
+          "fen": "6k1/8/8/8/8/r7/P7/1R2K3 w - - 0 1",
+          "question": {
+            "ro": "Turnul negru atacă pionul. Humpy nu pleacă la atac. Unde merge turnul?",
+            "en": "The black rook attacks the pawn. Humpy does not leave to attack. Where does the rook go?",
+            "fr": "La tour noire attaque le pion. Humpy ne part pas à l’attaque. Où va la tour ?"
+          },
+          "correctMove": "Ra1",
+          "goldenRule": {
+            "ro": "Ra1 ține pionul din a2. Fără turn, turnul din a3 îl ia și avantajul dispare.",
+            "en": "Ra1 holds the pawn on a2. Without the rook, the rook on a3 takes it and the advantage disappears.",
+            "fr": "Ra1 tient le pion en a2. Sans la tour, la tour en a3 le prend et l’avantage disparaît."
+          }
+        },
+        {
+          "lessonId": "humpy-2",
+          "title": {
+            "ro": "Schimbă, lasă pionul b",
+            "en": "Trade, leave the b-pawn",
+            "fr": "Échange, laisse le pion b"
+          },
+          "fen": "4k3/8/8/8/8/8/1P6/4KR1r w - - 0 1",
+          "question": {
+            "ro": "Ești un pion în plus. Ce schimb păstrează pionul?",
+            "en": "You are a pawn up. What trade keeps the pawn?",
+            "fr": "Tu as un pion de plus. Quel échange garde le pion ?"
+          },
+          "correctMove": "Rxh1",
+          "goldenRule": {
+            "ro": "Rxh1 pleacă cu turnurile. Pionul de pe b2 rămâne. Asta este convertirea tehnică.",
+            "en": "Rxh1 leaves with the rooks. The pawn on b2 stays. That is the technical conversion.",
+            "fr": "Rxh1 part avec les tours. Le pion en b2 reste. C’est la conversion technique."
+          }
+        }
+      ],
+      "continent": "asia"
+    },
+    {
+      "masterId": "florin-gheorghiu",
+      "category": "titani",
+      "name": "Florin Gheorghiu",
+      "title": {
+        "ro": "Planul de pe tablă, nu numele din față",
+        "en": "The plan on the board, not the name opposite",
+        "fr": "Le plan sur l’échiquier, pas le nom d’en face"
+      },
+      "biographyShort": {
+        "ro": "Florin Gheorghiu este cel mai titrat șahist român și a fost de trei ori campion mondial de juniori. La Havana, în 1966, l-a învins pe Fischer cu albul, pentru că ruptura g6 era deja pregătită.",
+        "en": "Florin Gheorghiu is Romania’s most titled player and he was three times world junior champion. In Havana in 1966 he beat Fischer with White, because the break g6 was already prepared.",
+        "fr": "Florin Gheorghiu est le joueur roumain le plus titré et il fut trois fois champion du monde junior. À La Havane en 1966 il a battu Fischer avec les Blancs, parce que la rupture g6 était déjà préparée."
+      },
+      "playingStyle": {
+        "ro": "Pregătire, atac pe flancul regelui, planul înaintea numelui",
+        "en": "Preparation, kingside attack, the plan before the name",
+        "fr": "Préparation, attaque à l’aile roi, le plan avant le nom"
+      },
+      "signatureMovePattern": {
+        "ro": "g4, g5 și h5 pregătesc g6. Favoritul se bate cu planul, dacă planul este deja pe tablă. g6 nu este mat.",
+        "en": "g4, g5 and h5 prepare g6. The favourite is beaten by the plan, if the plan is already on the board. g6 is not mate.",
+        "fr": "g4, g5 et h5 préparent g6. Le favori se bat contre le plan, si le plan est déjà sur l’échiquier. g6 n’est pas mat."
+      },
+      "quote": {
+        "ro": "Joacă poziția. Numele din față nu schimbă mutarea pregătită.",
+        "en": "Play the position. The name opposite does not change the prepared move.",
+        "fr": "Joue la position. Le nom d’en face ne change pas le coup préparé."
+      },
+      "interactiveExercises": [
+        {
+          "lessonId": "gheorghiu-1",
+          "title": {
+            "ro": "g6, Havana 1966",
+            "en": "g6, Havana 1966",
+            "fr": "g6, La Havane 1966"
+          },
+          "fen": "2rqrnk1/pp3ppp/2n1b3/2pp2PP/3P4/P1PBPP2/2Q1NK2/R1B4R w - - 1 17",
+          "question": {
+            "ro": "Gheorghiu, cu albul, contra lui Fischer. Atacul este pregătit. Ce mutare joacă?",
+            "en": "Gheorghiu, with White, against Fischer. The attack is prepared. What move does he play?",
+            "fr": "Gheorghiu, avec les Blancs, contre Fischer. L’attaque est préparée. Quel coup joue-t-il ?"
+          },
+          "correctMove": "g6",
+          "goldenRule": {
+            "ro": "g6 este ruptura pregătită. Partida a continuat mult după ea. Nu este mat. Planul era deja pe tablă.",
+            "en": "g6 is the prepared break. The game went on long after it. It is not mate. The plan was already on the board.",
+            "fr": "g6 est la rupture préparée. La partie a continué longtemps après. Ce n’est pas mat. Le plan était déjà sur l’échiquier."
+          }
+        },
+        {
+          "lessonId": "gheorghiu-2",
+          "title": {
+            "ro": "Aceeași pană, poziție simplă",
+            "en": "The same wedge, a simple position",
+            "fr": "Le même coin, une position simple"
+          },
+          "fen": "6k1/5ppp/8/6P1/7P/8/8/6K1 w - - 0 1",
+          "question": {
+            "ro": "g5 și h4 sunt deja acolo. Ce mutare încheie pregătirea?",
+            "en": "g5 and h4 are already there. Which move finishes the preparation?",
+            "fr": "g5 et h4 sont déjà là. Quel coup finit la préparation ?"
+          },
+          "correctMove": "g6",
+          "goldenRule": {
+            "ro": "g6 vine din pionii care sunt deja avansați. Ideea nu depinde de numele adversarului.",
+            "en": "g6 comes from the pawns that are already advanced. The idea does not depend on the opponent’s name.",
+            "fr": "g6 vient des pions qui sont déjà avancés. L’idée ne dépend pas du nom de l’adversaire."
+          }
+        }
+      ],
+      "continent": "europa"
+    },
+    {
+      "masterId": "gukesh",
+      "category": "tineri",
+      "name": "Dommaraju Gukesh",
+      "title": {
+        "ro": "Mutarea precisă, nu primul șah",
+        "en": "The precise move, not the first check",
+        "fr": "Le coup précis, pas le premier échec"
+      },
+      "biographyShort": {
+        "ro": "Gukesh a devenit campion mondial în 2024, la 18 ani. Caută mutarea care schimbă ceva, nu primul șah.",
+        "en": "Gukesh became world champion in 2024, at 18. He looks for the move that changes something, not the first check.",
+        "fr": "Gukesh est devenu champion du monde en 2024, à 18 ans. Il cherche le coup qui change quelque chose, pas le premier échec."
+      },
+      "playingStyle": {
+        "ro": "Precis, calcul, rezultatul înaintea zgomotului",
+        "en": "Precise, calculation, the result before the noise",
+        "fr": "Précis, calcul, le résultat avant le bruit"
+      },
+      "signatureMovePattern": {
+        "ro": "Captura pionului fără apărare trece înaintea șahului care lasă pionul pe tablă.",
+        "en": "The capture of the undefended pawn comes before the check that leaves the pawn on the board.",
+        "fr": "La capture du pion sans défense passe avant l’échec qui laisse le pion sur l’échiquier."
+      },
+      "quote": {
+        "ro": "Precizia este rezultatul, nu zgomotul șahului.",
+        "en": "Precision is the result, not the noise of the check.",
+        "fr": "La précision est le résultat, pas le bruit de l’échec."
+      },
+      "interactiveExercises": [
+        {
+          "lessonId": "gukesh-1",
+          "title": {
+            "ro": "Qxa7, nu șahul gol",
+            "en": "Qxa7, not the empty check",
+            "fr": "Qxa7, pas l’échec vide"
+          },
+          "fen": "4k3/p7/8/8/8/8/8/Q3K3 w - - 0 1",
+          "question": {
+            "ro": "Pionul din a7 nu este apărat. Ce mutare precisă joacă Gukesh?",
+            "en": "The pawn on a7 is not defended. What precise move does Gukesh play?",
+            "fr": "Le pion en a7 n’est pas défendu. Quel coup précis Gukesh joue-t-il ?"
+          },
+          "correctMove": "Qxa7",
+          "goldenRule": {
+            "ro": "Qxa7 ia pionul. Un șah care lasă pionul pe a7 nu schimbă materialul.",
+            "en": "Qxa7 takes the pawn. A check that leaves the pawn on a7 does not change the material.",
+            "fr": "Qxa7 prend le pion. Un échec qui laisse le pion en a7 ne change pas le matériel."
+          }
+        },
+        {
+          "lessonId": "gukesh-2",
+          "title": {
+            "ro": "Pasul de pe care cade pionul",
+            "en": "The step from which the pawn falls",
+            "fr": "Le pas depuis lequel le pion tombe"
+          },
+          "fen": "6k1/p7/8/8/8/N7/8/4K3 w - - 0 1",
+          "question": {
+            "ro": "Calul de pe a3 nu ia a7 dintr-o mutare. Care este pasul precis?",
+            "en": "The knight on a3 does not take a7 in one move. What is the precise step?",
+            "fr": "Le cavalier en a3 ne prend pas a7 en un coup. Quel est le pas précis ?"
+          },
+          "correctMove": "Nb5",
+          "goldenRule": {
+            "ro": "Nb5 este câmpul de pe care pionul din a7 cade. Precizia este pasul, nu un șah gol.",
+            "en": "Nb5 is the square from which the pawn on a7 falls. Precision is the step, not an empty check.",
+            "fr": "Nb5 est la case depuis laquelle le pion en a7 tombe. La précision est le pas, pas un échec vide."
+          }
+        }
+      ],
+      "continent": "asia",
+      "categories": [
+        "campioni",
+        "tineri"
+      ]
+    },
+    {
+      "masterId": "abdusattorov",
+      "category": "tineri",
+      "name": "Nodirbek Abdusattorov",
+      "title": {
+        "ro": "Mutarea practică",
+        "en": "The practical move",
+        "fr": "Le coup pratique"
+      },
+      "biographyShort": {
+        "ro": "Abdusattorov a devenit campion mondial la rapid la 17 ani. La timp scurt ia ce se poate lua sigur.",
+        "en": "Abdusattorov became world rapid champion at 17. In short time he takes what can be taken safely.",
+        "fr": "Abdusattorov est devenu champion du monde de rapide à 17 ans. À temps court il prend ce qui peut se prendre sûrement."
+      },
+      "playingStyle": {
+        "ro": "Practic, clar, captura sigură înaintea frumuseții",
+        "en": "Practical, clear, the safe capture before beauty",
+        "fr": "Pratique, clair, la capture sûre avant la beauté"
+      },
+      "signatureMovePattern": {
+        "ro": "Pionul sau piesa fără apărare se ia, dacă captura nu pierde piesa ta.",
+        "en": "The undefended pawn or piece is taken, if the capture does not lose your piece.",
+        "fr": "Le pion ou la pièce sans défense se prend, si la capture ne perd pas ta pièce."
+      },
+      "quote": {
+        "ro": "La timp scurt, mutarea clară valorează mai mult decât combinația frumoasă care lasă pionul.",
+        "en": "In short time, the clear move is worth more than the pretty combination that leaves the pawn.",
+        "fr": "À temps court, le coup clair vaut plus que la jolie combinaison qui laisse le pion."
+      },
+      "interactiveExercises": [
+        {
+          "lessonId": "abdusattorov-1",
+          "title": {
+            "ro": "Turnul ia pe b7",
+            "en": "The rook takes on b7",
+            "fr": "La tour prend en b7"
+          },
+          "fen": "6k1/1p6/8/8/8/8/8/1R4K1 w - - 0 1",
+          "question": {
+            "ro": "Pionul din b7 nu este apărat. Ce joacă Abdusattorov?",
+            "en": "The pawn on b7 is not defended. What does Abdusattorov play?",
+            "fr": "Le pion en b7 n’est pas défendu. Que joue Abdusattorov ?"
+          },
+          "correctMove": "Rxb7",
+          "goldenRule": {
+            "ro": "Rxb7 este clar. Regele din g8 nu apără b7. Nu începe un plan lung când captura e pe tablă.",
+            "en": "Rxb7 is clear. The king on g8 does not defend b7. Do not start a long plan when the capture is on the board.",
+            "fr": "Rxb7 est clair. Le roi en g8 ne défend pas b7. Ne commence pas un long plan quand la capture est sur l’échiquier."
+          }
+        },
+        {
+          "lessonId": "abdusattorov-2",
+          "title": {
+            "ro": "Nebunul fără apărare",
+            "en": "The undefended bishop",
+            "fr": "Le fou sans défense"
+          },
+          "fen": "6k1/8/8/8/3b4/8/8/3R2K1 w - - 0 1",
+          "question": {
+            "ro": "Nebunul din d4 stă singur. Care este mutarea practică?",
+            "en": "The bishop on d4 stands alone. What is the practical move?",
+            "fr": "Le fou en d4 est seul. Quel est le coup pratique ?"
+          },
+          "correctMove": "Rxd4",
+          "goldenRule": {
+            "ro": "Rxd4 ia nebunul. Frumusețea care îl lasă pe tablă îți irosește timpul.",
+            "en": "Rxd4 takes the bishop. Beauty that leaves it on the board wastes your time.",
+            "fr": "Rxd4 prend le fou. La beauté qui le laisse sur l’échiquier te fait perdre du temps."
+          }
+        }
+      ],
+      "continent": "asia"
+    },
+    {
+      "masterId": "praggnanandhaa",
+      "category": "tineri",
+      "name": "Rameshbabu Praggnanandhaa",
+      "title": {
+        "ro": "Contrașansa din poziția mai slabă",
+        "en": "The counterchance from the worse position",
+        "fr": "La contre-chance depuis la position inférieure"
+      },
+      "biographyShort": {
+        "ro": "Praggnanandhaa a devenit unul dintre cei mai tineri candidați la titlul mondial. Când este un pion în minus, caută mutarea activă, nu așteptarea.",
+        "en": "Praggnanandhaa became one of the youngest candidates for the world title. When he is a pawn down, he looks for the active move, not waiting.",
+        "fr": "Praggnanandhaa est devenu l’un des plus jeunes candidats au titre mondial. Quand il a un pion de moins, il cherche le coup actif, pas l’attente."
+      },
+      "playingStyle": {
+        "ro": "Activ din poziție mai slabă, captura care egalează",
+        "en": "Active from a worse position, the capture that equalises",
+        "fr": "Actif depuis une position inférieure, la capture qui égalise"
+      },
+      "signatureMovePattern": {
+        "ro": "Pionul fără apărare se ia înapoi. Șahul care lasă pionul nu egalează.",
+        "en": "The undefended pawn is taken back. The check that leaves the pawn does not equalise.",
+        "fr": "Le pion sans défense se reprend. L’échec qui laisse le pion n’égalise pas."
+      },
+      "quote": {
+        "ro": "Un pion în minus nu înseamnă să aștepți.",
+        "en": "A pawn down does not mean you wait.",
+        "fr": "Un pion de moins ne veut pas dire attendre."
+      },
+      "interactiveExercises": [
+        {
+          "lessonId": "praggnanandhaa-1",
+          "title": {
+            "ro": "Turnul ia pe h2",
+            "en": "The rook takes on h2",
+            "fr": "La tour prend en h2"
+          },
+          "fen": "6k1/8/8/8/8/8/7P/4K2r b - - 0 1",
+          "question": {
+            "ro": "Ești la mutare, cu negrul. Pionul din h2 nu este apărat. Ce joacă Praggnanandhaa?",
+            "en": "You are to move, as Black. The pawn on h2 is not defended. What does Praggnanandhaa play?",
+            "fr": "C’est à toi de jouer, avec les Noirs. Le pion en h2 n’est pas défendu. Que joue Praggnanandhaa ?"
+          },
+          "correctMove": "Rxh2",
+          "goldenRule": {
+            "ro": "Rxh2 ia pionul. Regele din e1 nu îl apără. Contrașansa este captura, nu așteptarea.",
+            "en": "Rxh2 takes the pawn. The king on e1 does not defend it. The counterchance is the capture, not waiting.",
+            "fr": "Rxh2 prend le pion. Le roi en e1 ne le défend pas. La contre-chance est la capture, pas l’attente."
+          }
+        },
+        {
+          "lessonId": "praggnanandhaa-2",
+          "title": {
+            "ro": "Ia pionul înapoi pe a2",
+            "en": "Take the pawn back on a2",
+            "fr": "Reprends le pion en a2"
+          },
+          "fen": "4k3/8/8/8/8/8/P6P/r3K3 b - - 0 1",
+          "question": {
+            "ro": "Ești un pion în minus. Șahul care lasă pionul nu egalează. Ce captură egalează?",
+            "en": "You are a pawn down. The check that leaves the pawn does not equalise. What capture equalises?",
+            "fr": "Tu as un pion de moins. L’échec qui laisse le pion n’égalise pas. Quelle capture égalise ?"
+          },
+          "correctMove": "Rxa2",
+          "goldenRule": {
+            "ro": "Rxa2 ia pionul înapoi. Materialul se egalizează prin mutarea activă.",
+            "en": "Rxa2 takes the pawn back. The material is equalised by the active move.",
+            "fr": "Rxa2 reprend le pion. Le matériel s’égalise par le coup actif."
+          }
+        }
+      ],
+      "continent": "asia"
+    },
+    {
+      "masterId": "anthony-miles",
+      "category": "titani",
+      "continent": "europa",
+      "name": "Anthony Miles",
+      "title": {
+        "ro": "Mutarea din afara cărții",
+        "en": "The move outside the book",
+        "fr": "Le coup hors du livre"
+      },
+      "biographyShort": {
+        "ro": "Anthony Miles l-a învins pe Karpov, campion mondial, cu 1...a6. Nu a intrat în pregătirea campionului: a schimbat întrebarea din prima mutare.",
+        "en": "Anthony Miles beat Karpov, the world champion, with 1...a6. He did not walk into the champion’s preparation: he changed the question on move one.",
+        "fr": "Anthony Miles a battu Karpov, champion du monde, avec 1...a6. Il n’est pas entré dans la préparation du champion : il a changé la question dès le premier coup."
+      },
+      "playingStyle": {
+        "ro": "Original, practic, deschideri ieșite din teorie",
+        "en": "Original, practical, openings outside theory",
+        "fr": "Original, pratique, ouvertures hors théorie"
+      },
+      "signatureMovePattern": {
+        "ro": "O mutare neașteptată scoate partida din teoria adversarului. Apoi spațiul se ia cu b5.",
+        "en": "An unexpected move takes the game out of the opponent’s theory. Then space is taken with b5.",
+        "fr": "Un coup inattendu sort la partie de la théorie adverse. Ensuite l’espace se prend avec b5."
+      },
+      "quote": {
+        "ro": "Dacă adversarul știe cartea, schimbă întrebarea.",
+        "en": "If the opponent knows the book, change the question.",
+        "fr": "Si l’adversaire connaît le livre, change la question."
+      },
+      "interactiveExercises": [
+        {
+          "lessonId": "miles-1",
+          "title": {
+            "ro": "Pionul care schimbă întrebarea",
+            "en": "The pawn that changes the question",
+            "fr": "Le pion qui change la question"
+          },
+          "fen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1",
+          "question": {
+            "ro": "Miles, cu negrul, nu a ales o deschidere de manual contra campionului. Ce pion a mutat?",
+            "en": "Miles, as Black, did not choose a book opening against the champion. Which pawn did he move?",
+            "fr": "Miles, avec les noirs, n’a pas choisi une ouverture de manuel contre le champion. Quel pion a-t-il joué ?"
+          },
+          "correctMove": "a6",
+          "goldenRule": {
+            "ro": "a6 nu câștigă o piesă. Scoate partida din pregătirea campionului.",
+            "en": "a6 does not win a piece. It takes the game out of the champion’s preparation.",
+            "fr": "a6 ne gagne pas de pièce. Il sort la partie de la préparation du champion."
+          }
+        },
+        {
+          "lessonId": "miles-2",
+          "title": {
+            "ro": "Spațiul de după a6",
+            "en": "The space after a6",
+            "fr": "L’espace après a6"
+          },
+          "fen": "rnbqkbnr/1ppppppp/p7/8/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2",
+          "question": {
+            "ro": "a6 a fost pregătirea. Cu ce pion își ia Miles spațiul la damă?",
+            "en": "a6 was the preparation. With which pawn does Miles take queenside space?",
+            "fr": "a6 était la préparation. Avec quel pion Miles prend-il l’espace à l’aile dame ?"
+          },
+          "correctMove": "b5",
+          "goldenRule": {
+            "ro": "b5 se poate ataca. Spațiul se ia înainte ca albul să se așeze. Nu este un pion gratis.",
+            "en": "b5 can be attacked. Space is taken before White settles. It is not a free pawn.",
+            "fr": "b5 peut être attaqué. L’espace se prend avant que les blancs s’installent. Ce n’est pas un pion gratuit."
+          }
+        }
+      ]
+    },
+    {
+      "masterId": "bassem-amin",
+      "category": "continente",
+      "continent": "africa",
+      "name": "Bassem Amin",
+      "title": {
+        "ro": "Campionul tehnic al Africii",
+        "en": "The technical champion of Africa",
+        "fr": "Le champion technique de l’Afrique"
+      },
+      "biographyShort": {
+        "ro": "Bassem Amin este cel mai titrat campion al Africii. Stilul lui arată că un avantaj mic, ținut până la capăt, ajunge mai departe decât un atac grăbit.",
+        "en": "Bassem Amin is the most titled champion of Africa. His style shows that a small advantage, held to the end, goes further than a rushed attack.",
+        "fr": "Bassem Amin est le champion le plus titré d’Afrique. Son style montre qu’un petit avantage, tenu jusqu’au bout, va plus loin qu’une attaque précipitée."
+      },
+      "playingStyle": {
+        "ro": "Tehnic, solid, transformă avantajul mic",
+        "en": "Technical, solid, converts a small advantage",
+        "fr": "Technique, solide, transforme le petit avantage"
+      },
+      "signatureMovePattern": {
+        "ro": "Pionul trecut înaintează când turnul stă deja în spatele lui.",
+        "en": "The passed pawn advances when the rook is already behind it.",
+        "fr": "Le pion passé avance quand la tour est déjà derrière lui."
+      },
+      "quote": {
+        "ro": "Avantajul mic se transformă. Nu se forțează.",
+        "en": "A small advantage is converted. It is not forced.",
+        "fr": "Le petit avantage se transforme. Il ne se force pas."
+      },
+      "interactiveExercises": [
+        {
+          "lessonId": "amin-1",
+          "title": {
+            "ro": "Pionul cu turnul în spate",
+            "en": "The pawn with the rook behind it",
+            "fr": "Le pion avec la tour derrière"
+          },
+          "fen": "8/8/8/8/P7/8/8/R3K2k w - - 0 1",
+          "question": {
+            "ro": "Turnul e deja pe coloana pionului trecut. Amin nu schimbă turnul. Unde merge pionul?",
+            "en": "The rook is already on the passed pawn’s file. Amin does not trade the rook. Where does the pawn go?",
+            "fr": "La tour est déjà sur la colonne du pion passé. Amin n’échange pas la tour. Où va le pion ?"
+          },
+          "correctMove": "a5",
+          "goldenRule": {
+            "ro": "Pionul înaintează. Turnul rămâne în spate. Nu căuta o captură care nu există.",
+            "en": "The pawn advances. The rook stays behind. Do not look for a capture that is not there.",
+            "fr": "Le pion avance. La tour reste derrière. Ne cherche pas une capture qui n’existe pas."
+          }
+        },
+        {
+          "lessonId": "amin-2",
+          "title": {
+            "ro": "Regele lângă pion",
+            "en": "The king next to the pawn",
+            "fr": "Le roi à côté du pion"
+          },
+          "fen": "8/8/8/3k4/8/8/P7/2K5 w - - 0 1",
+          "question": {
+            "ro": "Pionul din a2 are nevoie de rege. Pe ce câmp vine regele, lângă pion?",
+            "en": "The pawn on a2 needs the king. Which square does the king take, next to the pawn?",
+            "fr": "Le pion en a2 a besoin du roi. Quelle case le roi prend-il, à côté du pion ?"
+          },
+          "correctMove": "Kb2",
+          "goldenRule": {
+            "ro": "Regele susține pionul înainte ca pionul să alerge singur.",
+            "en": "The king supports the pawn before the pawn runs alone.",
+            "fr": "Le roi soutient le pion avant que le pion ne coure seul."
+          }
+        }
+      ]
+    },
+    {
+      "masterId": "miguel-najdorf",
+      "category": "continente",
+      "continent": "america-sud",
+      "name": "Miguel Najdorf",
+      "title": {
+        "ro": "Contra-jocul din America de Sud",
+        "en": "Counterplay from South America",
+        "fr": "Le contre-jeu d’Amérique du Sud"
+      },
+      "biographyShort": {
+        "ro": "Miguel Najdorf a dus șahul ascuțit în America de Sud. Varianta care îi poartă numele nu stă pasiv: alungă calul din centru și caută joc.",
+        "en": "Miguel Najdorf brought sharp chess to South America. The variation that carries his name does not sit passively: it drives the knight from the centre and looks for play.",
+        "fr": "Miguel Najdorf a apporté les échecs aiguisés en Amérique du Sud. La variante qui porte son nom ne reste pas passive : elle chasse le cavalier du centre et cherche le jeu."
+      },
+      "playingStyle": {
+        "ro": "Ascuțit, inițiativă, contra-joc în complicații",
+        "en": "Sharp, initiative, counterplay in complications",
+        "fr": "Aiguisé, initiative, contre-jeu dans les complications"
+      },
+      "signatureMovePattern": {
+        "ro": "...e5 alungă calul din d4. Apoi albul deschide cu f4 doar când piesele sunt afară.",
+        "en": "...e5 drives the knight from d4. Then White opens with f4 only when the pieces are out.",
+        "fr": "...e5 chasse le cavalier de d4. Ensuite les blancs ouvrent avec f4 seulement quand les pièces sont sorties."
+      },
+      "quote": {
+        "ro": "Poziția nu se așteaptă. Se deschide când piesele sunt gata.",
+        "en": "The position is not waited on. It is opened when the pieces are ready.",
+        "fr": "La position ne s’attend pas. Elle s’ouvre quand les pièces sont prêtes."
+      },
+      "interactiveExercises": [
+        {
+          "lessonId": "najdorf-1",
+          "title": {
+            "ro": "Alungă calul din centru",
+            "en": "Drive the knight from the centre",
+            "fr": "Chasse le cavalier du centre"
+          },
+          "fen": "rnbqkb1r/1p2pppp/p2p1n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R b KQkq - 0 6",
+          "question": {
+            "ro": "Calul alb stă pe d4. Najdorf nu apără pe loc. Cu ce pion îl alungă?",
+            "en": "The white knight sits on d4. Najdorf does not defend in place. With which pawn does he drive it off?",
+            "fr": "Le cavalier blanc est en d4. Najdorf ne défend pas sur place. Avec quel pion le chasse-t-il ?"
+          },
+          "correctMove": "e5",
+          "goldenRule": {
+            "ro": "e5 nu câștigă calul: calul poate sări. Centrul se contestă înainte de a sta pasiv.",
+            "en": "e5 does not win the knight: the knight can jump. The centre is contested before sitting passively.",
+            "fr": "e5 ne gagne pas le cavalier : le cavalier peut sauter. Le centre se conteste avant de rester passif."
+          }
+        },
+        {
+          "lessonId": "najdorf-2",
+          "title": {
+            "ro": "f4 când piesele sunt afară",
+            "en": "f4 when the pieces are out",
+            "fr": "f4 quand les pièces sont sorties"
+          },
+          "fen": "r1bq1rk1/pp2bppp/2np1n2/4p3/3NP3/2N1B3/PPP1BPPP/R2Q1RK1 w KQ - 0 1",
+          "question": {
+            "ro": "Piesele albe sunt dezvoltate, regele e în spate. Ce pion deschide jocul la rege?",
+            "en": "White’s pieces are developed and the king is tucked away. Which pawn opens the play toward the king?",
+            "fr": "Les pièces blanches sont développées, le roi est à l’abri. Quel pion ouvre le jeu vers le roi ?"
+          },
+          "correctMove": "f4",
+          "goldenRule": {
+            "ro": "f4 se poate lua. Linia se deschide pentru că piesele sunt deja afară, nu înainte.",
+            "en": "f4 can be taken. The line opens because the pieces are already out, not before.",
+            "fr": "f4 peut se prendre. La ligne s’ouvre parce que les pièces sont déjà sorties, pas avant."
+          }
+        }
+      ]
+    },
+    {
+      "masterId": "ian-rogers",
+      "category": "continente",
+      "continent": "oceania",
+      "name": "Ian Rogers",
+      "title": {
+        "ro": "Planul clar din Oceania",
+        "en": "The clear plan from Oceania",
+        "fr": "Le plan clair d’Océanie"
+      },
+      "biographyShort": {
+        "ro": "Ian Rogers a fost primul mare maestru australian. A jucat planuri clare: turnul pe coloana deschisă, nebunul pe diagonală, fără complicații de poftă.",
+        "en": "Ian Rogers was the first Australian grandmaster. He played clear plans: the rook on the open file, the bishop on the diagonal, no complications for their own sake.",
+        "fr": "Ian Rogers fut le premier grand maître australien. Il jouait des plans clairs : la tour sur la colonne ouverte, le fou sur la diagonale, pas de complications pour elles-mêmes."
+      },
+      "playingStyle": {
+        "ro": "Practic, clar, final tehnic",
+        "en": "Practical, clear, technical ending",
+        "fr": "Pratique, clair, finale technique"
+      },
+      "signatureMovePattern": {
+        "ro": "Turnul intră pe coloana deschisă înainte ca pionii să se împingă.",
+        "en": "The rook enters the open file before the pawns are pushed.",
+        "fr": "La tour entre sur la colonne ouverte avant que les pions ne soient poussés."
+      },
+      "quote": {
+        "ro": "Planul simplu, dus până la capăt, bate ideea spectaculoasă neterminată.",
+        "en": "A simple plan, carried through, beats an unfinished spectacular idea.",
+        "fr": "Un plan simple, mené jusqu’au bout, bat une idée spectaculaire inachevée."
+      },
+      "interactiveExercises": [
+        {
+          "lessonId": "rogers-1",
+          "title": {
+            "ro": "Turnul pe coloana deschisă",
+            "en": "The rook on the open file",
+            "fr": "La tour sur la colonne ouverte"
+          },
+          "fen": "4k3/8/8/8/8/8/8/R3K3 w - - 0 1",
+          "question": {
+            "ro": "Coloana d e goală. Rogers nu împinge un pion. Unde intră turnul?",
+            "en": "The d-file is open. Rogers does not push a pawn. Where does the rook enter?",
+            "fr": "La colonne d est ouverte. Rogers ne pousse pas un pion. Où entre la tour ?"
+          },
+          "correctMove": "Rd1",
+          "goldenRule": {
+            "ro": "Coloana deschisă se ocupă. Nu există încă un pion de împins care să schimbe partida.",
+            "en": "The open file is occupied. There is not yet a pawn push that changes the game.",
+            "fr": "La colonne ouverte s’occupe. Il n’y a pas encore de poussée de pion qui change la partie."
+          }
+        },
+        {
+          "lessonId": "rogers-2",
+          "title": {
+            "ro": "Nebunul pe diagonală",
+            "en": "The bishop on the diagonal",
+            "fr": "Le fou sur la diagonale"
+          },
+          "fen": "4k3/8/8/8/3p4/8/3P4/2B1K3 w - - 0 1",
+          "question": {
+            "ro": "Centrul e fix, d2 și d4. Pe ce câmp iese nebunul, pe diagonala lungă?",
+            "en": "The centre is fixed, d2 and d4. Which square does the bishop take, on the long diagonal?",
+            "fr": "Le centre est fixe, d2 et d4. Quelle case le fou prend-il, sur la grande diagonale ?"
+          },
+          "correctMove": "Bb2",
+          "goldenRule": {
+            "ro": "Nebunul se așază înainte de orice deschidere. Bb2 nu capturează nimic.",
+            "en": "The bishop is placed before any opening of the position. Bb2 captures nothing.",
+            "fr": "Le fou se place avant toute ouverture. Bb2 ne capture rien."
+          }
+        }
+      ]
+    }
+  ]
+}

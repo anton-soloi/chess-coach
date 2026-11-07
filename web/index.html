@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chess Coach</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Chess Coach</div>
+    <nav class="modes" data-i18n-aria="nav.modes">
+      <button type="button" class="mode" data-mode="menu" data-i18n="modes.menu">MENIU</button>
+      <button type="button" class="mode" data-mode="train" data-i18n="modes.train">TRAIN</button>
+      <button type="button" class="mode active" data-mode="analysis" data-i18n="modes.analysis">Niveluri de Măiestrie</button>
+      <button type="button" class="mode" data-mode="learn" data-i18n="modes.learn">ÎNVĂȚĂM DE LA…</button>
+    </nav>
+    <div class="roles" role="group" data-i18n-aria="role.group">
+      <button type="button" class="mode role active" data-role="child" data-i18n="role.child">Copil</button>
+      <button type="button" class="mode role" data-role="teacher" data-i18n="role.teacher">Profesor</button>
+    </div>
+    <div class="avatar-gender" role="group" data-i18n-aria="avatar.group">
+      <button type="button" class="lang-btn" data-gender="boy" data-i18n="avatar.boy" aria-pressed="true">Băiat</button>
+      <button type="button" class="lang-btn" data-gender="girl" data-i18n="avatar.girl" aria-pressed="false">Fată</button>
+    </div>
+    <div class="lang" role="group" data-i18n-aria="lang.group">
+      <button type="button" class="lang-btn active" data-lang="ro" aria-pressed="true">🇷🇴 RO</button>
+      <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">🇬🇧 EN</button>
+      <button type="button" class="lang-btn" data-lang="fr" aria-pressed="false">🇫🇷 FR</button>
+    </div>
+    <div class="players" data-i18n-aria="side.group">
+      <div id="side-white" class="player" data-i18n="side.white">Alb</div>
+      <div id="side-black" class="player" data-i18n="side.black">Negru</div>
+    </div>
+    <div class="badge"></div>
+  </header>
+
+  <div class="shell">
+    <nav class="sidebar" data-view="chapters" data-i18n-aria="nav.activities">
+      <button type="button" id="sidebar-toggle" class="sidebar-toggle" hidden aria-expanded="true">‹</button>
+      <p id="level-badge" class="level-badge" hidden></p>
+      <div class="nav-group" data-sidebar="games">
+        <button type="button" class="nav-item nav-parent" id="train-toggle" aria-expanded="false" aria-controls="train-menu">
+          <strong data-i18n="nav.train">Train</strong>
+          <span data-i18n="nav.trainHint">Quest, puzzle și partide. Ceas separat pentru Alb și Negru.</span>
+        </button>
+        <div class="submenu" id="train-menu" hidden>
+          <button type="button" class="nav-item sub" data-train="quest" data-i18n="nav.quest">Quest mode</button>
+          <button type="button" class="nav-item sub" data-train="puzzle" data-i18n="nav.puzzle">Chess Puzzle</button>
+          <button type="button" class="nav-item sub" data-train="random" data-i18n="nav.random">Random games</button>
+          <button type="button" class="nav-item sub" data-train="custom" data-i18n="nav.custom">Custom game</button>
+          <button type="button" class="nav-item sub" data-train="classical" data-i18n="nav.classical">Classical game</button>
+          <button type="button" class="nav-item sub" data-train="blindfold" data-i18n="nav.blindfold">Blindfold game</button>
+        </div>
+      </div>
+      <div class="nav-group" data-sidebar="exercises">
+        <button type="button" class="nav-item nav-parent open" id="exercise-toggle" aria-expanded="true" aria-controls="exercise-menu">
+          <strong data-i18n="nav.exercises">Exerciții</strong>
+          <span data-i18n="nav.exercisesHint">Mutare, explicație și motiv. Trei încercări.</span>
+        </button>
+        <div class="submenu" id="exercise-menu">
+          <button type="button" class="nav-item sub" id="new-exercise" hidden data-i18n="nav.newExercise">Exercițiu nou</button>
+          <div id="exercise-list"></div>
+        </div>
+      </div>
+      <div class="nav-group" data-sidebar="paths">
+        <button type="button" class="nav-item nav-parent open" id="path-toggle" aria-expanded="true" aria-controls="path-menu">
+          <strong data-i18n="path.title">Mutarea pieselor</strong>
+          <span data-i18n="path.hint">Mută piesa și adună stelele, ca la elementele de bază.</span>
+        </button>
+        <div class="submenu" id="path-menu"></div>
+      </div>
+      <div id="curriculum-root" data-sidebar="chapters"></div>
+      <button type="button" class="nav-item" id="focus-fen" data-sidebar="chapters">
+        <strong data-i18n="nav.fen">Poziție din FEN</strong>
+        <span data-i18n="nav.fenHint">Lipește o poziție și analizeaz-o cu motorul.</span>
+      </button>
+    </nav>
+
+    <section class="stage central-panel">
+      <div id="activity-title" class="activity">Niveluri de Măiestrie</div>
+      <div id="fen-bar" class="fen-bar" hidden>
+        <label for="board-fen" data-i18n="editor.pasteFen">Introdu/Lipește codul FEN</label>
+        <div class="fen-bar-row">
+          <textarea id="board-fen" rows="2" spellcheck="false" data-i18n-aria="editor.pasteFen"></textarea>
+        </div>
+        <p class="fen-hint" data-i18n="editor.drawHint">Click dreapta și trage: săgeată verde. Shift roșu, Alt galben, Ctrl albastru. Click dreapta pe un câmp: inel colorat.</p>
+        <div class="fen-actions">
+          <button type="button" id="fen-copy" data-i18n="editor.copyFen">Copiază FEN</button>
+          <button type="button" id="fen-paste" data-i18n="editor.pasteBoard">Lipește FEN</button>
+          <button type="button" id="fen-reset" data-i18n="editor.start">Poziția inițială</button>
+          <button type="button" id="load-fen" data-i18n="editor.loadFen">Încarcă FEN pe tablă</button>
+          <button type="button" id="fen-clear" data-i18n="editor.clearDraw">Șterge desenele</button>
+        </div>
+      </div>
+      <button id="pedagogy-return" type="button" hidden>Înapoi la cei 8 pași</button>
+      <div class="board-column board-container">
+      <audio id="lesson-audio" preload="auto" hidden></audio>
+      <div class="board-scene">
+      <aside id="avatar-panel" class="avatar-panel" data-state="idle"></aside>
+      <div class="board-and-tools-container board-wrapper">
+      <div class="board-slot">
+        <div id="cheer" class="cheer" hidden role="status"></div>
+        <div id="success" class="success-banner" hidden>
+          <p id="success-text"></p>
+          <button type="button" id="success-next"></button>
+        </div>
+        <div class="board-cluster">
+        <aside id="palette-white" class="piece-dock" hidden data-i18n-aria="editor.whitePieces"></aside>
+        <div id="interactive-board" class="interactive-board">
+          <div class="board-frame">
+            <div id="board" class="board" role="grid" data-i18n-aria="board.aria"></div>
+            <div id="board-zones" class="board-zones" hidden>
+              <span class="zone-line zone-h"></span>
+              <span class="zone-line zone-v"></span>
+              <span class="zone-label zone-black" data-zone="black"></span>
+              <span class="zone-label zone-white" data-zone="white"></span>
+              <span class="zone-label zone-queen" data-zone="queen"></span>
+              <span class="zone-label zone-king" data-zone="king"></span>
+              <span class="orient-frame orient-outer"></span>
+              <span class="orient-frame orient-inner"></span>
+              <span class="orient-coord" data-orient="c6"></span>
+              <span class="orient-coord" data-orient="f6"></span>
+              <span class="orient-coord" data-orient="d5"></span>
+              <span class="orient-coord" data-orient="e5"></span>
+              <span class="orient-coord" data-orient="d4"></span>
+              <span class="orient-coord" data-orient="e4"></span>
+              <span class="orient-coord" data-orient="c3"></span>
+              <span class="orient-coord" data-orient="f3"></span>
+            </div>
+            <div id="board-notes" class="board-notes" hidden>
+              <svg viewBox="0 0 8 8" preserveAspectRatio="none">
+                <defs>
+                  <marker id="note-arrow-green" markerWidth="4" markerHeight="4" refX="2.1" refY="2" orient="auto"><path d="M0 0 L4 2 L0 4 Z" fill="#1f8a4c"></path></marker>
+                  <marker id="note-arrow-red" markerWidth="4" markerHeight="4" refX="2.1" refY="2" orient="auto"><path d="M0 0 L4 2 L0 4 Z" fill="#c4473a"></path></marker>
+                  <marker id="note-arrow-yellow" markerWidth="4" markerHeight="4" refX="2.1" refY="2" orient="auto"><path d="M0 0 L4 2 L0 4 Z" fill="#d4a017"></path></marker>
+                  <marker id="note-arrow-blue" markerWidth="4" markerHeight="4" refX="2.1" refY="2" orient="auto"><path d="M0 0 L4 2 L0 4 Z" fill="#2f6fad"></path></marker>
+                </defs>
+                <g data-notes="highlights"></g>
+                <g data-notes="arrows"></g>
+              </svg>
+            </div>
+            <div id="piece-path-overlay" class="piece-path-overlay" hidden>
+              <svg class="piece-path-guides" viewBox="0 0 8 8" preserveAspectRatio="none"></svg>
+              <div class="piece-path-stars"></div>
+            </div>
+            <button type="button" id="sound-toggle" class="sound-toggle" aria-pressed="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path class="sound-body" d="M4 9.5h3.2L11.5 5v14l-4.3-4.5H4z"></path>
+                <path class="sound-wave" d="M15.5 9.2a4 4 0 0 1 0 5.6"></path>
+                <path class="sound-wave" d="M17.8 7a7 7 0 0 1 0 10"></path>
+                <path class="sound-slash" d="M16 8.2l5.2 7.6"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <aside id="palette-black" class="piece-dock" hidden data-i18n-aria="editor.blackPieces"></aside>
+        </div>
+      </div>
+      <div id="move-nav" class="move-nav" role="group" data-i18n-aria="replay.group">
+        <button type="button" id="nav-start" data-i18n-aria="replay.start" data-i18n-title="replay.start">|&lt;</button>
+        <button type="button" id="nav-prev" data-i18n-aria="replay.prev" data-i18n-title="replay.prev">&lt;</button>
+        <button type="button" id="nav-play" data-i18n-aria="replay.play" data-i18n-title="replay.play" aria-pressed="false">▶</button>
+        <button type="button" id="nav-next" data-i18n-aria="replay.next" data-i18n-title="replay.next">&gt;</button>
+        <button type="button" id="nav-end" data-i18n-aria="replay.end" data-i18n-title="replay.end">&gt;|</button>
+      </div>
+      </div>
+      </div>
+      </div>
+      <div id="eval-bar" class="eval-bar" hidden>
+        <span id="eval-readout" class="eval-readout">—</span>
+        <div class="eval-track" aria-hidden="true"><div id="eval-fill" class="eval-fill"></div></div>
+      </div>
+      <div class="under">
+        <button id="flip" type="button" data-i18n-title="flip">↻</button>
+        <input id="move" autocomplete="off" data-i18n-placeholder="move.placeholder" data-i18n-aria="move.label">
+        <select id="depth" data-i18n-aria="depth.label">
+          <option value="8" data-i18n="depth.8">adâncime 8</option>
+          <option value="12" selected data-i18n="depth.12">adâncime 12</option>
+          <option value="16" data-i18n="depth.16">adâncime 16</option>
+        </select>
+        <button id="eval" type="button" data-i18n="eval">Evaluează</button>
+      </div>
+    </section>
+
+    <aside class="side">
+      <div id="lesson-load" class="lesson-load">
+        <label class="field" for="lesson-pick">
+          <span data-i18n="lesson.load">Încarcă Lecția</span>
+          <select id="lesson-pick"></select>
+        </label>
+        <label class="field" for="lesson-file">
+          <span data-i18n="lesson.file">Fișier JSON</span>
+          <input id="lesson-file" type="file" accept="application/json,.json">
+        </label>
+      </div>
+      <h2 id="panel-title" data-i18n="panel.analysis">Niveluri de Măiestrie</h2>
+      <section id="piece-path" class="panel-block" hidden>
+        <p id="piece-path-goal"></p>
+        <p id="piece-path-moves"></p>
+        <p id="piece-path-score" class="piece-path-score"></p>
+        <div id="piece-path-promote" class="piece-path-promote" hidden>
+          <span data-i18n="path.promote">Alege piesa de promovare.</span>
+          <button type="button" data-promote="q" aria-label="Q"><img src="pieces/cburnett/wQ.svg" alt=""></button>
+          <button type="button" data-promote="r" aria-label="R"><img src="pieces/cburnett/wR.svg" alt=""></button>
+          <button type="button" data-promote="b" aria-label="B"><img src="pieces/cburnett/wB.svg" alt=""></button>
+          <button type="button" data-promote="n" aria-label="N"><img src="pieces/cburnett/wN.svg" alt=""></button>
+        </div>
+        <div class="practice-buttons">
+          <button type="button" id="piece-path-retry" data-i18n="path.retry">Reia nivelul</button>
+          <button type="button" id="piece-path-next" hidden data-i18n="path.next">Nivelul următor</button>
+        </div>
+      </section>
+      <form id="curriculum-editor" class="panel-block" hidden>
+        <h3 data-i18n="editor.title">Editor de lecții</h3>
+        <label class="field" for="ed-level"><span data-i18n="editor.level">Nivel</span>
+          <select id="ed-level"></select>
+        </label>
+        <label class="field" for="ed-sub"><span data-i18n="editor.subchapter">Subcapitol</span>
+          <select id="ed-sub"></select>
+        </label>
+        <label class="field" for="ed-section"><span data-i18n="editor.section">Secțiune</span>
+          <select id="ed-section">
+            <option value="learn" data-i18n="editor.learn">1. Noțiunea</option>
+            <option value="examples" selected data-i18n="editor.examples">2. Exemple</option>
+            <option value="practice" data-i18n="editor.practice">3. Antrenament</option>
+            <option value="evaluation" data-i18n="editor.evaluation">4. Evaluare / Test</option>
+          </select>
+        </label>
+        <label class="field" for="ed-text"><span data-i18n="editor.text">Explicație</span>
+          <textarea id="ed-text" rows="8"></textarea>
+        </label>
+        <label class="check" for="ed-eval-bar">
+          <input type="checkbox" id="ed-eval-bar">
+          <span data-i18n="editor.showEval">Arată bara de evaluare elevului în acest pas</span>
+        </label>
+        <div class="task-actions lesson-toolbar">
+          <button type="button" id="ed-save" data-i18n="editor.save">Salvează Modificările</button>
+          <button type="button" id="lesson-save" data-i18n="lesson.save">Salvează Lecția</button>
+          <button type="button" id="lesson-export" data-i18n="lesson.export">Export JSON File</button>
+        </div>
+        <section id="lesson-builder" class="lesson-builder">
+          <h3 data-i18n="builder.title">Constructor de lecție</h3>
+          <p class="builder-lead" data-i18n="builder.lead">Mută piesele liber: linia și PGN-ul se scriu singure. Redă audio, sau pune pe pauză, apoi desenează și alege avatarul: reperul cade pe secunda curentă.</p>
+          <p id="builder-pgn" class="builder-pgn" data-i18n="builder.noLine">Nicio mutare înregistrată.</p>
+          <div class="builder-states" role="group" data-i18n-aria="builder.states">
+            <button type="button" data-avatar-state="idle" aria-pressed="true" data-i18n="builder.idle">Așteaptă</button>
+            <button type="button" data-avatar-state="talking" aria-pressed="false" data-i18n="builder.talking">Vorbește</button>
+            <button type="button" data-avatar-state="pointing" aria-pressed="false" data-i18n="builder.pointing">Arată</button>
+            <button type="button" data-avatar-state="thinking" aria-pressed="false" data-i18n="builder.thinking">Gândește</button>
+          </div>
+          <label class="field" for="builder-script"><span data-i18n="builder.script">Text rostit</span>
+            <textarea id="builder-script" rows="2"></textarea>
+          </label>
+          <label class="field" for="builder-audio"><span data-i18n="builder.audio">Fișier MP3</span>
+            <input id="builder-audio" type="file" accept="audio/mpeg,audio/mp3,.mp3">
+          </label>
+          <label class="field" for="builder-audio-url"><span data-i18n="builder.audioUrl">Adresa audio în lecție</span>
+            <input id="builder-audio-url" spellcheck="false" placeholder="/assets/audio/lectie.mp3">
+          </label>
+          <p id="builder-clock" class="builder-clock">0.0 s</p>
+          <div class="task-actions">
+            <button type="button" id="builder-play" data-i18n="builder.play">Redă audio</button>
+            <button type="button" id="builder-record" aria-pressed="false" data-i18n="builder.record">Înregistrează timeline</button>
+            <button type="button" id="builder-mark" data-i18n="builder.mark">Marchează momentul</button>
+            <button type="button" id="builder-clear" data-i18n="builder.clear">Șterge timeline</button>
+          </div>
+          <ol id="builder-cues" class="builder-cues"></ol>
+          <button type="button" id="builder-export" class="builder-export" data-i18n="builder.export">Export JSON</button>
+        </section>
+        <div class="editor-list-head">
+          <span data-i18n="editor.listTitle">Exercițiile temei</span>
+          <button type="button" id="ed-new" data-i18n="editor.newExercise">Exercițiu nou</button>
+        </div>
+        <ol id="ed-list" class="editor-list"></ol>
+        <select id="ed-item" hidden></select>
+        <div id="ed-form" hidden>
+        <label class="field" for="ed-note"><span data-i18n="editor.note">Ce trebuie să observe</span>
+          <textarea id="ed-note" rows="2"></textarea>
+        </label>
+        <label class="field" for="ed-move"><span data-i18n="editor.move">Mutarea corectă</span>
+          <input id="ed-move" spellcheck="false">
+        </label>
+        <div id="ed-record-row" class="task-actions" hidden>
+          <button type="button" id="ed-record" aria-pressed="false">Înregistrează soluția</button>
+        </div>
+        <div id="ed-test-params" class="test-params" hidden>
+          <label class="field" for="ed-attempts"><span data-i18n="editor.testAttempts">Încercări maxime</span>
+            <input id="ed-attempts" type="number" min="1" max="20" value="3">
+          </label>
+          <label class="field" for="ed-time"><span data-i18n="editor.testTime">Timp limită (secunde, 0 = fără limită)</span>
+            <input id="ed-time" type="number" min="0" max="3600" step="1" value="0">
+          </label>
+          <label class="field" for="ed-weight"><span data-i18n="editor.testWeight">Pondere</span>
+            <input id="ed-weight" type="number" min="1" max="100" value="1">
+          </label>
+        </div>
+        <label class="field" for="ed-difficulty"><span data-i18n="editor.difficulty">Dificultate</span>
+          <select id="ed-difficulty">
+            <option value="basic" data-i18n="pedagogy.band.basic">Bază</option>
+            <option value="medium" data-i18n="pedagogy.band.medium">Mediu</option>
+            <option value="advanced" data-i18n="pedagogy.band.advanced">Avansat</option>
+          </select>
+        </label>
+        <label class="field" for="ed-fen"><span data-i18n="editor.pasteFen">Introdu/Lipește codul FEN</span>
+          <textarea id="ed-fen" rows="3" spellcheck="false"></textarea>
+        </label>
+        <details id="ed-pgn-box" class="pgn-fold">
+          <summary data-i18n="editor.pgnOptional">PGN (opțional)</summary>
+          <label class="field" for="ed-pgn">
+            <textarea id="ed-pgn" rows="3" spellcheck="false" data-i18n-aria="editor.pgn"></textarea>
+          </label>
+        </details>
+        <label class="field" for="ed-turn"><span data-i18n="editor.turn">La mutare</span>
+          <select id="ed-turn">
+            <option value="w" data-i18n="side.white">Alb</option>
+            <option value="b" data-i18n="side.black">Negru</option>
+          </select>
+        </label>
+        <div class="task-actions">
+          <button type="button" id="ed-empty" data-i18n="editor.empty">Tabla goală</button>
+          <button type="button" id="ed-start" data-i18n="editor.start">Poziția inițială</button>
+          <button type="button" id="ed-add">Adaugă exercițiu</button>
+          <button type="button" id="ed-delete" data-i18n="editor.remove">Șterge exercițiul</button>
+          <button type="button" id="ed-export" data-i18n="editor.exportDb">Exportă baza de date (Backup JSON)</button>
+          <button type="button" id="ed-import" data-i18n="editor.importDb">Importă baza de date JSON</button>
+          <input id="ed-import-file" type="file" accept="application/json,.json" hidden>
+          <button type="button" id="ed-preview" data-i18n="editor.preview">Previzualizează ca elev</button>
+        </div>
+        </div>
+      </form>
+      <p id="lesson" data-i18n="blurb.menu">Introdu mutarea, explică alegerea și selectează motivul tactic. Ai trei încercări.</p>
+      <div id="procedure-course" class="panel-block" hidden>
+        <div id="practice-tabs" class="practice-tabs" hidden>
+          <button type="button" id="practice-tab-theory" data-i18n="pedagogy.practiceTheory">1. Lecție Teoretică</button>
+          <button type="button" id="practice-tab-list" data-i18n="pedagogy.practiceList">2. Lista de Exerciții</button>
+        </div>
+        <p id="procedure-ask" class="procedure-ask" hidden></p>
+        <div id="procedure-read" hidden>
+          <h3 data-i18n="pedagogy.courseDefinition">Definiție</h3>
+          <p id="procedure-read-definition"></p>
+          <p id="procedure-read-rest" hidden></p>
+        </div>
+        <div id="practice-child" hidden>
+          <button type="button" id="practice-back" hidden data-i18n="pedagogy.practiceBack">Înapoi la lecție</button>
+          <div id="practice-child-buttons" class="practice-buttons"></div>
+        </div>
+        <form id="practice-grid" class="practice-grid" hidden>
+          <div id="practice-grid-options"></div>
+          <button type="submit" id="practice-grid-check" data-i18n="pedagogy.practiceCheck">Verifică răspunsul</button>
+        </form>
+        <div id="practice-list" hidden>
+          <button type="button" id="practice-add" data-i18n="pedagogy.practiceAdd">+ Adaugă Exercițiu Nou</button>
+          <p id="practice-empty" data-i18n="pedagogy.practiceEmpty">Tema nu are încă exerciții practice.</p>
+          <div id="practice-items"></div>
+          <form id="practice-form" hidden>
+            <label class="field" for="practice-title">
+              <span data-i18n="pedagogy.practiceTitle">Titlu / Cerință exercițiu</span>
+              <textarea id="practice-title" rows="2" data-i18n-placeholder="pedagogy.practiceTitlePh"></textarea>
+            </label>
+            <label class="field" for="practice-fen">
+              <span data-i18n="pedagogy.practiceFen">Poziție FEN de start</span>
+              <textarea id="practice-fen" rows="3" spellcheck="false"></textarea>
+            </label>
+            <div class="practice-buttons">
+              <button type="button" id="practice-from-board" data-i18n="pedagogy.practiceFromBoard">Încarcă din diagramă</button>
+              <button type="button" id="practice-show-board" data-i18n="pedagogy.practiceShowBoard">Arată pe tablă</button>
+            </div>
+            <label class="field" for="practice-line">
+              <span data-i18n="pedagogy.practiceLine">Secvență de mutări corecte</span>
+              <p id="practice-line-warn" class="sequence-warn" hidden></p>
+              <textarea id="practice-line" rows="2" spellcheck="false" data-i18n-placeholder="pedagogy.practiceLinePh"></textarea>
+            </label>
+            <label class="field" for="practice-bad">
+              <span data-i18n="pedagogy.practiceHint">Hint / Explicație didactică pentru greșeală</span>
+              <textarea id="practice-bad" rows="2" data-i18n-placeholder="pedagogy.procedureBadPh"></textarea>
+            </label>
+            <div class="practice-buttons">
+              <button type="submit" id="practice-save" data-i18n="pedagogy.practiceSave">Salvează Exercițiul</button>
+              <button type="button" id="practice-cancel" data-i18n="pedagogy.practiceCancel">Renunță</button>
+              <button type="button" id="practice-delete" hidden data-i18n="pedagogy.practiceDelete">Șterge exercițiul</button>
+            </div>
+          </form>
+        </div>
+        <label class="field procedure-edit" for="procedure-prompt">
+          <span data-i18n="pedagogy.procedurePrompt">Cerință</span>
+          <textarea id="procedure-prompt" rows="2" data-i18n-placeholder="pedagogy.procedurePromptPh"></textarea>
+        </label>
+        <label class="field procedure-edit" for="procedure-definition">
+          <span data-i18n="pedagogy.courseDefinition">Definiție</span>
+          <textarea id="procedure-definition" rows="8"></textarea>
+        </label>
+        <p id="procedure-rest" hidden></p>
+        <label class="field procedure-edit" for="procedure-line">
+          <span data-i18n="pedagogy.procedureLine">Varianta</span>
+          <p id="procedure-line-warn" class="sequence-warn" hidden></p>
+          <textarea id="procedure-line" rows="2" spellcheck="false" data-i18n-placeholder="pedagogy.procedureLinePh"></textarea>
+        </label>
+        <label class="field procedure-edit" for="procedure-bad">
+          <span data-i18n="pedagogy.procedureBad">Explicația greșelii</span>
+          <textarea id="procedure-bad" rows="2" data-i18n-placeholder="pedagogy.procedureBadPh"></textarea>
+        </label>
+        <p id="procedure-feedback" class="procedure-feedback" hidden></p>
+        <button type="button" id="procedure-next" hidden disabled data-i18n="pedagogy.procedureNext">Pasul următor / Mai exersează</button>
+      </div>
+      <div id="task-actions" class="task-actions"></div>
+      <div id="solver" class="panel-block" hidden>
+        <p id="attempt-count" class="tries"></p>
+        <label class="field" for="solver-move"><span data-i18n="solver.move">Mutarea ta</span>
+          <input id="solver-move" spellcheck="false" autocomplete="off" data-i18n-placeholder="solver.movePh" data-i18n-aria="solver.move">
+        </label>
+        <label class="field" for="explain"><span data-i18n="explain.label">Explicația ta</span>
+          <textarea id="explain" rows="3" data-i18n-placeholder="explain.placeholder"></textarea>
+        </label>
+        <label class="field" for="motif"><span data-i18n="motif.label">Motivul tactic</span>
+          <select id="motif">
+            <option value="" data-i18n="motif.choose">Alege motivul</option>
+          </select>
+        </label>
+        <div class="task-actions">
+          <button type="button" id="submit-attempt" data-i18n="submit">Trimit răspunsul</button>
+          <button type="button" id="retry-attempt" hidden data-i18n="retry">Mai încerc</button>
+        </div>
+      </div>
+      <form id="teacher" class="panel-block" hidden>
+        <label class="field" for="ex-title"><span data-i18n="teacher.title">Titlu</span>
+          <input id="ex-title" required>
+        </label>
+        <label class="field" for="ex-prompt"><span data-i18n="teacher.prompt">Enunț</span>
+          <textarea id="ex-prompt" rows="2" required></textarea>
+        </label>
+        <label class="field" for="ex-competency"><span data-i18n="teacher.competency">Competență</span>
+          <select id="ex-competency" required></select>
+        </label>
+        <label class="field" for="ex-difficulty"><span data-i18n="teacher.level">Nivel</span>
+          <select id="ex-difficulty" required></select>
+        </label>
+        <label class="field" for="ex-motif"><span data-i18n="teacher.motif">Motiv tactic</span>
+          <select id="ex-motif" required></select>
+        </label>
+        <label class="field" for="ex-solution"><span data-i18n="teacher.solution">Linia de soluție</span>
+          <input id="ex-solution" data-i18n-placeholder="teacher.solutionPh" required>
+        </label>
+        <label class="field" for="ex-concepts"><span data-i18n="teacher.concepts">Cuvinte în explicație</span>
+          <input id="ex-concepts" data-i18n-placeholder="teacher.conceptsPh">
+        </label>
+        <label class="field" for="ex-hint-1"><span data-i18n="teacher.hint1">Indiciu 1</span>
+          <input id="ex-hint-1" data-i18n-placeholder="teacher.hint1Ph">
+        </label>
+        <label class="field" for="ex-hint-2"><span data-i18n="teacher.hint2">Indiciu 2</span>
+          <input id="ex-hint-2">
+        </label>
+        <label class="field" for="ex-hint-3"><span data-i18n="teacher.hint3">Indiciu 3</span>
+          <input id="ex-hint-3">
+        </label>
+        <label class="check" for="ex-published">
+          <input id="ex-published" type="checkbox" checked>
+          <span data-i18n="teacher.published">Publicat pentru copii</span>
+        </label>
+        <div class="task-actions">
+          <button type="submit" id="ex-save" data-i18n="teacher.save">Salvează</button>
+          <button type="button" id="ex-delete" class="danger" hidden data-i18n="teacher.delete">Șterge</button>
+        </div>
+        <div id="attempt-log"></div>
+      </form>
+      <div id="analysis-fen">
+        <label for="fen" data-i18n="fen.label">Poziție FEN</label>
+        <textarea id="fen" rows="3" spellcheck="false"></textarea>
+        <button type="button" id="procedure-save" hidden data-i18n="editor.save">Salvează modificările</button>
+      </div>
+      <div id="result"></div>
+    </aside>
+    <section id="masters" class="masters"></section>
+    <section id="levels" class="levels"></section>
+  </div>
+
+  <footer class="statusbar">
+    <span id="status" role="status" data-i18n="status.engine">Se încarcă Stockfish…</span>
+    <span id="engine-line"></span>
+    <span data-i18n="footer.engine">Stockfish 19 · în browser</span>
+  </footer>
+
+  <div id="theme-dialog" class="theme-dialog" hidden>
+    <form id="theme-form" class="theme-card">
+      <h2 id="theme-heading" data-i18n="pedagogy.themeAdd">+ Adaugă Temă Nouă</h2>
+      <label class="field" for="theme-title">
+        <span data-i18n="pedagogy.themeTitle">Codul / Titlul temei</span>
+        <input id="theme-title" type="text" data-i18n-placeholder="pedagogy.themeTitlePh" placeholder="C5. Matul lui Anastasia">
+      </label>
+      <label class="field" for="theme-parent">
+        <span data-i18n="pedagogy.themeParent">Secțiunea părinte</span>
+        <select id="theme-parent"></select>
+      </label>
+      <div class="theme-subrow">
+        <label class="theme-subcheck" for="theme-sub">
+          <input id="theme-sub" type="checkbox">
+          <span data-i18n="pedagogy.themeSub">Este sub-temă pentru:</span>
+        </label>
+        <select id="theme-of" disabled data-i18n-aria="pedagogy.themeSubPick"></select>
+      </div>
+      <div class="practice-buttons">
+        <button type="submit" id="theme-save" data-i18n="pedagogy.themeSave">Salvează tema</button>
+        <button type="button" id="theme-delete" hidden data-i18n="pedagogy.themeDelete">Șterge tema</button>
+        <button type="button" id="theme-cancel" data-i18n="pedagogy.themeCancel">Renunță</button>
+      </div>
+    </form>
+  </div>
+
+  <div id="toast" class="toast" hidden role="status"></div>
+  <div id="test-summary" class="test-summary" hidden>
+    <div class="test-summary-card" role="dialog" aria-modal="true" aria-labelledby="test-summary-title">
+      <h3 id="test-summary-title" data-i18n="pedagogy.testTitle">Test finalizat</h3>
+      <p id="test-summary-lead"></p>
+      <p id="test-summary-score"></p>
+      <p id="test-summary-meta"></p>
+      <p id="test-summary-weight" hidden></p>
+      <div class="test-summary-actions">
+        <button type="button" id="test-retry" data-i18n="pedagogy.testRetry">Reia Testul</button>
+        <button type="button" id="test-finish" data-i18n="pedagogy.testFinish">Finalizează Lecția</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
