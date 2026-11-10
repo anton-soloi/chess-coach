@@ -49,6 +49,7 @@
     "custom": "Custom game",
     "classical": "Classical game",
     "blindfold": "Blindfold game",
+    "pgn": "Game from PGN",
     "exercises": "Exercises",
     "exercisesHint": "Move, explanation and motif. Three tries.",
     "newExercise": "New exercise",
@@ -313,6 +314,7 @@
     "white": "white", "black": "black"
   },
   "clock": {
+    "label": "Current time",
     "engine": "engine {time}",
     "aria": "Thinking time {side} {time}, engine {engine}"
   },
@@ -359,6 +361,9 @@
     "blindTitle": "Blindfold game",
     "blindBadge": "BLIND",
     "blindText": "The pieces are hidden. Move from the move box, in notation or in coordinates. 10 minutes for each colour, plus 3 seconds after every move.",
+    "pgnTitle": "Game from PGN",
+    "pgnBadge": "PGN",
+    "pgnText": "Paste a game or choose a .pgn file. The moves appear on the board and you can replay them with the arrows.",
     "noMoves": "No moves yet.",
     "over": "Game over.",
     "mate": "{side} delivered mate.",
@@ -385,6 +390,20 @@
     "kingDanger": "The engine shows that the king stays in danger.",
     "forced": "The engine shows that the move lets a forced idea slip."
   },
+  "pgn": {
+    "paste": "Game text",
+    "placeholder": "1. e4 e5 2. Nf3",
+    "file": ".pgn file",
+    "load": "Put it on the board",
+    "empty": "Paste a game or choose a file.",
+    "invalid": "One move did not make sense. Check the text.",
+    "nomoves": "There are no moves in this text.",
+    "tooBig": "The file is too big for the board.",
+    "readError": "The file could not be read.",
+    "ready": "The game is on the board. Press ▶ to see the moves.",
+    "skipped": "One move did not make sense. Check the text. The other games are on the board.",
+    "loaded": "{white} versus {black}. {moves} moves."
+  },
   "exam": {
     "next": "Next task",
     "title": "Measurable final test · {index}/4",
@@ -399,6 +418,9 @@
     "closed": "The 3 tries are over. Discuss the move with the teacher.",
     "one": "You have one try left.",
     "left": "You have {left} tries left.",
+    "remaining": "Tries left: {left}",
+    "hint": "Hint",
+    "hintMissing": "The engine did not find a hint move.",
     "level": "Level {difficulty} · {level}",
     "draft": " · draft",
     "badge": "{code} · {ui} · level {difficulty}"

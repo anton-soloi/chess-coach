@@ -49,6 +49,7 @@
     "custom": "Custom game",
     "classical": "Classical game",
     "blindfold": "Blindfold game",
+    "pgn": "Partidă din PGN",
     "exercises": "Exerciții",
     "exercisesHint": "Mutare, explicație și motiv. Trei încercări.",
     "newExercise": "Exercițiu nou",
@@ -313,6 +314,7 @@
     "white": "alb", "black": "negru"
   },
   "clock": {
+    "label": "Ora curentă",
     "engine": "motor {time}",
     "aria": "Timp de gândire {side} {time}, motor {engine}"
   },
@@ -359,6 +361,9 @@
     "blindTitle": "Blindfold game",
     "blindBadge": "ORB",
     "blindText": "Piesele sunt ascunse. Mută din câmpul de mutare, în notație sau în coordonate. 10 minute pentru fiecare culoare, plus 3 secunde după fiecare mutare.",
+    "pgnTitle": "Partidă din PGN",
+    "pgnBadge": "PGN",
+    "pgnText": "Lipește o partidă sau alege un fișier .pgn. Mutările apar pe tablă și le poți reda cu săgețile.",
     "noMoves": "Nicio mutare încă.",
     "over": "Partidă încheiată.",
     "mate": "{side} a dat mat.",
@@ -385,6 +390,20 @@
     "kingDanger": "Motorul arată că regele rămâne în pericol.",
     "forced": "Motorul arată că mutarea lasă să scape o idee forțată."
   },
+  "pgn": {
+    "paste": "Textul partidei",
+    "placeholder": "1. e4 e5 2. Nf3",
+    "file": "Fișier .pgn",
+    "load": "Pune pe tablă",
+    "empty": "Lipește partida sau alege un fișier.",
+    "invalid": "Nu am înțeles o mutare. Verifică textul.",
+    "nomoves": "Nu am găsit mutări în acest text.",
+    "tooBig": "Fișierul este prea mare pentru tablă.",
+    "readError": "Nu am putut citi fișierul.",
+    "ready": "Partida este pe tablă. Apasă ▶ ca să vezi mutările.",
+    "skipped": "Nu am înțeles o mutare. Verifică textul. Celelalte partide sunt pe tablă.",
+    "loaded": "{white} contra {black}. {moves} mutări."
+  },
   "exam": {
     "next": "Proba următoare",
     "title": "Test final măsurabil · {index}/4",
@@ -399,6 +418,9 @@
     "closed": "Cele 3 încercări s-au încheiat. Discută mutarea cu profesorul.",
     "one": "Mai ai o încercare.",
     "left": "Mai ai {left} încercări.",
+    "remaining": "Încercări rămase: {left}",
+    "hint": "Indiciu",
+    "hintMissing": "Motorul nu a găsit o mutare de indiciu.",
     "level": "Nivel {difficulty} · {level}",
     "draft": " · ciornă",
     "badge": "{code} · {ui} · nivel {difficulty}"

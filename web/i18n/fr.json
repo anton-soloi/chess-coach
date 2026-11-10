@@ -49,6 +49,7 @@
     "custom": "Custom game",
     "classical": "Classical game",
     "blindfold": "Blindfold game",
+    "pgn": "Partie depuis un PGN",
     "exercises": "Exercices",
     "exercisesHint": "Coup, explication et motif. Trois essais.",
     "newExercise": "Nouvel exercice",
@@ -313,6 +314,7 @@
     "white": "blanc", "black": "noir"
   },
   "clock": {
+    "label": "Heure actuelle",
     "engine": "moteur {time}",
     "aria": "Temps de réflexion {side} {time}, moteur {engine}"
   },
@@ -359,6 +361,9 @@
     "blindTitle": "Blindfold game",
     "blindBadge": "AVEUGLE",
     "blindText": "Les pièces sont cachées. Joue depuis le champ de coup, en notation ou en coordonnées. 10 minutes pour chaque couleur, plus 3 secondes après chaque coup.",
+    "pgnTitle": "Partie depuis un PGN",
+    "pgnBadge": "PGN",
+    "pgnText": "Colle une partie ou choisis un fichier .pgn. Les coups apparaissent sur l’échiquier et tu peux les rejouer avec les flèches.",
     "noMoves": "Aucun coup pour l’instant.",
     "over": "Partie terminée.",
     "mate": "{side} a fait mat.",
@@ -385,6 +390,20 @@
     "kingDanger": "Le moteur montre que le roi reste en danger.",
     "forced": "Le moteur montre que le coup laisse échapper une idée forcée."
   },
+  "pgn": {
+    "paste": "Texte de la partie",
+    "placeholder": "1. e4 e5 2. Nf3",
+    "file": "Fichier .pgn",
+    "load": "Mettre sur l’échiquier",
+    "empty": "Colle une partie ou choisis un fichier.",
+    "invalid": "Un coup n’a pas été compris. Vérifie le texte.",
+    "nomoves": "Ce texte ne contient pas de coups.",
+    "tooBig": "Le fichier est trop grand pour l’échiquier.",
+    "readError": "Le fichier n’a pas pu être lu.",
+    "ready": "La partie est sur l’échiquier. Appuie sur ▶ pour voir les coups.",
+    "skipped": "Un coup n’a pas été compris. Vérifie le texte. Les autres parties sont sur l’échiquier.",
+    "loaded": "{white} contre {black}. {moves} coups."
+  },
   "exam": {
     "next": "Épreuve suivante",
     "title": "Test final mesurable · {index}/4",
@@ -399,6 +418,9 @@
     "closed": "Les 3 essais sont finis. Discute le coup avec le professeur.",
     "one": "Il te reste un essai.",
     "left": "Il te reste {left} essais.",
+    "remaining": "Essais restants : {left}",
+    "hint": "Indice",
+    "hintMissing": "Le moteur n’a pas trouvé de coup indice.",
     "level": "Niveau {difficulty} · {level}",
     "draft": " · brouillon",
     "badge": "{code} · {ui} · niveau {difficulty}"

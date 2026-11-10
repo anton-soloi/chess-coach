@@ -8,6 +8,8 @@ import { deletePracticeExercise, listPracticeExercises, resolveInteractiveLesson
 import { closeLevels, isLevelsMode, loadLevels, markLessonDone, markLessonStarted, openLevels, refreshLevels } from './levels.js'
 import { closePedagogy, focusSavedExercise, hasSessionNext, isPedagogyOpen, isProcedureExamples, noteSessionResult, openPedagogy, pedagogyEvalVisible, pedagogyStep, pedagogyStepName, pedagogySubId, refreshPedagogy, resumePedagogy, takeSessionNext } from './pedagogy.js'
 import { bindTeacherEditor, captureLessonDocument, clearSavedAnnotations, closeTeacherEditor, editorMove, editorRemove, editorSelection, editorSquare, flushEditor, focusEditorLevel, focusEditorTheme, focusLessonDiagram, isTeacherEditor, openTeacherEditor, refreshEditorChrome, resumeTeacherEditor, showLoadedLesson, showSavedAnnotations, stampNarrative, syncBoardAnnotations } from './editor.js'
+import { paintHintArrow } from './board-notes.js'
+import { clearHintArrow, hintArrow, mountHintCoach, noteHintMiss, openHintDiagram, refreshHintCoach } from './hint-coach.js'
 import { sectionsFromLesson } from './lesson-pack.js'
 import { closeMasters, isMastersMode, loadMasters, openMasters, refreshMasters } from './masters.js'
 import { initI18n, lang, onLang, t, tList, tx } from './i18n.js'
@@ -18,6 +20,8 @@ import { playNarrative, stopNarrative } from './audio-sync.js'
 import { matchesTarget, practiceOf } from './practice-engine.js'
 import { builderSnapshot, builderTouched } from './lesson-builder.js'
 import { handlePiecePathSquare, mountPiecePath, piecePathActive, piecePathCanDrag, refreshPiecePathChrome, startPiecePath, stopPiecePath, syncPiecePath } from './piece-path.js'
+import { mountStudyClock, refreshStudyClock } from './study-clock.js'
+import { mountPgnImport } from './pgn-import.js'
 
 const EXERCISE_FEN = '6b1/3k2p1/1p1b1p1p/1K3P1P/2B3P1/2P3B1/8/8 w - - 0 37'
 const START_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
@@ -751,6 +755,22 @@ const fenInput = document.querySelector('#fen')
 const moveInput = document.querySelector('#move')
 const depthInput = document.querySelector('#depth')
 const evalButton = document.querySelector('#eval')
+
+function setMoveField(value) {
+  if (moveInput) moveInput.value = value
+}
+
+function readMoveField() {
+  return moveInput?.value.trim() || ''
+}
+
+function engineDepth() {
+  return Number(depthInput?.value) || 12
+}
+
+function lockEval(disabled) {
+  if (evalButton) evalButton.disabled = disabled
+}
 const statusEl = document.querySelector('#status')
 const engineLine = document.querySelector('#engine-line')
 const resultEl = document.querySelector('#result')
@@ -775,6 +795,8 @@ let exam = null
 let examProbeIndex = -1
 let train = null
 let trainMode = null
+let pathStamp = ''
+let solvedMark = ''
 
 function setStatus(text) {
   statusEl.textContent = text
@@ -1013,6 +1035,7 @@ function drawBoard() {
   document.querySelector('#side-black').classList.toggle('on', placed.turn === 'b')
   syncPiecePath(interactive.whiteAtBottom)
   syncBoardAnnotations(interactive.whiteAtBottom)
+  paintHintArrow(document.querySelector('#board-notes'), hintArrow(), interactive.whiteAtBottom)
   scheduleLiveEval()
 }
 
@@ -2051,6 +2074,10 @@ function showTeacherDiagram(target) {
   } else clearTestRun()
   }
   beginNarrative(target)
+  if (!practiceGate && task?.expectMove && role !== 'teacher') {
+    openHintDiagram(`lesson:${curriculumLessonId || openProcedureId || 'board'}:${target.fen || currentFen()}`)
+  }
+  refreshStudyClock()
 }
 
 function beginNarrative(target) {
@@ -2112,6 +2139,7 @@ function openPractice() {
     lessonEl.textContent = prompt
   }
   setStatus(prompt)
+  openHintDiagram(`practice:${gate.fen}:${gate.spec.targetMove.from}${gate.spec.targetMove.to}`)
 }
 
 function playPracticeSquare(square) {
@@ -2149,11 +2177,14 @@ function gradePracticeMove(chess, from, to) {
     return
   }
   if (!matchesTarget(played, spec)) {
+    noteHintMiss()
     showPracticeFeedback(spec, false)
     return
   }
   commitPlayed(played)
   practiceGate.solved = true
+  refreshStudyClock()
+  refreshHintCoach()
   interactive.draggable = false
   interactive.showTargets = false
   showPracticeFeedback(spec, true)
@@ -2276,8 +2307,7 @@ function onSquare(square) {
     playStudentMove(from, square)
     return
   }
-  moveInput.value = from + square
-  evaluate()
+  void evaluate(from + square)
 }
 
 interactive.onSquare = onSquare
@@ -2572,6 +2602,7 @@ function mistakeText(item) {
 }
 
 function rejectLineMove(item) {
+  noteHintMiss()
   if (item?.testing) {
     restoreStep()
     hideSuccess()
@@ -2602,14 +2633,7 @@ function rejectLineMove(item) {
       showProcedureFeedback('bad', text)
       return
     }
-    lineAttempts -= 1
     showCheer('again', text)
-    if (lineAttempts <= 0) {
-      noteSessionResult(false)
-      task = null
-      setStatus(t('attempt.closed'))
-      return
-    }
     setStatus(text)
     return
   }
@@ -2619,18 +2643,11 @@ function rejectLineMove(item) {
     showProcedureFeedback('bad', item?.bad || t('status.retry'))
     return
   }
-  lineAttempts -= 1
   restoreStep()
   hideSuccess()
   const hint = item?.bad || t('status.retry')
   showCheer('again', hint)
-  if (lineAttempts <= 0) {
-    noteSessionResult(false)
-    task = null
-    setStatus(t('attempt.closed'))
-    return
-  }
-  setStatus(lineAttempts === 1 ? t('attempt.one') : t('attempt.left', { left: lineAttempts }))
+  setStatus(hint)
 }
 
 function formatTestTime(seconds) {
@@ -2735,6 +2752,7 @@ function completeTest(solved) {
     solved,
   })
   setStatus(t(solved ? 'pedagogy.testPass' : 'pedagogy.testFail'))
+  refreshStudyClock()
 }
 
 function retryTest() {
@@ -2972,6 +2990,7 @@ function armExpect(san, item) {
 }
 
 function commitPlayed(played) {
+  clearHintArrow()
   fenInput.value = played.after
   interactive.lastMove = { from: played.from, to: played.to }
   drawBoard()
@@ -3060,7 +3079,7 @@ function showResult(result) {
   resultEl.append(verdict)
 }
 
-async function evaluate() {
+async function evaluate(explicitMove) {
   if (busy || studentPlay()) return
   const fen = currentFen()
   const check = validateFen(fen)
@@ -3069,12 +3088,12 @@ async function evaluate() {
     return
   }
 
-  const move = moveInput.value.trim()
-  const depth = Number(depthInput.value) || 12
+  const move = explicitMove != null ? String(explicitMove).trim() : readMoveField()
+  const depth = engineDepth()
   const resumeSide = interactive.running
   interactive.stop()
   busy = true
-  evalButton.disabled = true
+  lockEval(true)
   setStatus(t('status.search'))
 
   try {
@@ -3094,9 +3113,27 @@ async function evaluate() {
     setStatus(err instanceof Error ? err.message : String(err))
   } finally {
     busy = false
-    evalButton.disabled = evalLocked()
+    lockEval(evalLocked())
     if (resumeSide && train && !train.over && !train.setup) interactive.setTurn(resumeSide)
   }
+}
+
+function studyFocusKey() {
+  if (isLevelsMode()) return ''
+  if (piecePathActive()) return `path:${pathStamp}`
+  if (isPedagogyOpen()) return `lesson:${pedagogySubId()}:${pedagogyStepName()}`
+  if (train && !train.setup && (train.kind === 'puzzle' || train.kind === 'quest')) {
+    return `${train.over ? 'train-done' : 'train'}:${train.kind}:${train.index || 0}`
+  }
+  if (testRun?.finished) return `done:test:${curriculumLessonId || ''}`
+  if (testRun) return `test:${curriculumLessonId || ''}`
+  if (practiceGate?.solved) return `done:practice:${practiceGate.fen}`
+  if (practiceGate) return `practice:${practiceGate.fen}`
+  if (procedureSolved && openProcedureId) return `done:proc:${openProcedureId}`
+  if (procedurePuzzle && openProcedureId) return `puzzle:${openProcedureId}`
+  if (task) return `task:${solver?.id || openProcedureId || curriculumLessonId || 'board'}:${exam ? exam.index : ''}`
+  if (demoLine) return `demo:${curriculumLessonId || ''}`
+  return solvedMark
 }
 
 function clearTask() {
@@ -3105,6 +3142,7 @@ function clearTask() {
   setAvatarCaption('')
   demoLine = false
   practiceGate = null
+  solvedMark = ''
   resetLine()
   task = null
   exam = null
@@ -3179,6 +3217,7 @@ function advanceExercise() {
 }
 
 function showTaskFeedback(correct, item) {
+  if (correct) solvedMark = `solved:${solver?.id || curriculumLessonId || openProcedureId || 'line'}`
   if (procedurePuzzle && correct) {
     noteSessionResult(true)
     if (curriculumLessonId && !exam && !isMastersMode()) markLessonDone(curriculumLessonId)
@@ -3191,6 +3230,7 @@ function showTaskFeedback(correct, item) {
     procedureSolved = true
     task = null
     setStatus('')
+    refreshStudyClock()
     return
   }
   noteSessionResult(correct)
@@ -3207,6 +3247,7 @@ function showTaskFeedback(correct, item) {
     hideSuccess()
     showCheer('again')
   }
+  refreshStudyClock()
 }
 
 function renderChoices(item, onPick) {
@@ -3236,6 +3277,7 @@ function armTask(item, onGrade) {
       expectMove: null,
       grade: onGrade,
     }
+    refreshStudyClock()
     return
   }
   if (item.choices) {
@@ -3245,7 +3287,9 @@ function armTask(item, onGrade) {
     renderChoices(item, (correct) => {
       task = null
       onGrade(correct)
+      refreshStudyClock()
     })
+    refreshStudyClock()
     return
   }
   const source = Array.isArray(item.solutie) && item.solutie.length
@@ -3262,6 +3306,10 @@ function armTask(item, onGrade) {
       bad: item.bad,
     } : null,
     grade: onGrade,
+  }
+  refreshStudyClock()
+  if (role !== 'teacher' && task?.expectMove) {
+    openHintDiagram(`task:${item.fen || currentFen()}:${item.prompt || item.correctMove || ''}`)
   }
 }
 
@@ -3287,6 +3335,7 @@ function finishExam() {
   resultEl.replaceChildren()
   setStatus(passed ? t('exam.statusPass') : t('exam.statusFail'))
   exam = null
+  refreshStudyClock()
 }
 
 function showExamItem() {
@@ -3472,10 +3521,12 @@ function showLessonSteps(lessonId, stepId = 0, options = {}) {
   rememberLesson(lessonId, resume ? step : 0)
   if (role === 'teacher') {
     showTeacherWorkspace(lessonId)
+    refreshStudyClock()
     return
   }
   if (lessonId === 'test') {
     loadModule('test')
+    refreshStudyClock()
     return
   }
   markLessonStarted(lessonId)
@@ -3486,6 +3537,7 @@ function showLessonSteps(lessonId, stepId = 0, options = {}) {
   const sub = level?.subchapters?.find((item) => item.id === place?.subId)
   if (!level || !sub) {
     loadModule(lessonId)
+    refreshStudyClock()
     return
   }
   panelTitle.textContent = tx(level.title)
@@ -3493,12 +3545,14 @@ function showLessonSteps(lessonId, stepId = 0, options = {}) {
   closeLevels()
   if (resume && pedagogySubId() === sub.id) {
     resumePedagogy()
+    refreshStudyClock()
     return
   }
   openPedagogy(document.querySelector('#levels'), level, sub, {
     ...studentPlayHooks(),
     startStep: resume ? step : 0,
   })
+  refreshStudyClock()
 }
 
 function showMasteryView() {
@@ -3654,6 +3708,7 @@ mountPiecePath({
   win: () => playExerciseEnd(),
   status: (message) => setStatus(message || ''),
   onStart(exercise) {
+    pathStamp = exercise.id
     clearTask()
     endTrain()
     leaveExercise()
@@ -3666,8 +3721,14 @@ mountPiecePath({
     activityTitle.textContent = `${piece} · ${exercise.id}`
     panelTitle.textContent = t('path.title')
     badge.textContent = ''
+    refreshStudyClock()
+  },
+  onDone() {
+    pathStamp = `done:${pathStamp}`
+    refreshStudyClock()
   },
   onStop() {
+    pathStamp = ''
     const panel = document.querySelector('#piece-path')
     if (panel) panel.hidden = true
     document.querySelector('#lesson').hidden = false
@@ -3676,6 +3737,7 @@ mountPiecePath({
       panelTitle.textContent = t(`modeTitle.${mode}`)
       showLesson(mode)
     }
+    refreshStudyClock()
   },
 })
 
@@ -3743,7 +3805,45 @@ function endTrain() {
   interactive.lastMove = null
   interactive.resetClocks()
   fenInput.readOnly = false
-  evalButton.disabled = solving()
+  lockEval(solving())
+  hidePgnPanel()
+}
+
+let pgnPanel = null
+
+function hidePgnPanel() {
+  pgnPanel?.hide()
+}
+
+function pgnLabel(title) {
+  const white = title.white || t('side.whiteName')
+  const black = title.black || t('side.blackName')
+  const result = title.result ? ` · ${title.result}` : ''
+  return `${title.n}. ${white} – ${black}${result}`
+}
+
+function captionPgnGame(game) {
+  const white = game.headers.White || t('side.whiteName')
+  const black = game.headers.Black || t('side.blackName')
+  activityTitle.textContent = `${white} – ${black}`
+  lessonEl.textContent = t('pgn.loaded', { white, black, moves: game.ply })
+  badge.textContent = 'PGN'
+}
+
+function presentPgnGame(game, { sound = false } = {}) {
+  stopAutoPlay()
+  fenInput.readOnly = true
+  interactive.clearSelection()
+  interactive.lastMove = null
+  publishLine(game.startFen, game.san, false)
+  currentMoveIndex = 0
+  liveFen = historyFENs[0] || game.startFen
+  applyingHistory = true
+  showPosition(game.startFen)
+  applyingHistory = false
+  paintMoveNav()
+  captionPgnGame(game)
+  if (sound) playEffect('success')
 }
 
 function evalLocked() {
@@ -3752,7 +3852,7 @@ function evalLocked() {
 }
 
 function analysisOptions() {
-  const depth = Number(depthInput.value) || 12
+  const depth = engineDepth()
   return {
     depth,
     multiPv: train?.kind === 'game' ? 1 : 3,
@@ -3868,7 +3968,7 @@ function commitGameMove(played) {
   if (train.blindfold) interactive.showBlindGhost(played)
   else interactive.clearBlindGhost()
   fenInput.value = train.chess.fen()
-  moveInput.value = ''
+  setMoveField('')
   if (played?.color) interactive.addIncrement(played.color)
   drawBoard()
   playMoveEffect(played)
@@ -3882,7 +3982,7 @@ function gameOverCheck() {
   if (!chess.isGameOver()) return false
   train.over = true
   interactive.stop()
-  evalButton.disabled = false
+  lockEval(false)
   let text = t('train.over')
   if (chess.isCheckmate()) {
     const winner = chess.turn() === 'w' ? t('side.blackName') : t('side.whiteName')
@@ -3911,7 +4011,7 @@ async function engineReply() {
     return
   }
   busy = true
-  evalButton.disabled = true
+  lockEval(true)
   interactive.setTurn(side)
   setStatus(t('train.thinking', { side: sideName(side) }))
   const fen = train.chess.fen()
@@ -3944,7 +4044,7 @@ async function engineReply() {
     interactive.stop()
   } finally {
     busy = false
-    evalButton.disabled = evalLocked()
+    lockEval(evalLocked())
   }
 }
 
@@ -3959,7 +4059,7 @@ function acceptedLine(result, trial) {
 async function gradePlayed(fen, played) {
   if (busy || !train || train.over) return
   busy = true
-  evalButton.disabled = true
+  lockEval(true)
   const turn = sideToMove(fen)
   interactive.stop()
   setStatus(t('train.analyzing'))
@@ -3970,6 +4070,7 @@ async function gradePlayed(fen, played) {
     recordAnalysisTime(fen, result)
     showResult(result)
     if (!acceptedLine(result, new Chess(played.after))) {
+      noteHintMiss()
       showCheer('again')
       setStatus(t('train.thinkMore'))
       interactive.setTurn(turn)
@@ -3998,7 +4099,9 @@ async function gradePlayed(fen, played) {
     if (train && !train.over) interactive.setTurn(turn)
   } finally {
     busy = false
-    evalButton.disabled = evalLocked()
+    lockEval(evalLocked())
+    refreshStudyClock()
+    refreshHintCoach()
   }
 }
 
@@ -4041,6 +4144,7 @@ function loadQuestStep() {
   fenInput.value = step.fen
   drawBoard()
   interactive.setTurn(sideToMove(step.fen))
+  openHintDiagram(`quest:${train.index}`)
 }
 
 function minutesField(id, label, value) {
@@ -4130,7 +4234,7 @@ function startGame(options) {
     if (!train || train.over || train.kind !== 'game') return
     train.over = true
     interactive.stop()
-    evalButton.disabled = false
+    lockEval(false)
     const text = `${sideName(side)} a pierdut la timp.`
     setStatus(text)
     lessonEl.textContent = text
@@ -4145,10 +4249,10 @@ function startGame(options) {
   })
   fenInput.value = chess.fen()
   fenInput.readOnly = true
-  moveInput.value = ''
+  setMoveField('')
   resultEl.replaceChildren()
   drawBoard()
-  evalButton.disabled = true
+  lockEval(true)
   if (chess.isGameOver()) {
     gameOverCheck()
     return
@@ -4158,7 +4262,7 @@ function startGame(options) {
 }
 
 function trainCopy(id) {
-  const key = { quest: 'quest', puzzle: 'puzzle', random: 'random', custom: 'custom', classical: 'classical', blindfold: 'blind' }[id]
+  const key = { quest: 'quest', puzzle: 'puzzle', random: 'random', custom: 'custom', classical: 'classical', blindfold: 'blind', pgn: 'pgn' }[id]
   if (!key) return null
   return {
     title: t(`train.${key}Title`),
@@ -4188,6 +4292,11 @@ function openTrain(id) {
   engineLine.textContent = ''
   resultEl.replaceChildren()
 
+  if (id === 'pgn') {
+    pgnPanel?.show()
+    return
+  }
+
   if (id === 'custom') {
     showCustomSetup()
     return
@@ -4196,7 +4305,7 @@ function openTrain(id) {
     train = { kind: 'quest', index: 0, over: false, setup: false }
     fenInput.readOnly = true
     interactive.resetClocks()
-    evalButton.disabled = true
+    lockEval(true)
     loadQuestStep()
     return
   }
@@ -4207,8 +4316,9 @@ function openTrain(id) {
     interactive.lastMove = null
     fenInput.value = PUZZLE_FEN
     drawBoard()
-    evalButton.disabled = true
+    lockEval(true)
     interactive.setTurn('w')
+    openHintDiagram('puzzle')
     return
   }
   if (id === 'random') {
@@ -4232,7 +4342,10 @@ function openTrain(id) {
 }
 
 document.querySelectorAll('[data-train]').forEach((button) => {
-  button.addEventListener('click', () => openTrain(button.dataset.train))
+  button.addEventListener('click', () => {
+    openTrain(button.dataset.train)
+    refreshStudyClock()
+  })
 })
 
 document.querySelector('.sidebar').addEventListener('click', (event) => {
@@ -4619,6 +4732,7 @@ async function openPackedLesson(lesson) {
 }
 
 onLang(() => {
+  refreshHintCoach()
   paintMoveNav()
   paintTestSummary()
   if (piecePathActive()) {
@@ -4683,10 +4797,13 @@ function studentPlayHooks(exit) {
       writeView({ selectedLessonId: null, selectedStepId: 0 })
       markSidebarLesson('')
       openLevelSelector(readView().selectedLevelId)
+      solvedMark = ''
+      refreshStudyClock()
     }),
     onStep(index) {
       writeView({ selectedStepId: index })
       scheduleLiveEval()
+      refreshStudyClock()
     },
   }
 }
@@ -4906,10 +5023,10 @@ fenInput.addEventListener('input', () => {
     solverEl.hidden = true
   }
 })
-evalButton.addEventListener('click', evaluate)
-moveInput.addEventListener('keydown', (event) => {
+evalButton?.addEventListener('click', evaluate)
+moveInput?.addEventListener('keydown', (event) => {
   if (event.key !== 'Enter') return
-  if (train && !train.setup) playTrainNotation(moveInput.value)
+  if (train && !train.setup) playTrainNotation(readMoveField())
   else if (solving()) submitAttempt()
   else evaluate()
 })
@@ -4942,7 +5059,7 @@ const teacherEl = document.querySelector('#teacher')
 const explainInput = document.querySelector('#explain')
 const motifInput = document.querySelector('#motif')
 const solverMoveInput = document.querySelector('#solver-move')
-const attemptCount = document.querySelector('#attempt-count')
+const attemptCount = document.querySelector('#solver-tries')
 const submitAttemptButton = document.querySelector('#submit-attempt')
 const retryAttemptButton = document.querySelector('#retry-attempt')
 
@@ -4955,7 +5072,7 @@ function leaveExercise() {
   solverEl.hidden = true
   teacherEl.hidden = true
   fenInput.readOnly = false
-  evalButton.disabled = false
+  lockEval(false)
 }
 
 async function api(path, options = {}) {
@@ -4995,7 +5112,7 @@ function playOnFen(fen, text) {
 
 function rememberSolverMove(played) {
   solverMoveInput.value = played.san
-  moveInput.value = played.san
+  setMoveField(played.san)
   if (currentFen() !== solverFen()) {
     fenInput.value = solverFen()
   }
@@ -5098,7 +5215,7 @@ function paintAttempt(item) {
   submitAttemptButton.disabled = item.closed || left <= 0
   retryAttemptButton.hidden = !item.canRetry
   fenInput.readOnly = true
-  evalButton.disabled = true
+  lockEval(true)
 }
 
 function showChild(item) {
@@ -5108,7 +5225,7 @@ function showChild(item) {
   explainInput.value = ''
   motifInput.value = ''
   solverMoveInput.value = ''
-  moveInput.value = ''
+  setMoveField('')
   paintAttempt(item)
 }
 
@@ -5117,7 +5234,7 @@ function showTeacher(item) {
   solverEl.hidden = true
   teacherEl.hidden = false
   fenInput.readOnly = false
-  evalButton.disabled = false
+  lockEval(false)
   document.querySelector('#ex-title').value = item?.title || ''
   document.querySelector('#ex-prompt').value = item?.prompt || 'Introdu mutarea, explică alegerea și selectează motivul tactic.'
   document.querySelector('#ex-competency').value = item?.competencyCode || 'C.SAC'
@@ -5210,7 +5327,7 @@ function startNewExercise() {
 
 async function submitAttempt() {
   if (!solving() || savingAttempt) return
-  const typed = solverMoveInput.value.trim() || moveInput.value.trim()
+  const typed = solverMoveInput.value.trim() || readMoveField()
   const explanation = explainInput.value.trim()
   const motifCode = motifInput.value
   if (!typed) {
@@ -5239,7 +5356,7 @@ async function submitAttempt() {
   }
   const move = played.san
   solverMoveInput.value = move
-  moveInput.value = move
+  setMoveField(move)
 
   savingAttempt = true
   submitAttemptButton.disabled = true
@@ -5473,6 +5590,33 @@ document.querySelector('#sidebar-toggle').addEventListener('click', toggleSideba
 paintSidebarToggle()
 document.querySelector('#teacher').addEventListener('submit', saveExercise)
 bindTeacherEditor()
+mountStudyClock(document.querySelector('.topbar'), studyFocusKey)
+mountHintCoach({
+  text: t,
+  fen: currentFen,
+  status: setStatus,
+  active() {
+    if (role === 'teacher' || boardCovered()) return false
+    if (practiceGate?.open && !practiceGate.solved) return true
+    if (train && !train.over && (train.kind === 'puzzle' || train.kind === 'quest')) return true
+    return Boolean(task?.expectMove && !demoLine)
+  },
+  async bestMove(fen) {
+    await engine.ready()
+    const result = await engine.analyze(fen, { depth: engineDepth(), multiPv: 1 })
+    return result.bestMove
+  },
+  onArrow() {
+    drawBoard()
+  },
+})
+pgnPanel = mountPgnImport({
+  Chess,
+  text: t,
+  label: pgnLabel,
+  onGame(game, extra) { presentPgnGame(game, extra) },
+  onCaption: captionPgnGame,
+})
 submitAttemptButton.addEventListener('click', submitAttempt)
 document.querySelector('#success-next').addEventListener('click', advanceExercise)
 retryAttemptButton.addEventListener('click', async () => {

@@ -6,6 +6,7 @@ const COLORS = {
   red: '#c4473a',
   yellow: '#d4a017',
   blue: '#2f6fad',
+  gray: '#b7b7b7',
 }
 
 const RINGS = {
@@ -72,9 +73,36 @@ export function paintBoardNotes(root, notes, whiteAtBottom, preview = null) {
     line.setAttribute('stroke-width', '0.12')
     line.setAttribute('stroke-linecap', 'round')
     line.setAttribute('marker-end', `url(#note-arrow-${arrow.color})`)
+    if (arrow.color === 'gray') line.setAttribute('stroke-opacity', '0.45')
     if (arrow.preview) line.setAttribute('stroke-dasharray', '0.18 0.12')
     lines.append(line)
   }
+}
+
+export function paintHintArrow(root, arrow, whiteAtBottom) {
+  const lines = root?.querySelector('[data-notes="arrows"]')
+  if (!lines) return
+  lines.querySelector('[data-hint-arrow]')?.remove()
+  if (!arrow?.from || !arrow?.to) {
+    const marks = root.querySelector('[data-notes="highlights"]')
+    if (!lines.childElementCount && !marks?.childElementCount) root.hidden = true
+    return
+  }
+  const ends = arrowEnds(arrow.from, arrow.to, whiteAtBottom)
+  if (!ends) return
+  root.hidden = false
+  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
+  line.dataset.hintArrow = '1'
+  line.setAttribute('x1', String(ends.x1))
+  line.setAttribute('y1', String(ends.y1))
+  line.setAttribute('x2', String(ends.x2))
+  line.setAttribute('y2', String(ends.y2))
+  line.setAttribute('stroke', COLORS.gray)
+  line.setAttribute('stroke-opacity', '0.45')
+  line.setAttribute('stroke-width', '0.12')
+  line.setAttribute('stroke-linecap', 'round')
+  line.setAttribute('marker-end', 'url(#note-arrow-gray)')
+  lines.append(line)
 }
 
 export function bindBoardDraw(board, hooks) {

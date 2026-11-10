@@ -33,6 +33,7 @@
       <div id="side-black" class="player" data-i18n="side.black">Negru</div>
     </div>
     <div class="badge"></div>
+    <time id="study-clock" class="study-clock" data-i18n-aria="clock.label"></time>
   </header>
 
   <div class="shell">
@@ -51,6 +52,7 @@
           <button type="button" class="nav-item sub" data-train="custom" data-i18n="nav.custom">Custom game</button>
           <button type="button" class="nav-item sub" data-train="classical" data-i18n="nav.classical">Classical game</button>
           <button type="button" class="nav-item sub" data-train="blindfold" data-i18n="nav.blindfold">Blindfold game</button>
+          <button type="button" class="nav-item sub" data-train="pgn" data-i18n="nav.pgn">Partidă din PGN</button>
         </div>
       </div>
       <div class="nav-group" data-sidebar="exercises">
@@ -135,6 +137,7 @@
                   <marker id="note-arrow-red" markerWidth="4" markerHeight="4" refX="2.1" refY="2" orient="auto"><path d="M0 0 L4 2 L0 4 Z" fill="#c4473a"></path></marker>
                   <marker id="note-arrow-yellow" markerWidth="4" markerHeight="4" refX="2.1" refY="2" orient="auto"><path d="M0 0 L4 2 L0 4 Z" fill="#d4a017"></path></marker>
                   <marker id="note-arrow-blue" markerWidth="4" markerHeight="4" refX="2.1" refY="2" orient="auto"><path d="M0 0 L4 2 L0 4 Z" fill="#2f6fad"></path></marker>
+                  <marker id="note-arrow-gray" markerWidth="4" markerHeight="4" refX="2.1" refY="2" orient="auto"><path d="M0 0 L4 2 L0 4 Z" fill="#b7b7b7" fill-opacity="0.55"></path></marker>
                 </defs>
                 <g data-notes="highlights"></g>
                 <g data-notes="arrows"></g>
@@ -173,13 +176,10 @@
       </div>
       <div class="under">
         <button id="flip" type="button" data-i18n-title="flip">↻</button>
-        <input id="move" autocomplete="off" data-i18n-placeholder="move.placeholder" data-i18n-aria="move.label">
-        <select id="depth" data-i18n-aria="depth.label">
-          <option value="8" data-i18n="depth.8">adâncime 8</option>
-          <option value="12" selected data-i18n="depth.12">adâncime 12</option>
-          <option value="16" data-i18n="depth.16">adâncime 16</option>
-        </select>
-        <button id="eval" type="button" data-i18n="eval">Evaluează</button>
+        <div id="attempt-hint" class="attempt-hint" hidden>
+          <p id="attempt-count" class="attempt-count"></p>
+          <button type="button" id="attempt-hint-btn" class="attempt-hint-btn" hidden>Indiciu</button>
+        </div>
       </div>
     </section>
 
@@ -330,6 +330,19 @@
         </div>
       </form>
       <p id="lesson" data-i18n="blurb.menu">Introdu mutarea, explică alegerea și selectează motivul tactic. Ai trei încercări.</p>
+      <section id="pgn-import" class="panel-block pgn-import" hidden>
+        <label class="field" for="pgn-text">
+          <span data-i18n="pgn.paste">Textul partidei</span>
+          <textarea id="pgn-text" rows="5" spellcheck="false" data-i18n-placeholder="pgn.placeholder" placeholder="1. e4 e5 2. Nf3"></textarea>
+        </label>
+        <label class="field" for="pgn-file">
+          <span data-i18n="pgn.file">Fișier .pgn</span>
+          <input id="pgn-file" type="file" accept=".pgn,text/plain,.txt">
+        </label>
+        <button type="button" id="pgn-load" class="pgn-load" data-i18n="pgn.load">Pune pe tablă</button>
+        <p id="pgn-status" class="pgn-status" role="status"></p>
+        <div id="pgn-games" class="pgn-games" hidden></div>
+      </section>
       <div id="procedure-course" class="panel-block" hidden>
         <div id="practice-tabs" class="practice-tabs" hidden>
           <button type="button" id="practice-tab-theory" data-i18n="pedagogy.practiceTheory">1. Lecție Teoretică</button>
@@ -405,7 +418,7 @@
       </div>
       <div id="task-actions" class="task-actions"></div>
       <div id="solver" class="panel-block" hidden>
-        <p id="attempt-count" class="tries"></p>
+        <p id="solver-tries" class="tries"></p>
         <label class="field" for="solver-move"><span data-i18n="solver.move">Mutarea ta</span>
           <input id="solver-move" spellcheck="false" autocomplete="off" data-i18n-placeholder="solver.movePh" data-i18n-aria="solver.move">
         </label>

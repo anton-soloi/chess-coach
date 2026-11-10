@@ -375,6 +375,7 @@ function finish() {
   renderMenu()
   hooks?.status?.(t('path.doneStars', { n: String(session.earned) }))
   hooks?.win?.()
+  hooks?.onDone?.()
   hooks?.outline?.(null)
 }
 
