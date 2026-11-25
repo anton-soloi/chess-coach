@@ -106,6 +106,13 @@ export function resetBuilderLine(fen) {
   hooks.writeLine?.([], '')
 }
 
+export function rememberBuilderLine(fen, moves) {
+  lineFen = fen || hooks.getFen?.() || ''
+  sans = Array.isArray(moves) ? moves.filter(Boolean) : []
+  touched = true
+  paintLine()
+}
+
 export function observeBuilderMove({ from, to, before, after }) {
   const result = recordLegalMove(lineFen || before, sans, from, to)
   if (!result.ok) {

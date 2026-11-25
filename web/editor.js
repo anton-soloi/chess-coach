@@ -1,15 +1,16 @@
 // Editorul profesorului pentru diagramele celor 7 niveluri.
-// Salvarea stă în localStorage. Exportul descarcă curriculum_levels.json.
+// Temele de curriculum stau în localStorage. Exercițiile noi din Train
+// se scriu în web/curriculum/train-authored.json prin serverul local.
 
 import { sizeDragGhost } from './board.js'
 import { Chess } from './vendor/chess.js'
-import { formatSolution, playTypedMove, solutionMoves } from './notation.js'
+import { fenAlignedToMove, formatSolution, legalPosition, playTypedMove, solutionMoves } from './notation.js'
 import { exportThemeBackup, getLevels, importThemeBackup, saveSubchapterSections } from './curriculum.js'
 import { lessonFromSections } from './lesson-pack.js'
 import { lang, t, tx } from './i18n.js'
 import { closePedagogy, openPedagogy, refreshPreviewCopy } from './pedagogy.js'
 import { bindBoardDraw, paintBoardNotes } from './board-notes.js'
-import { loadBuilderItem, mountLessonBuilder, observeBuilderMove, observeBuilderNote, refreshBuilder, resetBuilderLine } from './lesson-builder.js'
+import { loadBuilderItem, mountLessonBuilder, observeBuilderMove, observeBuilderNote, recordLegalMove, rememberBuilderLine, refreshBuilder, resetBuilderLine } from './lesson-builder.js'
 
 const EMPTY = '8/8/8/8/8/8/8/8 w - - 0 1'
 const START = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
@@ -25,6 +26,7 @@ let subId = ''
 let sectionId = 'examples'
 let itemIndex = 0
 let creating = false
+let editorNavLock = false
 let entryOpen = false
 let hooks = {}
 let toastTimer = 0
@@ -34,6 +36,16 @@ let notePreview = null
 let recording = false
 let recordFrom = ''
 let lineStartFen = ''
+let boundDrill = null
+let sectionTemplate = null
+let authoringTrain = null
+let authoringBusy = false
+let trainNav = false
+let trainOutline = null
+let trainSelectionId = ''
+let trainAfterId = ''
+
+const TRAIN_DRILL_KEY = 'chesscoach.trainDrills'
 
 export function isTeacherEditor() {
   return active
@@ -58,9 +70,8 @@ export function editorSquare(square) {
     }
   } else map.set(square, brush)
   const after = serialize(map, turnOf(before))
-  if (from && from !== square) {
-    if (!observeBuilderMove({ from, to: square, before, after })) writeFen(after)
-  } else {
+  if (from && from !== square) applyDiagramMove(from, square, before, after)
+  else {
     writeFen(after)
     if (before !== after) resetBuilderLine(after)
   }
@@ -77,7 +88,37 @@ export function editorMove(from, to) {
   map.delete(from)
   map.set(to, piece)
   const after = serialize(map, turnOf(before))
+  applyDiagramMove(from, to, before, after)
+  return true
+}
+
+function applyDiagramMove(from, to, before, after) {
+  if (boundDrill) return applyTrainDiagramMove(from, to, before, after)
   if (!observeBuilderMove({ from, to, before, after })) writeFen(after)
+  else mirrorFen(currentFen())
+  return true
+}
+
+function applyTrainDiagramMove(from, to, before, after) {
+  const result = recordLegalMove(before, [], from, to)
+  if (!result.ok) {
+    writeFen(after)
+    resetBuilderLine(after)
+    hooks.status?.(t('builder.placed'))
+    return true
+  }
+  const form = document.querySelector('#curriculum-editor')
+  const field = form?.querySelector('#ed-move')
+  if (field) field.value = result.sans.join(' ')
+  const text = form?.querySelector('#ed-text')
+  if (text && result.san && /Apasă piesa care dă matul/.test(text.value)) {
+    text.value = text.value.replace(/Apasă piesa care dă matul\.?/, `Mută ${result.san}.`)
+  }
+  const pgnField = form?.querySelector('#ed-pgn')
+  if (pgnField) pgnField.value = result.pgn || ''
+  rememberBuilderLine(before, result.sans)
+  writeFen(before)
+  hooks.status?.(t('builder.recorded', { san: result.san }))
   return true
 }
 
@@ -258,11 +299,78 @@ function paintRecordButton() {
     button.setAttribute('aria-pressed', recording ? 'true' : 'false')
   }
   if (moveLabel && active) {
-    moveLabel.textContent = sectionId === 'evaluation'
-      ? t('editor.testSolution')
-      : (sectionId === 'practice' ? t('editor.solution') : t('editor.move'))
+    moveLabel.textContent = hooks.inTrain?.()
+      ? t('editor.moveOptional')
+      : (sectionId === 'evaluation'
+        ? t('editor.testSolution')
+        : (sectionId === 'practice' ? t('editor.solution') : t('editor.move')))
   }
+  syncEngineProbe()
   paintTestParams()
+}
+
+function showEngineGoal(goal, text = '') {
+  const readout = document.querySelector('#ed-eval')
+  if (!readout) return
+  const known = goal === 'mate' || goal === 'advantage' ? goal : ''
+  readout.dataset.goal = known
+  if (!known && !text) {
+    readout.hidden = true
+    readout.textContent = ''
+    return
+  }
+  readout.hidden = false
+  readout.textContent = text || t(known === 'mate' ? 'train.coachGoalMate' : 'train.coachGoalAdvantage')
+}
+
+function syncEngineProbe() {
+  const row = document.querySelector('#ed-engine')
+  if (row) row.hidden = !active
+  const moveLabel = document.querySelector('label[for="ed-move"] span')
+  if (moveLabel && active && hooks.inTrain?.()) moveLabel.textContent = t('editor.moveOptional')
+}
+
+function analysisFen() {
+  const typed = document.querySelector('#ed-fen')?.value.trim() || ''
+  const board = hooks.getFen?.() || ''
+  if (typed && legalPosition(typed)) return typed
+  return board || typed
+}
+
+function sameEngineMove(fen, written, san) {
+  if (!written || !san) return false
+  try {
+    const left = playTypedMove(new Chess(fen), written)
+    const right = playTypedMove(new Chess(fen), san)
+    return left.from === right.from && left.to === right.to && (left.promotion || '') === (right.promotion || '')
+  } catch {
+    return false
+  }
+}
+
+async function analyzeTrainPosition() {
+  const button = document.querySelector('#ed-analyze')
+  const fen = analysisFen()
+  if (!hooks.analyzeFen) return
+  if (button) button.disabled = true
+  showEngineGoal('', t('train.analyzing'))
+  try {
+    const verdict = await hooks.analyzeFen(fen)
+    const move = document.querySelector('#ed-move')
+    const written = move?.value.trim() || ''
+    const san = verdict?.san || ''
+    let text = verdict?.text || t('train.coachNone')
+    if (written && san && !sameEngineMove(fen, written, san)) {
+      text = `${text} ${t('editor.engineKeeps', { written, move: san })}`
+    } else if (move && !written && san) {
+      move.value = san
+    }
+    showEngineGoal(verdict?.goal || '', text)
+  } catch (err) {
+    showEngineGoal('', err instanceof Error ? err.message : t('train.coachNone'))
+  } finally {
+    if (button) button.disabled = false
+  }
 }
 
 export function syncBoardAnnotations(whiteAtBottom = true) {
@@ -283,14 +391,238 @@ export function openTeacherEditor(nextHooks) {
   hooks = nextHooks || {}
   active = true
   entryOpen = false
+  releaseTrainBinding()
   document.querySelector('#curriculum-editor').hidden = false
   savedNotes = emptyNotes()
   fillPalette()
   paintEditorTools()
   fillLevels()
   loadItem()
-  setEntryOpen(false)
+  revealCurrentEntry()
+  showDesk('edit')
+  paintPositionLegality(currentFen())
   hooks.status?.(t('editor.ready'))
+}
+
+function readTrainStore() {
+  try {
+    const data = JSON.parse(localStorage.getItem(TRAIN_DRILL_KEY) || '{}')
+    return data && typeof data === 'object' ? data : {}
+  } catch {
+    return {}
+  }
+}
+
+export function trainDrillRecord(code) {
+  if (!code) return null
+  const record = readTrainStore()[code]
+  return record && typeof record === 'object' ? record : null
+}
+
+function rememberSectionOptions() {
+  if (sectionTemplate) return
+  const select = document.querySelector('#ed-section')
+  if (!select) return
+  sectionTemplate = [...select.options].map((option) => ({
+    value: option.value,
+    text: option.textContent,
+    i18n: option.dataset.i18n || '',
+  }))
+}
+
+function restoreSectionOptions() {
+  const select = document.querySelector('#ed-section')
+  if (!select || !sectionTemplate) return
+  const keep = sectionTemplate.some((option) => option.value === sectionId) ? sectionId : 'examples'
+  select.replaceChildren()
+  for (const item of sectionTemplate) {
+    const option = document.createElement('option')
+    option.value = item.value
+    if (item.i18n) option.dataset.i18n = item.i18n
+    option.textContent = item.text
+    select.append(option)
+  }
+  select.value = keep
+}
+
+function pinSelect(select, value, label) {
+  if (!select) return
+  select.replaceChildren()
+  const option = document.createElement('option')
+  option.value = value
+  option.textContent = label || value
+  select.append(option)
+  select.value = value
+}
+
+function applyDrillTitle(title) {
+  if (!boundDrill?.code) return
+  const name = String(title || '').trim()
+  boundDrill.section = name ? `${boundDrill.code} · ${name}` : (boundDrill.section || boundDrill.code)
+  const section = document.querySelector('#ed-section')
+  const option = [...(section?.options || [])].find((item) => item.value === boundDrill.id)
+  if (option) option.textContent = boundDrill.section
+  showBoundDrillList(boundDrill.section)
+  hooks.renameTrainDrill?.({
+    id: boundDrill.id,
+    code: boundDrill.code,
+    title: name,
+    section: boundDrill.section,
+  })
+}
+
+function showBoundDrillList(label) {
+  const select = document.querySelector('#ed-item')
+  const list = document.querySelector('#ed-list')
+  const head = document.querySelector('.editor-list-head')
+  if (head) head.hidden = false
+  if (select) {
+    select.replaceChildren()
+    const option = document.createElement('option')
+    option.value = '0'
+    option.textContent = label
+    select.append(option)
+    select.value = '0'
+  }
+  if (!list) return
+  list.hidden = false
+  list.replaceChildren()
+  const row = document.createElement('li')
+  row.className = 'editor-row active'
+  const name = document.createElement('span')
+  name.className = 'editor-name'
+  name.textContent = label
+  row.append(name)
+  list.append(row)
+}
+
+function releaseTrainBinding() {
+  if (!boundDrill) return
+  boundDrill = null
+  if (trainNav) return
+  restoreSectionOptions()
+}
+
+function clickSquare(value) {
+  return /^[a-h][1-8]$/i.test(String(value || '').trim())
+}
+
+function commitBoundDrill() {
+  if (!boundDrill?.code) return null
+  const form = readForm()
+  const move = String(form.move || '').trim()
+  const square = clickSquare(move) ? move.toLowerCase() : ''
+  const record = {
+    id: boundDrill.id,
+    code: boundDrill.code,
+    fen: square ? (form.fen || currentFen()) : fenAlignedToMove(form.fen || currentFen(), move),
+    title: form.title,
+    prompt: form.text,
+    note: form.note,
+    move: move || square,
+    pgn: form.pgn,
+    square,
+    level: boundDrill.level,
+    chapter: boundDrill.chapter,
+    section: form.title ? `${boundDrill.code} · ${form.title}` : (boundDrill.section || boundDrill.code),
+  }
+  const store = readTrainStore()
+  store[record.code] = record
+  localStorage.setItem(TRAIN_DRILL_KEY, JSON.stringify(store))
+  boundDrill = { ...boundDrill, square, section: record.section }
+  applyDrillTitle(form.title)
+  return record
+}
+
+export function saveBoundTrainDrill(options = {}) {
+  if (!boundDrill) return null
+  const record = commitBoundDrill()
+  if (boundDrill.authored && hooks.saveAuthoredExercise) {
+    hooks.saveAuthoredExercise(authoredPayload(record)).then((saved) => {
+      hooks.onTrainDrillSaved?.(record)
+      hooks.onAuthoredSaved?.(saved || record)
+      showBoundDrillList(record.section || saved?.title || record.title || record.code)
+      if (!options.quiet) {
+        hooks.status?.(t('editor.menuSaved'))
+        showToast(t('editor.updated', { name: saved?.title || record.title || record.code }))
+      }
+    }).catch((err) => {
+      hooks.status?.(err instanceof Error ? err.message : t('editor.fileFail'))
+    })
+    return record
+  }
+  hooks.onTrainDrillSaved?.(record)
+  showBoundDrillList(record.title || record.section || record.code)
+  if (!options.quiet) {
+    hooks.status?.(t('editor.saved'))
+    showToast(t('editor.updated', { name: record.title || record.code }))
+  }
+  return record
+}
+
+export function seedTeacherDrill(drill) {
+  if (!active || !drill) return null
+  const form = document.querySelector('#curriculum-editor')
+  if (!form) return null
+  const nextCode = drill.code || drill.id
+  if (boundDrill?.code && boundDrill.code !== nextCode) commitBoundDrill()
+  rememberSectionOptions()
+  const saved = trainDrillRecord(nextCode)
+  const record = saved?.code && saved.code !== nextCode ? null : saved
+  const prompt = record?.prompt || drill.prompt || ''
+  const title = record?.title || drill.title || ''
+  const note = record?.title ? (record.note || '') : (record?.note && record.note !== drill.title ? record.note : '')
+  const move = record?.move || drill.move || ''
+  const storedFen = record?.fen || drill.fen
+  const fen = clickSquare(move) ? storedFen : fenAlignedToMove(storedFen, move)
+  const pgn = record?.pgn || ''
+  const moveField = form.querySelector('#ed-move')
+  const pgnField = form.querySelector('#ed-pgn')
+  if (moveField) moveField.value = ''
+  if (pgnField) pgnField.value = ''
+  boundDrill = {
+    id: drill.id,
+    code: nextCode,
+    square: clickSquare(move) ? move.toLowerCase() : (record?.square || drill.square || ''),
+    level: drill.level || '',
+    chapter: drill.chapter || '',
+    section: drill.section || '',
+    parentId: drill.parentId || '',
+    afterId: drill.authored ? (drill.afterId || '') : (drill.afterId || drill.id || ''),
+    ancestors: Array.isArray(drill.ancestors) ? drill.ancestors : [],
+    authored: Boolean(drill.authored),
+    goal: drill.goal === 'mate' || drill.goal === 'advantage'
+      ? drill.goal
+      : (record?.goal === 'mate' || record?.goal === 'advantage' ? record.goal : ''),
+  }
+  creating = false
+  showBoundDrillList(drill.section || boundDrill.code)
+  hooks.showTrainHierarchy?.(drill.id)
+  const text = form.querySelector('#ed-text')
+  const titleField = form.querySelector('#ed-title')
+  const noteField = form.querySelector('#ed-note')
+  if (titleField) titleField.value = title
+  applyDrillTitle(title)
+  if (text) text.value = prompt
+  if (noteField) noteField.value = note
+  for (const field of form.querySelectorAll('input, textarea, select, button')) field.disabled = false
+  for (const field of [form.querySelector('#ed-fen'), text, noteField, document.querySelector('#board-fen')]) {
+    if (field) field.readOnly = false
+  }
+  setEntryOpen(true)
+  writeFen(fen)
+  resetBuilderLine(fen)
+  if (moveField) moveField.value = move
+  if (pgnField) pgnField.value = pgn
+  showEngineGoal(boundDrill.goal)
+  setPgnOpen(pgn)
+  const played = move && !/^[a-h][1-8]$/.test(move)
+  if (played) loadBuilderItem({ fen, moves: move.split(/\s+/).filter(Boolean), pgn })
+  form.hidden = false
+  paintEditorTools()
+  showDesk('edit')
+  syncEngineProbe()
+  return { ...boundDrill, fen, title, prompt, note, move, pgn }
 }
 
 export function resumeTeacherEditor() {
@@ -298,9 +630,11 @@ export function resumeTeacherEditor() {
   document.querySelector('#curriculum-editor').hidden = false
   paintEditorTools()
   setEntryOpen(entryOpen)
+  paintPositionLegality(currentFen())
 }
 
 export function closeTeacherEditor() {
+  releaseTrainBinding()
   active = false
   grab = null
   const form = document.querySelector('#curriculum-editor')
@@ -315,43 +649,95 @@ export function closeTeacherEditor() {
   if (analysis) analysis.hidden = false
   const lesson = document.querySelector('#lesson')
   if (lesson) lesson.hidden = false
+  document.querySelector('.side')?.removeAttribute('data-desk')
+  paintPositionLegality()
+}
+
+function showDesk(name = 'edit') {
+  const form = document.querySelector('#curriculum-editor')
+  const side = document.querySelector('.side')
+  if (!form) return
+  if (side) side.dataset.desk = name
+  for (const button of form.querySelectorAll('.desk-tab')) {
+    button.setAttribute('aria-selected', button.dataset.desk === name ? 'true' : 'false')
+  }
+  for (const pane of form.querySelectorAll('[data-desk-pane]')) {
+    pane.hidden = pane.dataset.deskPane !== name
+  }
+}
+
+function revealCurrentEntry() {
+  setEntryOpen(sectionId === 'learn' || Boolean(listItems()[itemIndex]))
 }
 
 export function bindTeacherEditor() {
   const form = document.querySelector('#curriculum-editor')
   form.addEventListener('submit', (event) => event.preventDefault())
+  form.querySelector('.desk-tabs')?.addEventListener('click', (event) => {
+    const tab = event.target.closest('.desk-tab')
+    if (tab) showDesk(tab.dataset.desk)
+  })
   form.querySelector('#ed-level').addEventListener('change', () => {
+    if (editorNavLock) return
+    if (trainNav) {
+      retargetTrain('level')
+      return
+    }
+    if (boundDrill) return
     persist()
     levelId = form.querySelector('#ed-level').value
     fillSubs()
     loadItem()
-    setEntryOpen(sectionId === 'learn')
+    revealCurrentEntry()
   })
   form.querySelector('#ed-sub').addEventListener('change', () => {
+    if (editorNavLock) return
+    if (trainNav) {
+      retargetTrain('chapter')
+      return
+    }
+    if (boundDrill) return
     persist()
     subId = form.querySelector('#ed-sub').value
     draft = clone(currentSub()?.sections || {})
     fillItems()
     loadItem()
-    setEntryOpen(sectionId === 'learn')
+    revealCurrentEntry()
   })
   form.querySelector('#ed-section').addEventListener('change', () => {
+    if (editorNavLock) return
+    if (trainNav) {
+      retargetTrain('section')
+      return
+    }
+    if (boundDrill) return
     stopRecording({ resetBoard: true })
     persist()
     sectionId = form.querySelector('#ed-section').value
     itemIndex = 0
     fillItems()
     loadItem()
-    setEntryOpen(sectionId === 'learn')
+    revealCurrentEntry()
   })
   form.querySelector('#ed-item').addEventListener('change', () => {
-    persist()
-    itemIndex = Number(form.querySelector('#ed-item').value) || 0
+    if (boundDrill || editorNavLock) return
+    const next = Number(form.querySelector('#ed-item').value)
+    if (creating && next === listItems().length) return
+    if (creating) {
+      if (formHasContent(readForm())) addItem()
+      else creating = false
+    } else persist()
+    itemIndex = Number.isFinite(next) ? next : 0
+    if (itemIndex >= listItems().length) itemIndex = Math.max(0, listItems().length - 1)
     loadItem()
   })
   form.querySelector('#ed-fen').addEventListener('input', () => {
     if (recording) stopRecording()
+    showEngineGoal('')
     applyTypedFen(form.querySelector('#ed-fen').value, form.querySelector('#ed-fen'))
+  })
+  form.querySelector('#ed-analyze')?.addEventListener('click', () => {
+    void analyzeTrainPosition()
   })
   const boardFen = document.querySelector('#board-fen')
   boardFen.addEventListener('input', () => applyTypedFen(boardFen.value, boardFen))
@@ -359,14 +745,28 @@ export function bindTeacherEditor() {
     const fromBoard = boardFen.value.trim()
     const fromEditor = form.querySelector('#ed-fen').value.trim()
     const chosen = placementRanks(fromEditor) === 8 ? fromEditor : (fromBoard || EMPTY)
+    const previous = fenPlacement(currentFen())
     writeFen(chosen)
+    if (fenPlacement(chosen) !== previous) hooks.orientToFen?.(chosen)
   })
   form.querySelector('#ed-save').addEventListener('click', save)
+  form.querySelector('#ed-title').addEventListener('input', () => {
+    if (!boundDrill) return
+    applyDrillTitle(form.querySelector('#ed-title').value)
+  })
   form.querySelector('#ed-record').addEventListener('click', toggleRecording)
   form.querySelector('#ed-move').addEventListener('input', () => {
     if (recording) replayRecorded()
+    if (!boundDrill) return
+    const typed = form.querySelector('#ed-move').value.trim()
+    if (!typed || clickSquare(typed)) return
+    const aligned = fenAlignedToMove(currentFen(), typed)
+    if (aligned && aligned !== currentFen()) writeFen(aligned)
   })
-  form.querySelector('#ed-delete').addEventListener('click', deleteItem)
+  form.querySelector('#ed-delete').addEventListener('click', () => {
+    if (boundDrill || (trainNav && creating)) void deleteBoundDrill()
+    else deleteItem()
+  })
   form.querySelector('#ed-export').addEventListener('click', exportFile)
   form.querySelector('#ed-import').addEventListener('click', () => form.querySelector('#ed-import-file').click())
   form.querySelector('#ed-import-file').addEventListener('change', importFile)
@@ -412,8 +812,8 @@ export function bindTeacherEditor() {
     },
   })
   form.querySelector('#ed-turn').addEventListener('change', () => {
-    const map = readMap(currentFen())
-    writeFen(serialize(map, form.querySelector('#ed-turn').value === 'b' ? 'b' : 'w'))
+    const turn = form.querySelector('#ed-turn').value === 'b' ? 'b' : 'w'
+    writeFen(serialize(readMap(currentFen()), turn))
   })
   form.querySelector('#ed-pgn').addEventListener('change', applyPgn)
   mountLessonBuilder({
@@ -430,13 +830,13 @@ function fillPalette() {
   const white = document.querySelector('#palette-white')
   const black = document.querySelector('#palette-black')
   if (!white || !black || white.childElementCount) return
-  const tools = document.createElement('div')
-  tools.className = 'palette-tools'
-  tools.append(
-    toolButton('hand', t('editor.hand'), { symbol: '✋' }),
-    toolButton('eraser', t('editor.trash'), { trash: true }),
-  )
-  white.append(tools)
+  const tools = document.querySelector('.floating-board-tools')
+  if (tools && !tools.querySelector('[data-brush]')) {
+    tools.prepend(
+      toolButton('hand', t('editor.hand'), { symbol: '✋' }),
+      toolButton('eraser', t('editor.trash'), { trash: true }),
+    )
+  }
   for (const code of PIECES) dockFor(code, white, black).append(pieceButton(code))
   selectBrush('hand')
 }
@@ -515,15 +915,28 @@ function dragPalettePiece(event, code) {
 function selectBrush(code) {
   brush = code
   grab = null
-  for (const button of document.querySelectorAll('.piece-dock button')) {
+  for (const button of document.querySelectorAll('[data-brush]')) {
     button.classList.toggle('active', button.dataset.brush === code)
   }
+}
+
+function reserveToolSpace() {
+  const tools = document.querySelector('.floating-board-tools')
+  const board = document.querySelector('#interactive-board')
+  if (!tools || !board) return
+  const shown = getComputedStyle(tools).display !== 'none'
+  const width = shown ? Math.ceil(tools.getBoundingClientRect().width + 8) : 0
+  board.style.setProperty('--board-tools-pad', `${width}px`)
 }
 
 function paintEditorTools() {
   const bar = document.querySelector('#fen-bar')
   for (const dock of document.querySelectorAll('.piece-dock')) dock.hidden = !active
   if (bar) bar.hidden = !active
+  for (const button of document.querySelectorAll('.floating-board-tools [data-brush]')) {
+    button.hidden = !active
+  }
+  reserveToolSpace()
 }
 
 function emptyNotes() {
@@ -601,14 +1014,198 @@ async function pasteFen() {
       hooks.status?.(t('editor.pasteFail'))
       return
     }
+    const previous = fenPlacement(currentFen())
     writeFen(text)
+    if (fenPlacement(text) !== previous) hooks.orientToFen?.(text)
   } catch {
     document.querySelector('#board-fen')?.focus()
     hooks.status?.(t('editor.pasteFail'))
   }
 }
 
+function replaceSelect(select, options, value) {
+  if (!select) return
+  select.replaceChildren()
+  for (const item of options) {
+    const option = document.createElement('option')
+    option.value = item.value
+    option.textContent = item.label
+    select.append(option)
+  }
+  if ([...select.options].some((option) => option.value === value)) select.value = value
+  else if (select.options.length) select.value = select.options[0].value
+}
+
+function findOutline(nodes, id) {
+  for (const node of nodes || []) {
+    if (node.id === id) return node
+    const found = findOutline(node.children, id)
+    if (found) return found
+  }
+  return null
+}
+
+function outlinePath(nodes, id, trail = []) {
+  for (const node of nodes || []) {
+    const next = [...trail, node]
+    if (node.id === id) return next
+    const found = outlinePath(node.children, id, next)
+    if (found) return found
+  }
+  return null
+}
+
+function chapterChoices(level) {
+  const groups = (level?.children || []).filter((child) => !child.drill && !child.authoredSection)
+  return [{ value: level.id, label: level.title }, ...groups.map((group) => ({ value: group.id, label: group.title }))]
+}
+
+function sectionChoices(parent) {
+  const children = parent?.children || []
+  const groups = children.filter((child) => !child.drill)
+  const drills = children.filter((child) => child.drill)
+  if (groups.length && !drills.length) {
+    return [
+      { value: '', label: t('editor.chooseSection') },
+      ...groups.map((group) => ({ value: group.id, label: group.title })),
+      { value: 'new-section', label: t('editor.newSection') },
+    ]
+  }
+  return [
+    ...drills.map((drill) => {
+      const title = trainDrillRecord(drill.code || drill.id)?.title || drill.title
+      return {
+        value: drill.id,
+        label: drill.code ? `${drill.code} · ${title}` : title,
+      }
+    }),
+    { value: 'new', label: t('editor.newExercise') },
+  ]
+}
+
+function lastDrillId(parent) {
+  const drills = (parent?.children || []).filter((child) => child.drill)
+  return drills.length ? drills[drills.length - 1].id : ''
+}
+
+export function syncTrainHierarchy(outline, selectedId) {
+  if (!active || !Array.isArray(outline) || !selectedId) return false
+  const path = outlinePath(outline, selectedId)
+  if (!path?.length) return false
+  trainOutline = outline
+  trainNav = true
+  trainSelectionId = selectedId
+  const level = path[0]
+  const authored = [...path].reverse().find((node) => node.authoredSection && !node.drill)
+  const chapter = authored
+    ? (path[Math.max(0, path.indexOf(authored) - 1)] || level)
+    : (path.find((node, index) => index > 0 && !node.drill) || level)
+  const drill = path[path.length - 1].drill ? path[path.length - 1] : null
+  trainAfterId = drill?.id || lastDrillId(authored || (chapter.drill ? level : chapter))
+  const form = document.querySelector('#curriculum-editor')
+  editorNavLock = true
+  try {
+    replaceSelect(form.querySelector('#ed-level'), outline.map((node) => ({ value: node.id, label: node.title })), level.id)
+    replaceSelect(form.querySelector('#ed-sub'), chapterChoices(level), chapter.id)
+    const parent = findOutline(outline, chapter.id) || level
+    const inside = !drill && boundDrill?.id && (boundDrill.parentId === parent.id || (parent.children || []).some((child) => child.id === boundDrill.id))
+    if (inside) trainAfterId = boundDrill.id
+    const sectionValue = authored ? authored.id : (drill ? drill.id : (inside ? boundDrill.id : 'new'))
+    replaceSelect(form.querySelector('#ed-section'), sectionChoices(parent), sectionValue)
+  } finally {
+    editorNavLock = false
+  }
+  syncEngineProbe()
+  return true
+}
+
+export function relabelTrainHierarchy(outline) {
+  if (!trainNav || !trainSelectionId) return
+  if (Array.isArray(outline)) trainOutline = outline
+  syncTrainHierarchy(trainOutline, trainSelectionId)
+}
+
+function placementFromSelects() {
+  const levelIdValue = document.querySelector('#ed-level')?.value || ''
+  const chapterId = document.querySelector('#ed-sub')?.value || ''
+  const sectionValue = document.querySelector('#ed-section')?.value || ''
+  const level = findOutline(trainOutline, levelIdValue)
+  const chapter = findOutline(trainOutline, chapterId)
+  const sectionNode = sectionValue && sectionValue !== 'new' && sectionValue !== 'new-section'
+    ? findOutline(trainOutline, sectionValue)
+    : null
+  const folder = sectionNode && !sectionNode.drill ? sectionNode : null
+  const parent = folder || (chapter && !chapter.drill ? chapter : level)
+  const ancestors = []
+  if (level?.id) ancestors.push(level.id)
+  if (chapter?.id && chapter.id !== level?.id && !chapter.drill && chapter.id !== folder?.id) ancestors.push(chapter.id)
+  if (folder?.id && folder.id !== level?.id) ancestors.push(folder.id)
+  const afterId = folder
+    ? lastDrillId(folder)
+    : (sectionValue && sectionValue !== 'new' ? sectionValue : (trainAfterId || lastDrillId(parent)))
+  return {
+    id: '',
+    parentId: parent?.id || '',
+    afterId: afterId === parent?.id ? '' : afterId,
+    ancestors,
+  }
+}
+
+function retargetTrain(which) {
+  const form = document.querySelector('#curriculum-editor')
+  const level = findOutline(trainOutline, form.querySelector('#ed-level')?.value)
+  if (!level) return
+  editorNavLock = true
+  try {
+    if (which === 'level') {
+      replaceSelect(form.querySelector('#ed-sub'), chapterChoices(level), level.id)
+      replaceSelect(form.querySelector('#ed-section'), sectionChoices(level), 'new')
+      trainSelectionId = level.id
+      trainAfterId = lastDrillId(level)
+    } else if (which === 'chapter') {
+      const chapter = findOutline(trainOutline, form.querySelector('#ed-sub')?.value) || level
+      const parent = chapter.drill ? level : chapter
+      replaceSelect(form.querySelector('#ed-section'), sectionChoices(parent), 'new')
+      trainSelectionId = parent.id
+      trainAfterId = lastDrillId(parent)
+    } else {
+      const sectionValue = form.querySelector('#ed-section')?.value || ''
+      const picked = sectionValue ? findOutline(trainOutline, sectionValue) : null
+      if (!sectionValue || sectionValue === 'new-section') {
+        trainSelectionId = form.querySelector('#ed-sub')?.value || level.id
+        if (sectionValue === 'new-section') {
+          hooks.status?.(t('editor.newSectionHint'))
+          document.querySelector('#ed-title')?.focus()
+        }
+      } else if (picked?.authoredSection) {
+        trainSelectionId = picked.id
+        trainAfterId = lastDrillId(picked)
+      } else if (picked && !picked.drill) {
+        const sub = form.querySelector('#ed-sub')
+        if (sub && [...sub.options].some((option) => option.value === picked.id)) sub.value = picked.id
+        replaceSelect(form.querySelector('#ed-section'), sectionChoices(picked), 'new')
+        trainSelectionId = picked.id
+        trainAfterId = lastDrillId(picked)
+      } else if (sectionValue !== 'new') {
+        trainAfterId = sectionValue
+        trainSelectionId = sectionValue
+        editorNavLock = false
+        hooks.focusTrainDrill?.(sectionValue)
+        return
+      }
+    }
+  } finally {
+    editorNavLock = false
+  }
+  if (creating) authoringTrain = placementFromSelects()
+  hooks.markTrainSelection?.(trainSelectionId)
+}
+
 function fillLevels() {
+  trainNav = false
+  trainOutline = null
+  trainSelectionId = ''
+  trainAfterId = ''
   const select = document.querySelector('#ed-level')
   select.replaceChildren()
   for (const level of getLevels()) {
@@ -620,6 +1217,7 @@ function fillLevels() {
   if (!levelId) levelId = select.value
   select.value = levelId
   fillSubs()
+  syncEngineProbe()
 }
 
 function fillSubs() {
@@ -640,6 +1238,9 @@ function fillSubs() {
 }
 
 function fillItems() {
+  const locked = editorNavLock
+  editorNavLock = true
+  try {
   const select = document.querySelector('#ed-item')
   const list = document.querySelector('#ed-list')
   const head = document.querySelector('.editor-list-head')
@@ -684,10 +1285,23 @@ function fillItems() {
       list.append(empty)
     }
     creating = true
+    itemIndex = 0
+    select.value = '0'
+  } else if (creating) {
+    const option = document.createElement('option')
+    option.value = String(items.length)
+    option.textContent = t('editor.newExercise')
+    select.append(option)
+    itemIndex = items.length
+    select.value = option.value
+  } else {
+    if (itemIndex >= items.length) itemIndex = 0
+    select.value = String(itemIndex)
   }
-  if (itemIndex >= items.length) itemIndex = 0
-  select.value = String(items.length ? itemIndex : 0)
   refreshActionButton()
+  } finally {
+    editorNavLock = locked
+  }
 }
 
 export function refreshEditorChrome() {
@@ -696,6 +1310,7 @@ export function refreshEditorChrome() {
   syncPanelHint()
   paintRecordButton()
   refreshBuilder()
+  paintPositionLegality(currentFen())
 }
 
 function listItems() {
@@ -721,7 +1336,7 @@ function exerciseCode(item, index) {
 }
 
 function rowTitle(item, index) {
-  const text = tx(item.explanation) || tx(item.hint) || tx(item.what_to_observe) || t('editor.customDiagram')
+  const text = tx(item.title) || tx(item.explanation) || tx(item.hint) || tx(item.what_to_observe) || t('editor.customDiagram')
   const first = String(text).split('\n')[0].trim().slice(0, 48)
   return `${index + 1}. ${exerciseCode(item, index)} · ${first}`
 }
@@ -759,10 +1374,12 @@ function loadItem() {
   if (!item) {
     creating = sectionId !== 'learn'
     const form = document.querySelector('#curriculum-editor')
+    form.querySelector('#ed-title').value = ''
     form.querySelector('#ed-text').value = ''
     form.querySelector('#ed-note').value = ''
     form.querySelector('#ed-move').value = ''
     form.querySelector('#ed-pgn').value = ''
+    showEngineGoal('')
     setPgnOpen(false)
     refreshActionButton()
     syncPanelHint()
@@ -774,6 +1391,7 @@ function loadItem() {
   }
   creating = false
   const form = document.querySelector('#curriculum-editor')
+  form.querySelector('#ed-title').value = tx(item.title) || ''
   form.querySelector('#ed-text').value = tx(item.explanation) || tx(item.hint) || ''
   form.querySelector('#ed-note').value = tx(item.what_to_observe) || ''
   form.querySelector('#ed-move').value = formatLine(item)
@@ -796,6 +1414,7 @@ function loadItem() {
 function readForm() {
   const form = document.querySelector('#curriculum-editor')
   return {
+    title: form.querySelector('#ed-title')?.value.trim() || '',
     text: form.querySelector('#ed-text').value,
     note: form.querySelector('#ed-note').value,
     move: form.querySelector('#ed-move').value.trim(),
@@ -810,7 +1429,7 @@ function readForm() {
 
 function formHasContent(form) {
   const emptyBoard = !form.fen || form.fen.startsWith('8/8/8/8/8/8/8/8')
-  return Boolean(form.text.trim() || form.note.trim() || form.move || form.pgn || !emptyBoard)
+  return Boolean(form.title || form.text.trim() || form.note.trim() || form.move || form.pgn || !emptyBoard)
 }
 
 function formatLine(item) {
@@ -853,6 +1472,7 @@ function assignLine(item, fen, typed, force) {
 }
 
 function applyToItem(item, form, force = false) {
+  item.title = writeText(item.title, form.title)
   item.fen = form.fen
   item.pgn = form.pgn
   assignLine(item, form.fen, form.move, force)
@@ -887,7 +1507,7 @@ function rememberShowEval() {
 }
 
 function rememberItem() {
-  if (!draft) return
+  if (!draft || (creating && sectionId !== 'learn')) return
   rememberShowEval()
   const form = readForm()
   if (sectionId === 'learn') {
@@ -912,23 +1532,34 @@ function rememberItem() {
   applyToItem(item, form)
 }
 
+function nextExerciseId(items) {
+  const used = (items || []).map((item) => {
+    const raw = item?.id
+    if (typeof raw === 'number' && Number.isFinite(raw)) return raw
+    const match = String(raw ?? '').match(/(\d+)\s*$/)
+    return match ? Number(match[1]) : 0
+  })
+  return Math.max(0, ...(used.length ? used : [0]), (items || []).length) + 1
+}
+
 function pushBlank(fen) {
   const difficulty = document.querySelector('#ed-difficulty')?.value || 'basic'
   const mark = { levelId, subchapterId: subId, difficulty }
   if (sectionId === 'examples') {
     draft.examples = draft.examples || []
-    draft.examples.push({ id: draft.examples.length + 1, type: 'interactive_fen', fen, explanation: blank(), what_to_observe: blank(), correctMove: '', ...mark })
+    const id = nextExerciseId(draft.examples)
+    draft.examples.push({ id, type: 'interactive_fen', fen, explanation: blank(), what_to_observe: blank(), correctMove: '', ...mark })
     itemIndex = draft.examples.length - 1
   } else if (sectionId === 'practice') {
     draft.practice = draft.practice || { max_attempts: 3, exercises: [] }
-    const next = draft.practice.exercises.length + 1
-    draft.practice.exercises.push({ id: next, type: 'interactive_fen', fen, hint: blank(), correctMove: '', ...mark })
-    itemIndex = next - 1
+    const id = nextExerciseId(draft.practice.exercises)
+    draft.practice.exercises.push({ id, type: 'interactive_fen', fen, hint: blank(), correctMove: '', ...mark })
+    itemIndex = draft.practice.exercises.length - 1
   } else if (sectionId === 'evaluation') {
     draft.evaluation = draft.evaluation || { pass_score: 9, tests: [] }
-    const next = draft.evaluation.tests.length + 1
-    draft.evaluation.tests.push({ id: `T${next}`, type: 'find_move', level: difficulty, fen, explanation: blank(), correctMove: '', ...mark })
-    itemIndex = next - 1
+    const id = `T${nextExerciseId(draft.evaluation.tests)}`
+    draft.evaluation.tests.push({ id, type: 'find_move', level: difficulty, fen, explanation: blank(), correctMove: '', ...mark })
+    itemIndex = draft.evaluation.tests.length - 1
   }
 }
 
@@ -952,20 +1583,166 @@ function onPrimary() {
   else save()
 }
 
+export function startNewEditorExercise() {
+  if (!active || !draft) return false
+  beginNew()
+  document.querySelector('#ed-title')?.focus()
+  return true
+}
+
+function trainPlacement() {
+  if (!hooks.inTrain?.()) return null
+  if (trainNav) return placementFromSelects()
+  if (boundDrill) {
+    return {
+      id: '',
+      parentId: boundDrill.parentId || '',
+      afterId: boundDrill.id || '',
+      ancestors: Array.isArray(boundDrill.ancestors) ? boundDrill.ancestors.slice() : [],
+    }
+  }
+  return hooks.trainPlacement?.() || { id: '', parentId: '', afterId: '', ancestors: [] }
+}
+
+function authoredPayload(record = {}) {
+  const form = readForm()
+  const source = boundDrill?.authored ? boundDrill : (authoringTrain || (trainNav ? placementFromSelects() : null))
+  return {
+    id: source?.id || record.id || '',
+    code: source?.code || record.code || '',
+    parentId: source?.parentId || record.parentId || '',
+    afterId: source?.afterId || record.afterId || '',
+    ancestors: source?.ancestors || record.ancestors || [],
+    title: record.title || form.title,
+    section: record.section || boundDrill?.section || '',
+    fen: record.fen || form.fen || currentFen(),
+    prompt: record.prompt ?? form.text,
+    note: record.note ?? form.note,
+    move: record.move ?? form.move,
+    pgn: record.pgn ?? form.pgn,
+    goal: document.querySelector('#ed-eval')?.dataset.goal || source?.goal || record.goal || '',
+  }
+}
+
+function bindAuthored(saved) {
+  const form = readForm()
+  boundDrill = {
+    id: saved.id,
+    code: saved.code,
+    square: clickSquare(saved.move || form.move) ? String(saved.move || form.move).toLowerCase() : '',
+    level: '',
+    chapter: '',
+    section: `${saved.code} · ${saved.title}`,
+    parentId: saved.parentId || '',
+    afterId: saved.afterId || '',
+    ancestors: Array.isArray(saved.ancestors) ? saved.ancestors : [],
+    authored: true,
+    goal: saved.goal === 'mate' || saved.goal === 'advantage' ? saved.goal : '',
+  }
+  creating = false
+  authoringTrain = null
+  showBoundDrillList(boundDrill.section)
+  hooks.onAuthoredSaved?.(saved)
+}
+
+async function publishTrainSection() {
+  if (authoringBusy) return
+  const title = String(document.querySelector('#ed-title')?.value || '').trim()
+  if (!title) {
+    hooks.status?.(t('editor.needSectionTitle'))
+    document.querySelector('#ed-title')?.focus()
+    return
+  }
+  const parent = findOutline(trainOutline, document.querySelector('#ed-sub')?.value)
+    || findOutline(trainOutline, document.querySelector('#ed-level')?.value)
+  if (!parent?.id || !hooks.saveTrainSection) {
+    hooks.status?.(t('editor.fileFail'))
+    return
+  }
+  const groups = (parent.children || []).filter((child) => !child.drill)
+  const afterId = groups.length ? groups[groups.length - 1].id : ''
+  authoringBusy = true
+  try {
+    const saved = await hooks.saveTrainSection({ title, parentId: parent.id, afterId })
+    if (!saved?.id) throw new Error(t('editor.fileFail'))
+    const titleField = document.querySelector('#ed-title')
+    if (titleField) titleField.value = ''
+    hooks.status?.(t('editor.sectionSaved'))
+    showToast(t('editor.sectionAdded', { name: saved.title || title }))
+  } catch (err) {
+    hooks.status?.(err instanceof Error ? err.message : t('editor.fileFail'))
+  } finally {
+    authoringBusy = false
+  }
+}
+
+async function publishAuthoredExercise() {
+  if (authoringBusy || !authoringTrain) return
+  const form = readForm()
+  if (!form.title) {
+    hooks.status?.(t('editor.needTitle'))
+    document.querySelector('#ed-title')?.focus()
+    return
+  }
+  if (!hooks.saveAuthoredExercise) {
+    hooks.status?.(t('editor.fileFail'))
+    return
+  }
+  authoringBusy = true
+  try {
+    const saved = await hooks.saveAuthoredExercise(authoredPayload())
+    if (!saved?.id) throw new Error(t('editor.fileFail'))
+    bindAuthored(saved)
+    hooks.status?.(t('editor.menuSaved'))
+    showToast(t('editor.added'))
+  } catch (err) {
+    hooks.status?.(err instanceof Error ? err.message : t('editor.fileFail'))
+  } finally {
+    authoringBusy = false
+  }
+}
+
 function beginNew() {
-  if (sectionId === 'learn' || !draft) return
+  if (!draft) return
+  const placement = trainPlacement()
+  if (sectionId === 'learn') {
+    sectionId = 'examples'
+    const section = document.querySelector('#ed-section')
+    if (section && [...section.options].some((option) => option.value === 'examples')) section.value = 'examples'
+  }
   stopRecording({ resetBoard: true })
-  if (!creating) persist()
-  creating = true
-  const form = document.querySelector('#curriculum-editor')
-  form.querySelector('#ed-text').value = ''
-  form.querySelector('#ed-note').value = ''
-  form.querySelector('#ed-move').value = ''
-  form.querySelector('#ed-pgn').value = ''
-  setPgnOpen(false)
-  fillItems()
-  setEntryOpen(true)
-  syncPanelHint()
+  editorNavLock = true
+  try {
+    if (boundDrill) {
+      commitBoundDrill()
+      releaseTrainBinding()
+    } else if (!creating) persist()
+    authoringTrain = placement
+    if (trainNav) {
+      const section = document.querySelector('#ed-section')
+      if (section && [...section.options].some((option) => option.value === 'new')) {
+        editorNavLock = true
+        section.value = 'new'
+        editorNavLock = false
+      }
+    }
+    creating = true
+    itemIndex = listItems().length
+    const form = document.querySelector('#curriculum-editor')
+    form.querySelector('#ed-title').value = ''
+    form.querySelector('#ed-text').value = ''
+    form.querySelector('#ed-note').value = ''
+    form.querySelector('#ed-move').value = ''
+    form.querySelector('#ed-pgn').value = ''
+    showEngineGoal('')
+    setPgnOpen(false)
+    fillItems()
+    setEntryOpen(true)
+    syncPanelHint()
+    showDesk('edit')
+  } finally {
+    editorNavLock = false
+  }
 }
 
 function setEntryOpen(open) {
@@ -977,10 +1754,38 @@ function setEntryOpen(open) {
   paintEditorTools()
 }
 
+function discardNewTrainDraft() {
+  creating = false
+  authoringTrain = null
+  const previous = trainSelectionId
+  if (previous && previous !== 'new') hooks.focusTrainDrill?.(previous)
+}
+
+async function deleteBoundDrill() {
+  const drill = boundDrill
+  if (!drill?.id && !drill?.code) {
+    if (trainNav && creating) discardNewTrainDraft()
+    return
+  }
+  const name = document.querySelector('#ed-title')?.value.trim() || drill.code || drill.id
+  if (!window.confirm(t('editor.confirmRemove', { name }))) return
+  boundDrill = null
+  creating = false
+  authoringTrain = null
+  try {
+    await hooks.deleteTrainDrill?.(drill)
+    hooks.status?.(t('editor.deleted'))
+    showToast(t('editor.removedToast', { name }))
+  } catch (err) {
+    boundDrill = drill
+    hooks.status?.(err instanceof Error ? err.message : t('editor.fileFail'))
+  }
+}
+
 function deleteItem(index = itemIndex) {
   if (!draft || sectionId === 'learn' || !subId) return
   const items = listItems()
-  if (!items[index]) return
+  if (!Number.isInteger(index) || !items[index]) return
   const name = exerciseCode(items[index], index)
   items.splice(index, 1)
   itemIndex = Math.min(index, Math.max(0, items.length - 1))
@@ -994,6 +1799,7 @@ function deleteItem(index = itemIndex) {
 }
 
 function persist() {
+  if (boundDrill) return false
   if (!draft || !levelId || !subId) return false
   if (creating) {
     if (sectionId === 'learn' || !formHasContent(readForm())) return false
@@ -1007,9 +1813,35 @@ function persist() {
 }
 
 function save() {
+  const sectionValue = document.querySelector('#ed-section')?.value || ''
+  if (trainNav && (sectionValue === 'new-section' || sectionValue === '')) {
+    if (sectionValue === 'new-section') void publishTrainSection()
+    else hooks.status?.(t('editor.chooseSection'))
+    return
+  }
+  const pickedSection = trainNav && sectionValue ? findOutline(trainOutline, sectionValue) : null
+  if (trainNav && pickedSection?.authoredSection && !boundDrill) {
+    authoringTrain = placementFromSelects()
+    creating = true
+    publishAuthoredExercise()
+    return
+  }
+  if (creating && authoringTrain) {
+    publishAuthoredExercise()
+    return
+  }
+  if (creating) {
+    if (boundDrill) releaseTrainBinding()
+    if (sectionId !== 'learn' && draft && subId) addItem()
+    return
+  }
+  if (boundDrill) {
+    saveBoundTrainDrill()
+    return
+  }
   if (!draft || !levelId || !subId) return
   stopRecording({ resetBoard: true })
-  if (sectionId !== 'learn' && (creating || !listItems()[itemIndex])) {
+  if (sectionId !== 'learn' && !listItems()[itemIndex]) {
     addItem()
     return
   }
@@ -1030,6 +1862,15 @@ function save() {
   refreshPreviewCopy()
   hooks.status?.(t('editor.saved'))
   showToast(t('editor.updated', { name: exerciseCode(item, itemIndex) }))
+}
+
+export function currentTrainExport() {
+  if (!boundDrill) return null
+  const record = commitBoundDrill()
+  if (!record) return null
+  if (boundDrill.authored) saveBoundTrainDrill({ quiet: true })
+  else hooks.onTrainDrillSaved?.(record)
+  return authoredPayload(record)
 }
 
 function exportFile() {
@@ -1063,6 +1904,11 @@ function importFile(event) {
 }
 
 function preview() {
+  if (boundDrill) {
+    const record = saveBoundTrainDrill()
+    if (record) hooks.previewTrain?.(record)
+    return
+  }
   save()
   const level = getLevels().find((item) => item.id === levelId)
   const sub = currentSub()
@@ -1104,13 +1950,23 @@ function writeBuilderLine(moves, pgn) {
   if (recording && recordsLine()) return
   const form = document.querySelector('#curriculum-editor')
   if (!form) return
-  form.querySelector('#ed-move').value = moves.join(' ')
+  const field = form.querySelector('#ed-move')
+  const typed = String(field?.value || '').trim()
+  if (boundDrill && !moves.length && typed && !clickSquare(typed)) {
+    form.querySelector('#ed-pgn').value = pgn || ''
+    return
+  }
+  field.value = moves.join(' ')
   form.querySelector('#ed-pgn').value = pgn || ''
   setPgnOpen(pgn)
 }
 
 export function showLoadedLesson(nextLevelId, nextSubId) {
   if (!active || !nextLevelId || !nextSubId) return false
+  if (boundDrill) {
+    releaseTrainBinding()
+    fillLevels()
+  }
   levelId = nextLevelId
   subId = nextSubId
   sectionId = 'learn'
@@ -1163,12 +2019,17 @@ function syncPanelHint() {
 
 export function focusLessonDiagram(nextLevelId, nextSubId) {
   if (!active || !nextLevelId || !nextSubId) return false
+  if (boundDrill) {
+    releaseTrainBinding()
+    fillLevels()
+  }
   const form = document.querySelector('#curriculum-editor')
   const levelSelect = form?.querySelector('#ed-level')
   const sectionSelect = form?.querySelector('#ed-section')
   if (!levelSelect || !sectionSelect) return false
   if (!levelSelect.options.length) fillLevels()
   if (levelId === nextLevelId && subId === nextSubId && sectionId === 'learn') {
+    setEntryOpen(true)
     paintEditorTools()
     return true
   }
@@ -1184,12 +2045,17 @@ export function focusLessonDiagram(nextLevelId, nextSubId) {
   const subSelect = form.querySelector('#ed-sub')
   if (subSelect && [...subSelect.options].some((option) => option.value === nextSubId)) subSelect.value = nextSubId
   loadItem()
+  setEntryOpen(true)
   paintEditorTools()
   return true
 }
 
 export function focusEditorLevel(nextLevelId, nextSubId = '') {
   if (!active || !nextLevelId) return false
+  if (boundDrill) {
+    releaseTrainBinding()
+    fillLevels()
+  }
   const form = document.querySelector('#curriculum-editor')
   const levelSelect = form?.querySelector('#ed-level')
   const subSelect = form?.querySelector('#ed-sub')
@@ -1275,6 +2141,26 @@ function writeFen(fen, mirror = true) {
   if (mirror) mirrorFen(clean)
   const turn = document.querySelector('#ed-turn')
   if (turn) turn.value = turnOf(clean)
+  paintPositionLegality(clean)
+}
+
+export function paintPositionLegality(fen = currentFen()) {
+  const node = document.querySelector('#ed-legal')
+  if (!node) return
+  if (!active) {
+    node.hidden = true
+    node.textContent = ''
+    return
+  }
+  const legal = legalPosition(fen)
+  node.hidden = false
+  node.classList.toggle('is-ok', legal)
+  node.classList.toggle('is-bad', !legal)
+  node.textContent = t(legal ? 'editor.positionLegal' : 'editor.positionIllegal')
+}
+
+function fenPlacement(fen) {
+  return String(fen || '').trim().split(/\s+/)[0] || ''
 }
 
 function mirrorFen(clean, source) {
@@ -1327,6 +2213,7 @@ function readMap(fen) {
 }
 
 function serialize(map, turn) {
+  // FEN standard: rândul 8 primul, coloanele a–h. Nu depinde de rotirea tablei.
   const ranks = []
   for (let rank = 8; rank >= 1; rank -= 1) {
     let row = ''

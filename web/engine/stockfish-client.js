@@ -2,8 +2,10 @@
 // Binarele sunt build-ul oficial stockfish.js (GPLv3): stockfish-19-lite-single.js/.wasm.
 
 import { Chess, validateFen } from '../vendor/chess.js'
-import { collectSearch, lossInCentipawns, scoreForMover } from './uci.js'
+import { collectSearch, lossInCentipawns, parseScoreLine, scoreForMover } from './uci.js'
 
+// Nu adăuga „,worker” în hash. În acest build condiția devine adevărată și
+// sare peste încărcarea wasm. Worker-ul clasic pornește singur: onmessage există.
 const WORKER_URL = new URL('./stockfish-19-lite-single.js', import.meta.url)
 
 function playUserMove(fen, moveText) {
@@ -62,14 +64,21 @@ export class StockfishClient {
   }
 
   #bootWorker() {
+    console.log('[Stockfish] worker', WORKER_URL.href)
     this.#worker = new Worker(WORKER_URL)
     this.#worker.onmessage = (event) => this.#onMessage(event.data)
     this.#worker.onerror = (event) => {
       const reason = this.#pending?.failReason
       const detail = reason || event.error?.message || event.message || 'Stockfish nu a putut porni'
+      console.error('[Stockfish] eroare worker', detail)
       this.#fail(new Error(detail))
     }
     this.#ready = this.#boot()
+  }
+
+  #post(command) {
+    console.log('[Stockfish] →', command)
+    this.#worker.postMessage(command)
   }
 
   ready() {
@@ -83,12 +92,18 @@ export class StockfishClient {
 
   requestLive(fen, options = {}) {
     const id = ++this.#liveId
-    if (this.#pending?.live) this.#worker.postMessage('stop')
+    if (this.#pending?.live) this.#post('stop')
     const promise = this.#enqueue(async () => {
       if (id !== this.#liveId) return null
       const check = validateFen(String(fen || '').trim())
       if (!check.ok) return null
-      return this.#analyze(fen, { depth: options.depth ?? 15, multiPv: 1, live: true })
+      return this.#analyze(fen, {
+        depth: options.depth ?? 15,
+        multiPv: 1,
+        live: true,
+        onInfo: options.onInfo,
+        onProgress: options.onProgress,
+      })
     })
     return { id, promise }
   }
@@ -99,7 +114,7 @@ export class StockfishClient {
 
   #cancelLive() {
     this.#liveId += 1
-    if (this.#pending?.live) this.#worker.postMessage('stop')
+    if (this.#pending?.live) this.#post('stop')
   }
 
   async evaluateUserMove(fen, moveText, options = {}) {
@@ -150,10 +165,17 @@ export class StockfishClient {
   async #boot() {
     await this.#waitFor('uci', (line) => line === 'uciok', 30000)
     await this.#waitFor('isready', (line) => line === 'readyok', 30000)
+    console.log('[Stockfish] gata')
   }
 
   #enqueue(task) {
-    const run = this.#chain.then(task, task)
+    const run = this.#chain.then(async () => {
+      await this.#ready
+      return task()
+    }, async () => {
+      await this.#ready
+      return task()
+    })
     this.#chain = run.then(() => {}, () => {})
     return run
   }
@@ -162,19 +184,24 @@ export class StockfishClient {
     const check = validateFen(fen.trim())
     if (!check.ok) throw new Error(check.error)
 
-    const depth = options.depth ?? 12
+    const depth = options.depth ?? 15
     const multiPv = options.multiPv ?? 3
+    const movetime = Number(options.movetime) || 0
     const cleanFen = fen.trim()
     const started = performance.now()
+    const go = movetime > 0
+      ? `go depth ${depth} movetime ${Math.round(movetime)}`
+      : `go depth ${depth}`
 
-    this.#worker.postMessage(`setoption name MultiPV value ${multiPv}`)
-    this.#worker.postMessage(`position fen ${cleanFen}`)
+    this.#post(`setoption name MultiPV value ${multiPv}`)
+    this.#post(`position fen ${cleanFen}`)
     const output = await this.#waitFor(
-      `go depth ${depth}`,
+      go,
       (line) => line.startsWith('bestmove'),
       120000,
       options.onProgress,
       Boolean(options.live),
+      options.onInfo,
     )
     const search = collectSearch(output)
     const measured = Math.max(0, Math.round(performance.now() - started))
@@ -187,7 +214,7 @@ export class StockfishClient {
     }
   }
 
-  #waitFor(command, isDone, timeoutMs, onProgress, live = false) {
+  #waitFor(command, isDone, timeoutMs, onProgress, live = false, onInfo) {
     return new Promise((resolve, reject) => {
       const timer = setTimeout(() => {
         if (this.#pending) this.#pending = null
@@ -197,6 +224,7 @@ export class StockfishClient {
       this.#pending = {
         isDone,
         onProgress,
+        onInfo,
         live,
         lines: [],
         resolve: (lines) => {
@@ -208,22 +236,25 @@ export class StockfishClient {
           reject(error)
         },
       }
-      this.#worker.postMessage(command)
+      this.#post(command)
     })
   }
 
   #onMessage(data) {
+    if (typeof data !== 'string') {
+      console.log('[Stockfish] ←', data)
+      return
+    }
     const pending = this.#pending
-    if (!pending) return
-
-    for (const raw of String(data).split(/\n/)) {
+    for (const raw of data.split(/\n/)) {
       const line = raw.trim()
       if (!line) continue
+      console.log('[Stockfish] ←', line)
+      if (!pending) continue
       pending.lines.push(line)
-      const info = line.startsWith('info ') ? /(?:^|\s)depth (\d+)/.exec(line) : null
-      if (info && pending.onProgress) {
-        pending.onProgress({ depth: Number(info[1]) })
-      }
+      const score = parseScoreLine(line)
+      if (score && pending.onInfo) pending.onInfo(score)
+      if (score?.depth && pending.onProgress) pending.onProgress({ depth: score.depth })
       if (/Invalid FEN|CRITICAL ERROR/.test(line)) {
         pending.failReason = /32 pieces/.test(line)
           ? 'Poziția are mai mult de 32 de piese. Motorul nu poate răspunde.'

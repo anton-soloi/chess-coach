@@ -1,5 +1,5 @@
 import { Chess, validateFen } from './vendor/chess.js'
-import { formatSolution, illegalSequenceMove, playTypedMove, sameMove, solutionMoves } from './notation.js'
+import { fenAlignedToMove, formatSolution, illegalSequenceMove, legalPosition, movePlayable, playTypedMove, sameMove, solutionLines, solutionMoves } from './notation.js'
 import { StockfishClient } from './engine/stockfish-client.js'
 import { coachQuestion } from './tutor.js'
 import { InteractiveBoard, formatEngineTime } from './board.js'
@@ -7,7 +7,7 @@ import { addMenuTheme, currentCurriculumLevel, deleteMenuTheme, getLevels, insta
 import { deletePracticeExercise, listPracticeExercises, resolveInteractiveLesson, saveLessonOverride, savePracticeExercise } from './interactive-lesson.js'
 import { closeLevels, isLevelsMode, loadLevels, markLessonDone, markLessonStarted, openLevels, refreshLevels } from './levels.js'
 import { closePedagogy, focusSavedExercise, hasSessionNext, isPedagogyOpen, isProcedureExamples, noteSessionResult, openPedagogy, pedagogyEvalVisible, pedagogyStep, pedagogyStepName, pedagogySubId, refreshPedagogy, resumePedagogy, takeSessionNext } from './pedagogy.js'
-import { bindTeacherEditor, captureLessonDocument, clearSavedAnnotations, closeTeacherEditor, editorMove, editorRemove, editorSelection, editorSquare, flushEditor, focusEditorLevel, focusEditorTheme, focusLessonDiagram, isTeacherEditor, openTeacherEditor, refreshEditorChrome, resumeTeacherEditor, showLoadedLesson, showSavedAnnotations, stampNarrative, syncBoardAnnotations } from './editor.js'
+import { bindTeacherEditor, captureLessonDocument, clearSavedAnnotations, closeTeacherEditor, currentTrainExport, editorMove, editorRemove, editorSelection, editorSquare, flushEditor, focusEditorLevel, focusEditorTheme, focusLessonDiagram, isTeacherEditor, openTeacherEditor, paintPositionLegality, refreshEditorChrome, relabelTrainHierarchy, resumeTeacherEditor, saveBoundTrainDrill, seedTeacherDrill, showLoadedLesson, showSavedAnnotations, stampNarrative, startNewEditorExercise, syncBoardAnnotations, syncTrainHierarchy, trainDrillRecord } from './editor.js'
 import { paintHintArrow } from './board-notes.js'
 import { clearHintArrow, hintArrow, mountHintCoach, noteHintMiss, openHintDiagram, refreshHintCoach } from './hint-coach.js'
 import { sectionsFromLesson } from './lesson-pack.js'
@@ -15,6 +15,7 @@ import { closeMasters, isMastersMode, loadMasters, openMasters, refreshMasters }
 import { initI18n, lang, onLang, t, tList, tx } from './i18n.js'
 import { isSoundOn, playEffect, playExerciseEnd, playMoveEffect, setSoundOn } from './audio.js'
 import { bindGenderSelector } from './avatar-profile.js'
+import { mountWelcome } from './welcome.js'
 import { mountAvatarDisplay, setAvatarCaption, setAvatarLevel, setAvatarMouth, setAvatarState } from './avatar-display.js'
 import { playNarrative, stopNarrative } from './audio-sync.js'
 import { matchesTarget, practiceOf } from './practice-engine.js'
@@ -22,6 +23,8 @@ import { builderSnapshot, builderTouched } from './lesson-builder.js'
 import { handlePiecePathSquare, mountPiecePath, piecePathActive, piecePathCanDrag, refreshPiecePathChrome, startPiecePath, stopPiecePath, syncPiecePath } from './piece-path.js'
 import { mountStudyClock, refreshStudyClock } from './study-clock.js'
 import { mountPgnImport } from './pgn-import.js'
+import { trainExerciseTree } from './train-exercises.js'
+import { COACH_SEARCH, describeLine, goalFromLine, judgeTrainMove, playedUci, studentView } from './train-coach.js'
 
 const EXERCISE_FEN = '6b1/3k2p1/1p1b1p1p/1K3P1P/2B3P1/2P3B1/8/8 w - - 0 37'
 const START_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
@@ -765,7 +768,7 @@ function readMoveField() {
 }
 
 function engineDepth() {
-  return Number(depthInput?.value) || 12
+  return Number(depthInput?.value) || 15
 }
 
 function lockEval(disabled) {
@@ -790,6 +793,7 @@ const interactive = new InteractiveBoard(document.querySelector('#interactive-bo
 let busy = false
 let mode = 'analysis'
 let task = null
+let lessonPromotion = null
 let curriculumLessonId = null
 let exam = null
 let examProbeIndex = -1
@@ -818,6 +822,10 @@ function currentFen() {
 
 function sideToMove(fen) {
   return fen.trim().split(/\s+/)[1] === 'b' ? 'b' : 'w'
+}
+
+function fenPlacement(fen) {
+  return String(fen || '').trim().split(/\s+/)[0] || ''
 }
 
 function otherSide(side) {
@@ -1012,6 +1020,11 @@ function toggleAutoPlay() {
   }, 1500)
 }
 
+function orientBoardToFen(fen) {
+  const wantWhite = sideToMove(fen) !== 'b'
+  if (interactive.whiteAtBottom !== wantWhite) interactive.flip()
+}
+
 function showPosition(fen) {
   fenInput.value = String(fen || '').trim()
   drawBoard()
@@ -1027,6 +1040,7 @@ function drawBoard() {
   if (!placed) {
     const check = validateFen(currentFen())
     setStatus(check.ok ? 'FEN invalid' : check.error)
+    paintPositionLegality(currentFen())
     scheduleLiveEval()
     return
   }
@@ -1036,6 +1050,7 @@ function drawBoard() {
   syncPiecePath(interactive.whiteAtBottom)
   syncBoardAnnotations(interactive.whiteAtBottom)
   paintHintArrow(document.querySelector('#board-notes'), hintArrow(), interactive.whiteAtBottom)
+  paintPositionLegality(currentFen())
   scheduleLiveEval()
 }
 
@@ -1053,12 +1068,26 @@ function viewingAsTeacher() {
 }
 
 function evalBarVisible() {
-  if (piecePathActive() || train || interactive.blindfold || boardCovered()) return false
-  if (viewingAsTeacher()) return true
+  if (piecePathActive() || interactive.blindfold || boardCovered()) return false
+  if (train && !train.over && (train.kind === 'puzzle' || train.kind === 'quest')) return false
+  if (practiceGate?.open && !practiceGate.solved) return false
+  if (task?.coach) return false
+  if (task?.expectMove && !demoLine) return false
+  if (procedurePuzzle && !procedureSolved) return false
   if (practiceIndex >= 0) return false
   if (isPedagogyOpen()) return pedagogyEvalVisible()
   if (studentEvalStep) return pedagogyEvalVisible(studentEvalStep)
-  return false
+  return true
+}
+
+function paintEngineInfo(fen, info) {
+  if (!info) return
+  paintEval({
+    evaluationCp: info.kind === 'cp' ? info.value : null,
+    mateIn: info.kind === 'mate' ? info.value : null,
+  }, fen)
+  const side = sideToMove(fen)
+  if (side === 'w' || side === 'b') interactive.addEngineTime(side, info.timeMs || 0, { intoClock: false })
 }
 
 function whiteScore(line, fen) {
@@ -1118,7 +1147,13 @@ async function runLiveEval(serial) {
   const readout = document.querySelector('#eval-readout')
   if (readout && readout.textContent === '—') readout.textContent = '…'
   try {
-    const { promise } = engine.requestLive(fen, { depth: 15 })
+    const { promise } = engine.requestLive(fen, {
+      depth: 15,
+      onInfo: (info) => {
+        if (serial !== liveSerial || currentFen() !== fen) return
+        paintEngineInfo(fen, info)
+      },
+    })
     const result = await promise
     if (serial !== liveSerial || !result || currentFen() !== fen) return
     paintEval(result.lines[0], fen)
@@ -1130,7 +1165,7 @@ async function runLiveEval(serial) {
 function squareEdges(square, whiteAtBottom) {
   const file = square.charCodeAt(0) - 97
   const rank = Number(square[1])
-  const col = whiteAtBottom ? file : 7 - file
+  const col = file
   const row = whiteAtBottom ? 8 - rank : rank - 1
   return { left: col / 8, top: row / 8, right: (col + 1) / 8, bottom: (row + 1) / 8 }
 }
@@ -1229,13 +1264,72 @@ let practiceView = 'theory'
 let practiceIndex = -1
 let practiceEditId = ''
 
+function savedCurriculumDiagram(lessonId) {
+  const id = String(lessonId || '').trim()
+  if (!id) return null
+  for (const level of getLevels()) {
+    for (const sub of level.subchapters || []) {
+      const sections = sub.sections || {}
+      const rows = []
+      if (sections.learn) rows.push({ kind: 'learn', item: sections.learn })
+      for (const item of sections.examples || []) rows.push({ kind: 'examples', item })
+      for (const item of sections.practice?.exercises || []) rows.push({ kind: 'practice', item })
+      for (const item of sections.evaluation?.tests || []) rows.push({ kind: 'evaluation', item })
+      for (const row of rows) {
+        const item = row.item
+        if (!item) continue
+        const keys = [item.lessonId, item.id, item.sidebarId].map((value) => String(value || ''))
+        if (!keys.includes(id)) continue
+        const fen = String(item.fen || item.diagram_fen || '').trim()
+        const correctMove = String(
+          item.correctMove
+          || (Array.isArray(item.solutie) ? item.solutie.join(' ') : item.solutie)
+          || '',
+        ).trim()
+        const empty = !fen || fen.startsWith('8/8/8/8/8/8/8/8')
+        const text = [tx(item.title), tx(item.explanation) || tx(item.hint) || tx(item.prompt), tx(item.what_to_observe)].filter(Boolean).join('\n\n')
+        if (empty && !correctMove && !text) continue
+        return {
+          fen: empty ? '' : fen,
+          pgn: item.pgn || '',
+          text,
+          correctMove,
+          solutie: item.solutie,
+          moves: item.moves,
+          orientation: item.orientation,
+          annotations: item.annotations,
+          training: row.kind === 'practice' && Boolean(correctMove),
+          testing: row.kind === 'evaluation' && Boolean(correctMove),
+          maxAttempts: Number(item.maxAttempts) || 3,
+          timeLimitSec: Number(item.timeLimitSec) || 0,
+          scoreWeight: Number(item.scoreWeight) || 1,
+        }
+      }
+    }
+  }
+  return null
+}
+
+function lessonSpeech(procedure, savedText = '') {
+  const parts = [savedText, tx(procedure?.prompt), tx(procedure?.definition), tx(procedure?.what_to_observe)]
+    .map((part) => String(part || '').trim())
+    .filter(Boolean)
+  const unique = []
+  for (const part of parts) {
+    if (!unique.includes(part)) unique.push(part)
+  }
+  return unique.join('\n\n')
+}
+
 function showProcedureCourse(procedure) {
   clearTask()
   closePedagogy()
   closeLevels()
   const cheer = document.querySelector('#cheer')
   if (cheer) cheer.hidden = true
-  const storedFen = String(procedure.fen || '').trim()
+  const saved = savedCurriculumDiagram(procedure.id)
+  const savedFen = String(saved?.fen || '').trim()
+  const storedFen = savedFen || String(procedure.fen || '').trim()
   interactive.lastMove = null
   interactive.clearSelection()
   fenInput.value = storedFen || START_FEN
@@ -1262,7 +1356,10 @@ function showProcedureCourse(procedure) {
   const reading = document.querySelector('#procedure-read')
   const readDefinition = document.querySelector('#procedure-read-definition')
   const readRest = document.querySelector('#procedure-read-rest')
-  ask.textContent = procedureAsk(procedure, fenInput.value)
+  const spoken = lessonSpeech(procedure, saved?.text || '')
+  const savedLine = procedureLineText(procedure) || saved?.correctMove || ''
+  const childProcedure = { ...procedure, fen: fenInput.value, solutie: savedLine || procedure.solutie || '' }
+  ask.textContent = spoken || procedureAsk(procedure, fenInput.value)
   ask.hidden = !child
   readDefinition.textContent = definition.value
   readRest.textContent = extra
@@ -1284,7 +1381,7 @@ function showProcedureCourse(procedure) {
   practiceView = 'theory'
   practiceIndex = -1
   practiceEditId = ''
-  if (child) armProcedurePuzzle(procedure)
+  if (child) armProcedurePuzzle(childProcedure)
   else procedurePuzzle = false
   syncPracticeChrome()
   setStatus('')
@@ -1496,27 +1593,8 @@ function readProcedureDraft() {
   }
 }
 
-function idleKingSquare(chess) {
-  const idle = chess.turn() === 'w' ? 'b' : 'w'
-  for (const rank of chess.board()) {
-    for (const piece of rank) {
-      if (piece?.type === 'k' && piece.color === idle) return piece.square
-    }
-  }
-  return ''
-}
-
 function legalChessPosition(fen) {
-  const text = String(fen || '').trim()
-  if (!validateFen(text).ok) return false
-  try {
-    const chess = new Chess(text)
-    const king = idleKingSquare(chess)
-    if (!king || chess.isAttacked(king, chess.turn())) return false
-    return true
-  } catch {
-    return false
-  }
+  return legalPosition(fen)
 }
 
 function warnIllegalFen() {
@@ -2027,6 +2105,7 @@ function returnToThemeLesson() {
 
 function showTeacherDiagram(target) {
   clearTask()
+  closeProcedureCourse()
   demoLine = Boolean(target.demo)
   closeLevels()
   curriculumLessonId = null
@@ -2075,7 +2154,8 @@ function showTeacherDiagram(target) {
   }
   beginNarrative(target)
   if (!practiceGate && task?.expectMove && role !== 'teacher') {
-    openHintDiagram(`lesson:${curriculumLessonId || openProcedureId || 'board'}:${target.fen || currentFen()}`)
+    if (target.testing) openHintDiagram(`lesson:${curriculumLessonId || openProcedureId || 'board'}:${target.fen || currentFen()}`)
+    else beginGuide(`lesson:${curriculumLessonId || openProcedureId || 'board'}:${target.fen || currentFen()}`)
   }
   refreshStudyClock()
 }
@@ -2139,7 +2219,7 @@ function openPractice() {
     lessonEl.textContent = prompt
   }
   setStatus(prompt)
-  openHintDiagram(`practice:${gate.fen}:${gate.spec.targetMove.from}${gate.spec.targetMove.to}`)
+  beginGuide(`practice:${gate.fen}:${gate.spec.targetMove.from}${gate.spec.targetMove.to}`)
 }
 
 function playPracticeSquare(square) {
@@ -2177,11 +2257,22 @@ function gradePracticeMove(chess, from, to) {
     return
   }
   if (!matchesTarget(played, spec)) {
+    const phase = offerGuide({}, {
+      id: guide?.id,
+      fen: practiceGate?.fen || currentFen(),
+      moves: [`${spec.targetMove.from}${spec.targetMove.to}`],
+      note: tx(spec.hint?.text) || tx(spec.feedback?.wrong?.text) || '',
+    })
+    if (phase) {
+      setAvatarState('thinking')
+      return
+    }
     noteHintMiss()
     showPracticeFeedback(spec, false)
     return
   }
   commitPlayed(played)
+  clearGuide()
   practiceGate.solved = true
   refreshStudyClock()
   refreshHintCoach()
@@ -2231,6 +2322,10 @@ function playPracticeClip(url, correct) {
 
 function onSquare(square) {
   if (isPlaying) stopAutoPlay()
+  if (guide?.locked || guide?.playing) {
+    interactive.clearSelection()
+    return
+  }
   if (testRun?.finished) {
     interactive.clearSelection()
     return
@@ -2312,9 +2407,11 @@ function onSquare(square) {
 
 interactive.onSquare = onSquare
 interactive.canDrag = (square) => {
+  if (lessonPromotion) return false
+  if (guide?.locked || guide?.playing) return false
   if (practiceGate && (!practiceGate.open || practiceGate.solved)) return false
   if (piecePathActive()) return piecePathCanDrag(square)
-  if (replyLock || procedureSolved || task?.pieceClick) return false
+  if (replyLock || coachBusy || procedureSolved || (solutionClickSquare() && !isTeacherEditor())) return false
   if (role !== 'child' || !learnerSide) return true
   const chess = positionChess()
   if (chess && chess.turn() !== learnerSide) return false
@@ -2328,9 +2425,18 @@ interactive.onDrop = ({ from, to, remove }) => {
     return
   }
   if (!interactive.draggable) return
+  if (solutionClickSquare()) return
   interactive.selected = from
   onSquare(to)
 }
+
+document.querySelector('#lesson-promote')?.addEventListener('click', (event) => {
+  const choice = event.target.closest('[data-promote]')
+  if (!choice || !lessonPromotion) return
+  const pending = lessonPromotion
+  hideLessonPromotion()
+  playLessonMove(positionChess(), pending.from, pending.to, choice.dataset.promote)
+})
 
 let cheerTimer = 0
 
@@ -2366,9 +2472,27 @@ function blockForeign(piece) {
   return true
 }
 
+function solutionClickSquare() {
+  if (task?.interaction === 'move' || task?.expectMove || task?.coach) return ''
+  if (task?.pieceClick || task?.interaction === 'click') {
+    return squareName(task.expected) || (!String(activeDrill?.correctMove || '').trim() ? squareName(activeDrill?.square) : '')
+  }
+  if (activeDrill?.pieceClick && !String(activeDrill.correctMove || '').trim()) {
+    return squareName(activeDrill.square)
+  }
+  return ''
+}
+
 function handleLessonSquare(square) {
-  if (task?.pieceClick) {
+  if (lessonPromotion) hideLessonPromotion()
+  if (solutionClickSquare()) {
+    interactive.clearSelection()
     submitPieceClick(square)
+    return
+  }
+  if (task?.click && !interactive.selected) {
+    interactive.clearSelection()
+    submitLessonSquare(square)
     return
   }
   const chess = positionChess()
@@ -2400,17 +2524,33 @@ function handleLessonSquare(square) {
   playLessonMove(chess, from, square)
 }
 
+function squareName(value) {
+  const text = String(value || '').trim().toLowerCase()
+  return /^[a-h][1-8]$/.test(text) ? text : ''
+}
+
 function submitPieceClick(square) {
-  if (!task?.pieceClick || typeof task.accept !== 'function') return
-  const correct = Boolean(task.accept(square))
+  if (task?.drillCode && activeDrill?.code && task.drillCode !== activeDrill.code) return
+  const picked = squareName(square)
+  const expected = solutionClickSquare()
+  if (!picked || !expected) return
+  const correct = picked === expected
   const grade = task.grade
   interactive.clearSelection()
   if (!correct) {
-    grade?.(false, true)
+    const phase = offerGuide(activeDrill, {
+      id: guide?.id,
+      fen: currentFen(),
+      moves: [],
+      square: expected,
+      note: guideNote(activeDrill),
+    })
+    if (!phase) grade?.(false, true)
+    else grade?.(false, false)
     return
   }
   task = { accept: null }
-  markAsked(square)
+  markAsked(picked)
   grade?.(true, true)
 }
 
@@ -2420,6 +2560,12 @@ function submitLessonSquare(square) {
     const hits = chess ? chess.moves({ verbose: true }).filter((move) => move.to === square) : []
     if (hits.length === 1) {
       playLessonMove(chess, hits[0].from, square)
+      return
+    }
+    if (task.interaction === 'move') {
+      const text = task.expectMove.bad || t('pedagogy.tryAgain')
+      showCheer('again', text)
+      setStatus(text)
       return
     }
     showCheer('again')
@@ -2437,10 +2583,247 @@ function submitLessonSquare(square) {
   if (task?.collect) task.collect(square)
 }
 
-function playLessonMove(chess, from, to) {
-  if (replyLock) return
-  if (task?.pieceClick) {
-    submitPieceClick(to)
+function studentSolving() {
+  return role === 'child' || document.body.classList.contains('student')
+}
+
+function usesTrainCoach(item) {
+  if (mode !== 'train' || !activeDrill || !studentSolving()) return false
+  if (item?.pieceClick || item?.choices || item?.accept) return false
+  if (isPedagogyOpen() || procedurePuzzle) return false
+  const same = (item?.code && activeDrill.code && item.code === activeDrill.code)
+    || (item?.id && item.id === activeDrill.id)
+  if (!same) return false
+  if (item.authored) return true
+  const line = solutionTokens(item)
+  return !line.some((token) => movePlayable(item.fen || currentFen(), token))
+}
+
+function cancelTrainCoach() {
+  coachEpoch += 1
+  coachBusy = false
+  coachBook = null
+  coachReady = Promise.resolve()
+}
+
+function releaseCoachBoard() {
+  coachBusy = false
+  replyLock = false
+  if (task?.coach) interactive.draggable = true
+}
+
+function prepareTrainCoach() {
+  const epoch = coachEpoch
+  const item = task
+  if (!item?.coach) {
+    coachReady = Promise.resolve()
+    return
+  }
+  const fen = currentFen()
+  coachReady = (async () => {
+    try {
+      await engine.ready()
+      if (epoch !== coachEpoch || task !== item) return
+      const result = await engine.analyze(fen, COACH_SEARCH)
+      if (epoch !== coachEpoch || task !== item) return
+      coachBook = { fen, bestMove: result.bestMove, line: result.lines[0] || null }
+      if (!item.goal) item.goal = goalFromLine(coachBook.line)
+      if (!coachBusy) {
+        setStatus(item.goal === 'mate' ? t('train.coachGoalMate') : t('train.coachGoalAdvantage'))
+      }
+    } catch (err) {
+      if (epoch === coachEpoch && !coachBusy) setStatus(err instanceof Error ? err.message : String(err))
+    }
+  })()
+}
+
+function missCoach(item) {
+  interactive.clearSelection()
+  const fen = currentFen()
+  const book = coachBook?.fen === fen ? coachBook : null
+  const moves = book?.line?.pvSan?.length ? book.line.pvSan.slice(0, 8) : (book?.bestMove ? [book.bestMove] : [])
+  const phase = offerGuide(item, {
+    id: guide?.id,
+    fen,
+    moves,
+    note: coachNote(fen, book?.line) || guideNote(item),
+    engine: true,
+  })
+  if (phase === 'hint') {
+    releaseCoachBoard()
+    return
+  }
+  if (phase) {
+    coachBusy = false
+    replyLock = true
+    interactive.draggable = false
+    return
+  }
+  const text = item?.bad || t('train.coachMiss')
+  showCheer('again', text)
+  setStatus(text)
+  releaseCoachBoard()
+}
+
+function finishTrainCoach(item) {
+  coachEpoch += 1
+  coachBusy = false
+  replyLock = false
+  coachBook = null
+  interactive.draggable = true
+  const grade = item?.grade
+  task = null
+  playExerciseEnd()
+  grade?.(true)
+  scheduleLiveEval()
+}
+
+function followCoachLine(played, item, epoch) {
+  commitPlayed(played)
+  restoreGuidePrompt()
+  item.coachPlies = (item.coachPlies || 0) + 1
+  const nextIndex = currentStepIndex + 1
+  const replySan = solutie[nextIndex]
+  const reply = replySan ? tryLineMove(played.after, replySan) : null
+  const opponentReply = reply && reply.color !== (learnerSide || played.color)
+  if (opponentReply) {
+    currentStepIndex = nextIndex
+    showCheer('ok', t('train.coachGood'), 1200)
+    scheduleReply(reply, () => {
+      if (epoch !== coachEpoch || task !== item) return
+      currentStepIndex += 1
+      stepFen = fenInput.value
+      continuation = solutie.slice(currentStepIndex)
+      if (currentStepIndex >= solutie.length && finishIfReady(item, fenInput.value)) return
+      if (task && currentStepIndex >= solutie.length) task.flexible = true
+      releaseCoachBoard()
+      prepareTrainCoach()
+    }, 360)
+    return
+  }
+  currentStepIndex = nextIndex
+  if (finishIfReady(item, played.after)) return
+  showCheer('ok', t('train.coachGood'), 1200)
+  stepFen = played.after
+  if (task) task.flexible = true
+  releaseCoachBoard()
+  const after = positionChessOf(played.after)
+  if (after && after.turn() !== (learnerSide || played.color) && !after.isGameOver()) {
+    void playEngineReply(played.after, '', item)
+  }
+}
+
+async function gradeTrainCoach(played) {
+  const epoch = coachEpoch
+  const item = task
+  if (!item?.coach || !played) return
+  coachBusy = true
+  replyLock = true
+  interactive.draggable = false
+  interactive.clearSelection()
+  try {
+    const afterChess = new Chess(played.after)
+    if (afterChess.isCheckmate()) {
+      commitPlayed(played)
+      finishTrainCoach(item)
+      return
+    }
+    if (afterChess.isGameOver()) {
+      missCoach(item)
+      return
+    }
+    if (adoptBranch(played)) {
+      followCoachLine(played, item, epoch)
+      return
+    }
+    setStatus(t('train.analyzing'))
+    await coachReady
+    if (epoch !== coachEpoch || task !== item) return
+    await engine.ready()
+    if (epoch !== coachEpoch || task !== item) return
+    const after = await engine.analyze(played.after, COACH_SEARCH)
+    if (epoch !== coachEpoch || task !== item) return
+    const book = coachBook?.fen === played.before ? coachBook : null
+    if (!item.goal) item.goal = goalFromLine(book?.line)
+    const student = studentView(after.lines[0])
+    const scripted = played.before === item.startFen
+      && (item.line || []).slice(0, 1).some((token) => moveMatches(played, token))
+    const verdict = judgeTrainMove({
+      goal: item.goal || 'advantage',
+      student,
+      bestMove: book?.bestMove || '',
+      playedUci: playedUci(played),
+      bestCp: book?.line?.mateIn != null ? null : (book?.line?.evaluationCp ?? null),
+      checkmate: false,
+      gameOver: false,
+    })
+    if (!verdict.ok && !scripted) {
+      missCoach(item)
+      return
+    }
+    commitPlayed(played)
+    restoreGuidePrompt()
+    item.coachPlies = (item.coachPlies || 0) + 1
+    if (!mateExercise(item) && verdict.done && item.coachPlies > 1 && currentStepIndex >= solutie.length) {
+      finishTrainCoach(item)
+      return
+    }
+    showCheer('ok', t('train.coachGood'), 1200)
+    const bookSan = solutie[currentStepIndex + 1]
+    const bookReply = bookSan ? tryLineMove(played.after, bookSan) : null
+    const listedReply = bookReply && bookReply.color !== (learnerSide || played.color) ? bookReply : null
+    const reply = listedReply || moveFromUci(played.after, after.bestMove)
+    if (!reply) {
+      setStatus(t('train.noEngineMove'))
+      releaseCoachBoard()
+      if (task) task.flexible = true
+      return
+    }
+    if (listedReply) currentStepIndex += 1
+    else currentStepIndex = solutie.length
+    scheduleReply(reply, () => {
+      if (epoch !== coachEpoch || task !== item) return
+      if (listedReply) currentStepIndex += 1
+      stepFen = fenInput.value
+      if (task) task.flexible = true
+      releaseCoachBoard()
+      prepareTrainCoach()
+    }, 360)
+  } catch (err) {
+    if (epoch !== coachEpoch) return
+    setStatus(err instanceof Error ? err.message : String(err))
+    releaseCoachBoard()
+  }
+}
+
+function hideLessonPromotion() {
+  lessonPromotion = null
+  const box = document.querySelector('#lesson-promote')
+  if (box) box.hidden = true
+}
+
+function offerLessonPromotion(from, to, color, letters) {
+  lessonPromotion = { from, to }
+  interactive.clearSelection()
+  const box = document.querySelector('#lesson-promote')
+  if (!box) return
+  box.querySelectorAll('[data-promote]').forEach((button) => {
+    const letter = button.dataset.promote
+    const show = letters.includes(letter)
+    button.hidden = !show
+    const img = button.querySelector('img')
+    if (img && show) img.src = `pieces/cburnett/${color}${letter.toUpperCase()}.svg`
+  })
+  box.hidden = false
+  setStatus(t('path.promote'))
+}
+
+function playLessonMove(chess, from, to, chosenPromotion) {
+  if (replyLock || coachBusy || guide?.locked || guide?.playing) return
+  if (task?.drillCode && activeDrill?.code && task.drillCode !== activeDrill.code) return
+  if (Array.isArray(task?.line)) solutie = task.line
+  if (solutionClickSquare()) {
+    submitPieceClick(from)
     return
   }
   if (!chess) {
@@ -2453,11 +2836,25 @@ function playLessonMove(chess, from, to) {
     setStatus(t('status.toMove', { side: sideName(chess.turn()) }))
     return
   }
-  const promotion = piece?.type === 'p' && (to[1] === '8' || to[1] === '1') ? 'q' : undefined
+  const promoting = piece?.type === 'p' && (to[1] === '8' || to[1] === '1')
+  if (promoting && studentSolving() && !chosenPromotion) {
+    const choices = chess.moves({ verbose: true }).filter((move) => move.from === from && move.to === to && move.promotion)
+    if (choices.length) {
+      offerLessonPromotion(from, to, piece.color, choices.map((move) => move.promotion))
+      return
+    }
+  }
+  const promotion = promoting ? (chosenPromotion || 'q') : undefined
   let played
   try {
     played = chess.move({ from, to, promotion })
   } catch {
+    if (task?.interaction === 'move') {
+      const text = task.expectMove?.bad || t('pedagogy.tryAgain')
+      showCheer('again', text)
+      setStatus(text)
+      return
+    }
     if (task?.expectMove) {
       showCheer('again')
       setStatus(t('status.notLegal'))
@@ -2466,16 +2863,14 @@ function playLessonMove(chess, from, to) {
     submitLessonSquare(to)
     return
   }
-  if (task?.expectMove || solutie.length) {
+  if (task?.coach) {
+    void gradeTrainCoach(played)
+    return
+  }
+  if (task?.expectMove || task?.flexible || solutie.length || lineBranches.length) {
     const item = task?.expectMove
-    if (!solutie.length) startLine(played.before || currentFen(), [item.san], item)
-    const expected = solutie[currentStepIndex]
-    const correct = moveMatches(played, expected) || (currentStepIndex === 0 && Boolean(task?.accept?.(played.to)))
-    if (!correct) {
-      rejectLineMove(item)
-      return
-    }
-    acceptSolvedMove(played, item)
+    if (!solutie.length && !lineBranches.length && item?.san) startLine(played.before || currentFen(), [item.san], item)
+    resolveStudentMove(played, item)
     return
   }
   if (task?.accept) {
@@ -2561,9 +2956,36 @@ function solutionSource(fen, target) {
   return pgnMoves
 }
 
+function branchLines(fen, source) {
+  const raw = Array.isArray(source)
+    ? source.map((move) => String(move || '').trim()).filter(Boolean).join(' ')
+    : source
+  const lines = solutionLines(fen, raw)
+  if (lines.length) return lines
+  const fallback = normalizeSolution(fen, source)
+  return fallback.length ? [fallback] : []
+}
+
+function solutionMaterial(item, fen) {
+  const chunks = []
+  const push = (value) => {
+    const text = Array.isArray(value) ? value.map((move) => String(move || '').trim()).filter(Boolean).join(' ') : String(value || '').trim()
+    if (text) chunks.push(text)
+  }
+  push(item?.correctMove)
+  push(item?.solutie)
+  push(item?.moves)
+  push(item?.solutionMoves)
+  push(item?.testSolutionMoves)
+  if (item?.pgn) push(pgnLine(fen, item.pgn).join(' '))
+  return chunks.join(' / ')
+}
+
 function startLine(fen, source, item) {
   cancelReply()
-  const line = normalizeSolution(fen, source)
+  lineBranches = branchLines(fen, source)
+  const line = lineBranches[0] || normalizeSolution(fen, source)
+  if (!lineBranches.length && line.length) lineBranches = [line]
   solutie = line
   currentStepIndex = 0
   stepFen = fen
@@ -2576,6 +2998,7 @@ function startLine(fen, source, item) {
 function resetLine() {
   cancelReply()
   solutie = []
+  lineBranches = []
   currentStepIndex = 0
   stepFen = ''
   lineAttempts = 3
@@ -2583,6 +3006,31 @@ function resetLine() {
   endTestClock()
   testRun = null
   hideTestSummary()
+}
+
+function adoptBranch(played) {
+  const branches = lineBranches.length ? lineBranches : (solutie.length ? [solutie] : [])
+  let best = null
+  let bestPlayable = false
+  const playableLine = (line) => line.every((token) => /^[a-h][1-8][a-h][1-8][qrbn]?$/i.test(String(token)))
+  for (const branch of branches) {
+    const token = branch[currentStepIndex]
+    if (!token || !moveMatches(played, token)) continue
+    const playable = playableLine(branch)
+    const longer = best && branch.length > best.length
+    if (!best || (playable && !bestPlayable) || (playable === bestPlayable && longer)) {
+      best = branch
+      bestPlayable = playable
+    }
+  }
+  if (!best) return ''
+  solutie = best
+  if (task) task.line = best.slice()
+  return best[currentStepIndex]
+}
+
+function trainSolving() {
+  return mode === 'train' && Boolean(activeDrill) && studentSolving() && !exam
 }
 
 function restoreStep() {
@@ -2601,9 +3049,275 @@ function mistakeText(item) {
   return `${lead}\n${detail}`
 }
 
+function beginGuide(id) {
+  if (!studentSolving() || exam) return
+  const held = Boolean(guide?.locked || guide?.playing)
+  guideToken += 1
+  guide = {
+    id: id || 'exercise',
+    misses: 0,
+    locked: false,
+    playing: false,
+    prompt: String(lessonEl?.textContent || ''),
+    startFen: currentFen(),
+    finished: false,
+  }
+  if (held) {
+    replyLock = false
+    interactive.draggable = true
+  }
+  paintGuide()
+}
+
+function clearGuide() {
+  const held = Boolean(guide?.locked || guide?.playing)
+  guideToken += 1
+  guide = null
+  const box = document.querySelector('#attempt-hint')
+  if (box?.dataset.guide === '1') {
+    delete box.dataset.guide
+    box.hidden = true
+  }
+  const retry = document.querySelector('#guide-retry')
+  if (retry) retry.hidden = true
+  if (held) {
+    replyLock = false
+    interactive.draggable = true
+  }
+}
+
+function paintGuide() {
+  const box = document.querySelector('#attempt-hint')
+  const count = document.querySelector('#attempt-count')
+  const button = document.querySelector('#attempt-hint-btn')
+  const retry = document.querySelector('#guide-retry')
+  if (!box || !count) return
+  const fresh = Boolean(guide?.finished) && !guide?.playing
+  if (!guide || !studentSolving() || (!guide.misses && !fresh)) {
+    if (box.dataset.guide === '1') {
+      delete box.dataset.guide
+      box.hidden = true
+      count.hidden = true
+    }
+    if (retry) retry.hidden = true
+    return
+  }
+  box.dataset.guide = '1'
+  box.hidden = false
+  count.hidden = !guide.misses
+  if (button) button.hidden = true
+  count.textContent = guide.misses ? t('guide.attempt', { n: Math.min(guide.misses, 3) }) : ''
+  if (retry) {
+    retry.hidden = !fresh
+    retry.textContent = t('guide.retry')
+  }
+}
+
+function retryGuide() {
+  if (!guide?.finished || guide.playing || !guide.startFen) return
+  const prompt = guide.prompt || ''
+  const fen = guide.startFen
+  const id = guide.id
+  guideToken += 1
+  cancelReply()
+  coachBusy = false
+  replyLock = false
+  interactive.draggable = true
+  interactive.showTargets = true
+  interactive.clearSelection()
+  showSavedAnnotations({ arrows: [], highlights: [] })
+  hideSuccess()
+  const cheer = document.querySelector('#cheer')
+  if (cheer) cheer.hidden = true
+  showPosition(fen)
+  if (lessonEl) lessonEl.textContent = prompt
+  setStatus('')
+  if (solutie.length) {
+    currentStepIndex = 0
+    stepFen = fen
+    continuation = solutie.slice()
+    if (task?.expectMove) task.expectMove = { ...task.expectMove, san: solutie[0] || task.expectMove.san }
+  }
+  if (task?.coach) {
+    task.startFen = fen
+    cancelTrainCoach()
+    prepareTrainCoach()
+  }
+  if (practiceGate) {
+    practiceGate.solved = false
+    practiceGate.open = true
+    setAvatarState('idle')
+    setAvatarCaption(prompt)
+  }
+  if (procedurePuzzle) showProcedureFeedback('', '')
+  if (train && (train.kind === 'puzzle' || train.kind === 'quest')) {
+    train.over = false
+    lockEval(true)
+    interactive.setTurn(sideToMove(fen))
+  }
+  guide = {
+    id,
+    misses: 0,
+    locked: false,
+    playing: false,
+    prompt,
+    startFen: fen,
+    finished: false,
+  }
+  paintGuide()
+}
+
+function guideWanted(item) {
+  if (!studentSolving() || exam || testRun || item?.testing) return false
+  if (isMastersMode() || train?.kind === 'game') return false
+  return true
+}
+
+function offerGuide(item, spec) {
+  if (!guideWanted(item)) return ''
+  if (guide?.locked || guide?.playing) return 'locked'
+  if (!guide) beginGuide(spec?.id || 'exercise')
+  if (!guide) return ''
+  guide.misses += 1
+  paintGuide()
+  const text = guide.misses >= 3 ? t('guide.unsolved') : t(`guide.try${guide.misses}`)
+  const prompt = guide.prompt || ''
+  if (lessonEl && guide.misses < 3) lessonEl.textContent = prompt ? `${prompt}\n\n${text}` : text
+  if (lessonEl && guide.misses >= 3) lessonEl.textContent = `${t('guide.try3')}\n\n${text}`
+  showCheer('again', text, 7000)
+  setStatus(text)
+  if (procedurePuzzle) showProcedureFeedback('bad', text)
+  if (guide.misses >= 3) {
+    void revealGuide(spec || {})
+    return 'reveal'
+  }
+  return 'hint'
+}
+
+function guideIdea(moves, spec) {
+  const parts = [t('guide.unsolved')]
+  if (moves.length) parts.push(t('guide.line', { line: moves.join(' ') }))
+  else if (spec?.square) parts.push(t('guide.square', { square: spec.square }))
+  const note = String(spec?.note || '').trim()
+  if (note && !parts.includes(note)) parts.push(note)
+  return parts.join('\n')
+}
+
+function coachNote(fen, line) {
+  if (!line) return ''
+  const described = describeLine(fen, line)
+  if (!described.move) return ''
+  if (described.goal === 'mate' && described.mateIn) {
+    return t('train.coachMate', { n: described.mateIn, move: described.move })
+  }
+  return t('train.coachAdvantage', { score: formatScore(described.cp, null), move: described.move })
+}
+
+async function engineGuide(fen) {
+  const book = coachBook?.fen === fen ? coachBook : null
+  if (book?.line?.pvSan?.length) {
+    return { moves: book.line.pvSan.slice(0, 8), note: coachNote(fen, book.line) }
+  }
+  try {
+    await engine.ready()
+    const result = await engine.analyze(fen, COACH_SEARCH)
+    const line = result.lines?.[0]
+    const moves = line?.pvSan?.length ? line.pvSan.slice(0, 8) : (result.bestMove ? [result.bestMove] : [])
+    return { moves, note: coachNote(fen, line) }
+  } catch {
+    return { moves: [], note: '' }
+  }
+}
+
+async function revealGuide(spec) {
+  if (!guide) return
+  const token = guideToken
+  guide.playing = true
+  guide.locked = true
+  coachBusy = false
+  interactive.draggable = false
+  interactive.clearSelection()
+  cancelReply()
+  replyLock = true
+  const fen = spec?.fen || currentFen()
+  if (validateFen(fen).ok && canonicalFen(fen) !== canonicalFen(currentFen())) showPosition(fen)
+  let planned = (spec?.moves || []).slice(0, 8)
+  let note = spec?.note || ''
+  if (!planned.length && spec?.engine) {
+    const found = await engineGuide(fen)
+    if (token !== guideToken) return
+    planned = found.moves
+    note = note || found.note
+  }
+  const played = []
+  for (const tokenMove of planned) {
+    await new Promise((resolve) => setTimeout(resolve, 680))
+    if (token !== guideToken || !guide) return
+    const chess = positionChess()
+    if (!chess) break
+    let move = null
+    try {
+      move = playTypedMove(chess, tokenMove)
+    } catch {
+      move = null
+    }
+    if (!move) break
+    commitPlayed(move)
+    played.push(move.san)
+  }
+  if (token !== guideToken || !guide) return
+  if (!played.length && spec?.square) {
+    markAsked(spec.square)
+    showSavedAnnotations({
+      arrows: [],
+      highlights: [{ square: spec.square, color: 'yellow', type: 'circle-ring' }],
+    })
+  }
+  const idea = guideIdea(played, { ...spec, note })
+  guide.idea = idea
+  guide.playing = false
+  guide.locked = false
+  guide.finished = true
+  guide.misses = 0
+  if (lessonEl) lessonEl.textContent = idea
+  setStatus(idea)
+  showCheer('again', t('guide.unsolved'), 7000)
+  const back = spec?.fen || guide.startFen || stepFen
+  if (back && validateFen(back).ok) stepFen = back
+  restoreStep()
+  replyLock = false
+  interactive.draggable = true
+  paintGuide()
+}
+
+function guideNote(item) {
+  const skip = new Set([
+    t('pedagogy.tryAgain'),
+    t('status.retry'),
+    t('train.coachMiss'),
+    t('pedagogy.moveIncorrect'),
+    t('pedagogy.moveSolved'),
+    t('status.correct'),
+  ])
+  for (const value of [item?.note, item?.bad, item?.ok, item?.prompt]) {
+    const text = String(value || '').trim()
+    if (text && !skip.has(text)) return text
+  }
+  return ''
+}
+
+function lineGuideSpec(item) {
+  return {
+    id: guide?.id || `line:${stepFen || currentFen()}`,
+    fen: stepFen || currentFen(),
+    moves: solutie.slice(currentStepIndex).filter(Boolean),
+    note: guideNote(item),
+  }
+}
+
 function rejectLineMove(item) {
-  noteHintMiss()
   if (item?.testing) {
+    noteHintMiss()
     restoreStep()
     hideSuccess()
     if (testRun) testRun.wrong += 1
@@ -2617,6 +3331,10 @@ function rejectLineMove(item) {
     setStatus(text)
     return
   }
+  restoreStep()
+  hideSuccess()
+  if (offerGuide(item, lineGuideSpec(item))) return
+  noteHintMiss()
   if (item?.training) {
     restoreStep()
     hideSuccess()
@@ -2793,6 +3511,7 @@ function finishLine(item) {
   }
   task = null
   solutie = []
+  lineBranches = []
   currentStepIndex = 0
   playExerciseEnd()
   showTaskFeedback(true, {
@@ -2878,7 +3597,7 @@ function resumeAfterMissingReply(fen, pendingSan, item) {
     return
   }
   replyLock = false
-  if (!pendingSan && currentStepIndex >= solutie.length) finishLine(item)
+  if (!pendingSan && currentStepIndex >= solutie.length) afterReplyLine(item, fen)
 }
 
 async function playEngineReply(fen, pendingSan, item) {
@@ -2895,7 +3614,11 @@ async function playEngineReply(fen, pendingSan, item) {
   try {
     await engine.ready()
     if (token !== replyEpoch) return
-    const result = await engine.analyze(fen, { depth: 12, multiPv: 1 })
+    const result = await engine.analyze(fen, {
+      depth: 15,
+      multiPv: 1,
+      onInfo: (info) => paintEngineInfo(fen, info),
+    })
     if (token !== replyEpoch) return
     const played = moveFromUci(fen, result.bestMove)
     stopMotorPulse()
@@ -2910,7 +3633,18 @@ async function playEngineReply(fen, pendingSan, item) {
     scheduleReply(played, () => {
       stepFen = fenInput.value
       setStatus('')
-      if (!pendingSan) return
+      if (!pendingSan) {
+        if (task) {
+          task.flexible = true
+          if (task.expectMove) task.expectMove = { ...task.expectMove, san: '' }
+        }
+        replyLock = false
+        interactive.draggable = true
+        if (task?.coach) releaseCoachBoard()
+        const side = learnerSide || sideToMove(stepFen)
+        if (side) setStatus(t('status.toMove', { side: sideName(side) }))
+        return
+      }
       if (tryLineMove(stepFen, pendingSan)) {
         armExpect(pendingSan, item)
         hideSuccess()
@@ -2928,6 +3662,190 @@ async function playEngineReply(fen, pendingSan, item) {
   }
 }
 
+function positionChessOf(fen) {
+  try {
+    return new Chess(fen)
+  } catch {
+    return null
+  }
+}
+
+function restoreGuidePrompt() {
+  const prompt = String(guide?.prompt || '').trim()
+  if (lessonEl && prompt) lessonEl.textContent = prompt
+}
+
+function keepSolving(item, fen) {
+  const chess = positionChessOf(fen)
+  if (!chess || chess.isCheckmate()) {
+    finishLine(item)
+    return
+  }
+  restoreGuidePrompt()
+  showCheer('ok', t('train.coachGood'), 1200)
+  task = task || { expectMove: item || {} }
+  task.flexible = true
+  if (task.expectMove) task.expectMove = { ...task.expectMove, san: '' }
+  stepFen = fen
+  replyLock = false
+  interactive.draggable = true
+  const student = learnerSide || sideToMove(stepFen) || (chess.turn() === 'b' ? 'w' : 'b')
+  if (!chess.isGameOver() && chess.turn() !== student) {
+    void playEngineReply(fen, '', item)
+    return
+  }
+  setStatus(t('status.toMove', { side: sideName(chess.turn()) }))
+}
+
+function mateExercise(item) {
+  if (item?.testing || exam || procedurePuzzle) return false
+  if (item?.goal === 'advantage' || task?.goal === 'advantage') return false
+  if (item?.goal === 'mate' || task?.goal === 'mate') return true
+  if (solutie.some((token) => String(token).includes('#'))) return true
+  const title = `${activeDrill?.title || ''} ${activeDrill?.code || ''} ${item?.title || ''}`
+  return /\b(?:mate|mat(?:ul)?)\b/i.test(title)
+}
+
+function finishExercise(item) {
+  if (task?.coach) finishTrainCoach(task)
+  else finishLine(item)
+}
+
+function finishIfReady(item, fen) {
+  const chess = positionChessOf(fen)
+  if (!chess || chess.isCheckmate()) {
+    finishExercise(item)
+    return true
+  }
+  if (currentStepIndex < solutie.length) return false
+  if (!chess.isGameOver() && mateExercise(item)) return false
+  finishExercise(item)
+  return true
+}
+
+function afterStudentLine(item, fen) {
+  if (finishIfReady(item, fen)) return
+  keepSolving(item, fen)
+}
+
+function afterReplyLine(item, fen) {
+  if (finishIfReady(item, fen)) return
+  keepSolving(item, fen)
+}
+
+function allowsFlexibleSolve(item) {
+  if (!item || item.testing || exam || procedurePuzzle) return false
+  return Boolean(task?.flexible || trainSolving())
+}
+
+function resolveStudentMove(played, item) {
+  const listed = adoptBranch(played)
+  const correct = Boolean(listed) || (!task?.drillCode && currentStepIndex === 0 && Boolean(task?.accept?.(played.to)))
+  if (correct) {
+    acceptSolvedMove(played, item)
+    return
+  }
+  if (item?.testing) {
+    rejectLineMove(item)
+    return
+  }
+  const after = positionChessOf(played.after)
+  if (after?.isCheckmate()) {
+    commitPlayed(played)
+    finishLine(item)
+    return
+  }
+  if (allowsFlexibleSolve(item)) {
+    void acceptIfSolving(played, item)
+    return
+  }
+  rejectLineMove(item)
+}
+
+async function acceptIfSolving(played, item) {
+  const epoch = replyEpoch
+  replyLock = true
+  interactive.draggable = false
+  interactive.clearSelection()
+  setStatus(t('train.analyzing'))
+  try {
+    const afterChess = positionChessOf(played.after)
+    if (!afterChess) {
+      replyLock = false
+      interactive.draggable = true
+      rejectLineMove(item)
+      return
+    }
+    if (afterChess.isCheckmate()) {
+      commitPlayed(played)
+      finishLine(item)
+      return
+    }
+    await engine.ready()
+    if (epoch !== replyEpoch || !task) {
+      replyLock = false
+      if (task) interactive.draggable = true
+      return
+    }
+    const before = await engine.analyze(played.before, COACH_SEARCH)
+    if (epoch !== replyEpoch || !task) {
+      replyLock = false
+      if (task) interactive.draggable = true
+      return
+    }
+    const after = await engine.analyze(played.after, COACH_SEARCH)
+    if (epoch !== replyEpoch || !task) {
+      replyLock = false
+      if (task) interactive.draggable = true
+      return
+    }
+    const verdict = judgeTrainMove({
+      goal: task.goal || 'mate',
+      student: studentView(after.lines?.[0]),
+      bestMove: before.bestMove || '',
+      playedUci: playedUci(played),
+      bestCp: before.lines?.[0]?.mateIn != null ? null : (before.lines?.[0]?.evaluationCp ?? null),
+      checkmate: false,
+      gameOver: afterChess.isGameOver(),
+    })
+    if (!verdict.ok) {
+      replyLock = false
+      interactive.draggable = true
+      rejectLineMove(item)
+      return
+    }
+    const bookSan = solutie[currentStepIndex + 1]
+    const book = bookSan ? tryLineMove(played.after, bookSan) : null
+    if (book && book.color !== (learnerSide || played.color)) {
+      acceptSolvedMove(played, item)
+      return
+    }
+    commitPlayed(played)
+    restoreGuidePrompt()
+    showCheer('ok', t('train.coachGood'), 1200)
+    task.flexible = true
+    task.flexPlies = (task.flexPlies || 0) + 1
+    if (task.expectMove) task.expectMove = { ...task.expectMove, san: '' }
+    stepFen = played.after
+    currentStepIndex = Math.max(currentStepIndex, solutie.length)
+    if (!mateExercise(item) && verdict.done && task.flexPlies > 1 && currentStepIndex >= solutie.length) {
+      finishExercise(item)
+      return
+    }
+    replyLock = false
+    interactive.draggable = true
+    if (afterChess.turn() !== (learnerSide || played.color) && !afterChess.isGameOver()) {
+      void playEngineReply(played.after, '', item)
+    }
+  } catch (err) {
+    if (epoch !== replyEpoch) return
+    replyLock = false
+    interactive.draggable = true
+    setStatus(err instanceof Error ? err.message : String(err))
+    rejectLineMove(item)
+  }
+}
+
 function acceptSolvedMove(played, item) {
   const guided = role === 'child' && Boolean(learnerSide)
   replyLock = true
@@ -2937,12 +3855,13 @@ function acceptSolvedMove(played, item) {
   }
   hideSuccess()
   commitPlayed(played)
+  restoreGuidePrompt()
   const nextIndex = currentStepIndex + 1
   continuation = solutie.slice(nextIndex)
   if (nextIndex >= solutie.length) {
     currentStepIndex = nextIndex
     replyLock = false
-    finishLine(item)
+    afterStudentLine(item, played.after)
     return
   }
   const replySan = solutie[nextIndex]
@@ -2955,7 +3874,7 @@ function acceptSolvedMove(played, item) {
       continuation = solutie.slice(currentStepIndex)
       stepFen = fenInput.value
       if (currentStepIndex >= solutie.length) {
-        finishLine(item)
+        afterReplyLine(item, fenInput.value)
         return
       }
       armExpect(solutie[currentStepIndex], item)
@@ -3012,13 +3931,9 @@ function playStudentMove(from, to) {
     return
   }
   const expected = task?.expectMove?.san || solutie[currentStepIndex] || ''
-  if (solutie.length || expected) {
-    if (!solutie.length) startLine(played.before || currentFen(), [expected], task?.expectMove)
-    if (!moveMatches(played, solutie[currentStepIndex])) {
-      rejectLineMove(task?.expectMove)
-      return
-    }
-    acceptSolvedMove(played, task?.expectMove)
+  if (solutie.length || lineBranches.length || task?.flexible || expected) {
+    if (!solutie.length && !lineBranches.length && expected) startLine(played.before || currentFen(), [expected], task?.expectMove)
+    resolveStudentMove(played, task?.expectMove)
     return
   }
   commitPlayed(played)
@@ -3137,6 +4052,8 @@ function studyFocusKey() {
 }
 
 function clearTask() {
+  clearGuide()
+  cancelTrainCoach()
   stopNarrative()
   setAvatarState('idle')
   setAvatarCaption('')
@@ -3154,6 +4071,8 @@ function clearTask() {
 }
 
 function hideSuccess() {
+  clearTimeout(advanceTimer)
+  advanceTimer = 0
   const box = document.querySelector('#success')
   if (box) box.hidden = true
   const next = document.querySelector('#success-next')
@@ -3169,7 +4088,8 @@ function showSuccess(message) {
   if (!box || !text || !next) return
   text.textContent = message || t('success.solved')
   next.textContent = t('success.next')
-  next.hidden = !canAdvanceExercise()
+  const trainNext = mode === 'train' && role === 'child' && activeDrillId && nextTrainNode(activeDrillId)
+  next.hidden = !(canAdvanceExercise() || trainNext)
   box.hidden = false
 }
 
@@ -3197,7 +4117,14 @@ function nextSolverId() {
 }
 
 function advanceExercise() {
+  clearTimeout(advanceTimer)
+  advanceTimer = 0
+  const trainNext = mode === 'train' && activeDrillId ? nextTrainNode(activeDrillId) : null
   hideSuccess()
+  if (trainNext) {
+    openResolvedTrainNode(trainNext)
+    return
+  }
   if (exam && exam.index < EXAM.length) {
     showExamItem()
     return
@@ -3217,6 +4144,11 @@ function advanceExercise() {
 }
 
 function showTaskFeedback(correct, item) {
+  if (correct) {
+    const prompt = item?.prompt || guide?.prompt || ''
+    clearGuide()
+    if (prompt && lessonEl) lessonEl.textContent = prompt
+  }
   if (correct) solvedMark = `solved:${solver?.id || curriculumLessonId || openProcedureId || 'line'}`
   if (procedurePuzzle && correct) {
     noteSessionResult(true)
@@ -3241,12 +4173,17 @@ function showTaskFeedback(correct, item) {
   line.className = 'verdict'
   line.textContent = correct ? (guided ? t('pedagogy.moveSolved') : item.ok) : item.bad
   resultEl.append(line)
-  setStatus(correct ? (guided ? t('pedagogy.moveSolved') : t('status.correct')) : t('status.retry'))
-  if (correct) showSuccess(guided ? t('pedagogy.moveSolved') : '')
-  else {
-    hideSuccess()
-    showCheer('again')
+  if (correct || !guide?.misses) {
+    setStatus(correct ? (guided ? t('pedagogy.moveSolved') : t('status.correct')) : (item?.pieceClick && item?.bad ? item.bad : t('status.retry')))
   }
+  if (correct) {
+    showSuccess(guided ? t('pedagogy.moveSolved') : '')
+    queueSuccessAdvance()
+  } else if (!guide?.misses) {
+    hideSuccess()
+    const detail = item?.pieceClick ? String(item.bad || '').trim() : ''
+    showCheer('again', detail)
+  } else hideSuccess()
   refreshStudyClock()
 }
 
@@ -3264,17 +4201,118 @@ function renderChoices(item, onPick) {
   }
 }
 
+function solutionTokens(item) {
+  const raw = Array.isArray(item?.solutie) && item.solutie.length
+    ? item.solutie
+    : (item?.correctMove || item?.move || '')
+  return (Array.isArray(raw) ? raw : String(raw).split(/\s+/))
+    .map((token) => String(token || '').trim())
+    .filter(Boolean)
+}
+
+function movePrompt(prompt, san) {
+  const text = String(prompt || '')
+  if (!san || !/Apasă piesa care dă matul/.test(text)) return text
+  return text.replace(/Apasă piesa care dă matul\.?/, `Mută ${san}.`)
+}
+
+function trainSolution(text) {
+  const raw = String(text || '').trim()
+  const pair = raw.match(/^([a-h][1-8])\s*[-x×:]?\s*([a-h][1-8])$/i)
+  if (pair) return { kind: 'move', tokens: [`${pair[1]}${pair[2]}`.toLowerCase()] }
+  const tokens = raw.split(/\s+/).filter(Boolean)
+  if (tokens.length === 1 && /^[a-h][1-8]$/i.test(tokens[0])) return { kind: 'click', tokens: [tokens[0].toLowerCase()] }
+  if (tokens.length) return { kind: 'move', tokens }
+  return { kind: '', tokens: [] }
+}
+
+function clickPrompt(basePrompt, savedPrompt, rejectedMove) {
+  const base = String(basePrompt || '')
+  const saved = String(savedPrompt || '')
+  if (rejectedMove && /Mută\s+\S+/.test(saved) && /Apasă piesa/.test(base)) return base
+  return saved || base
+}
+
+function shapeTrainDrill(item, saved) {
+  const raw = item || {}
+  if (saved?.code && raw.code && saved.code !== raw.code) return { ...raw }
+  const base = saved?.title ? { ...raw, title: saved.title } : raw
+  const fen = (saved ? saved.fen : '') || base.fen
+  const prompt = (saved ? saved.prompt : '') || base.prompt
+  const savedMove = saved ? String(saved.move || '').trim() : String(base.correctMove || '').trim()
+  const parsed = trainSolution(savedMove)
+  const catalogSquare = base.pieceClick ? squareName(base.square) : ''
+  const playable = parsed.kind === 'move' && parsed.tokens.some((token) => movePlayable(fen, token))
+  if (parsed.kind === 'move') {
+    const line = parsed.tokens.join(' ')
+    return {
+      ...base,
+      id: base.id || saved?.id,
+      code: saved?.code || base.code,
+      fen: playable ? fenAlignedToMove(fen, line) : fen,
+      prompt: movePrompt(prompt, parsed.tokens[0]),
+      square: '',
+      pieceClick: false,
+      correctMove: parsed.tokens.join(' '),
+      solutie: parsed.tokens.slice(),
+      accept: null,
+      ok: t('pedagogy.moveSolved'),
+      bad: t('pedagogy.tryAgain'),
+      goal: saved?.goal === 'mate' || saved?.goal === 'advantage' ? saved.goal : (base.goal || ''),
+    }
+  }
+  if (!savedMove && saved && !catalogSquare && base.correctMove) {
+    return { ...base, fen, prompt }
+  }
+  const square = parsed.kind === 'click'
+    ? parsed.tokens[0]
+    : (squareName(saved?.square) || catalogSquare)
+  if (!square) {
+    return {
+      ...base,
+      fen,
+      prompt,
+      square: '',
+      pieceClick: false,
+      correctMove: '',
+      solutie: [],
+      accept: null,
+      goal: saved?.goal === 'mate' || saved?.goal === 'advantage' ? saved.goal : (base.goal || ''),
+    }
+  }
+  return {
+    ...base,
+    fen,
+    prompt: clickPrompt(base.prompt, prompt, parsed.kind === 'move'),
+    square,
+    pieceClick: true,
+    correctMove: '',
+    solutie: [],
+    accept: (picked) => String(picked || '').toLowerCase() === square,
+    ok: base.ok || t('status.correct'),
+    bad: base.bad || `Piesa care dă matul este pe ${square}.`,
+  }
+}
+
 function armTask(item, onGrade) {
+  hideLessonPromotion()
   lessonEl.textContent = item.prompt
   taskActions.replaceChildren()
   interactive.showTargets = false
-  if (item.pieceClick) {
+  const moves = solutionTokens(item)
+  const clickTarget = moves.length === 1 && /^[a-h][1-8]$/i.test(moves[0]) ? moves[0].toLowerCase() : ''
+  if (clickTarget || (item.pieceClick && !moves.length)) {
+    const square = clickTarget || String(item.square || '').toLowerCase()
     resetLine()
     learnerSide = ''
     task = {
-      accept: item.accept || null,
+      accept: square ? (picked) => String(picked || '').toLowerCase() === square : (item.accept || null),
       pieceClick: true,
+      interaction: 'click',
       expectMove: null,
+      expected: square,
+      drillCode: item.code || '',
+      line: [],
       grade: onGrade,
     }
     refreshStudyClock()
@@ -3292,14 +4330,45 @@ function armTask(item, onGrade) {
     refreshStudyClock()
     return
   }
-  const source = Array.isArray(item.solutie) && item.solutie.length
-    ? item.solutie
-    : (Array.isArray(item.moves) && item.moves.length ? item.moves : item.correctMove)
-  const line = startLine(item.fen, source, item)
+  if (usesTrainCoach(item)) {
+    resetLine()
+    const coachFen = item.fen || currentFen()
+    lineBranches = branchLines(coachFen, solutionMaterial(item, coachFen))
+    solutie = lineBranches[0] || []
+    currentStepIndex = 0
+    stepFen = item.fen || currentFen()
+    learnerSide = sideToMove(item.fen || currentFen())
+    task = {
+      coach: true,
+      accept: null,
+      pieceClick: false,
+      interaction: 'move',
+      drillCode: item.code || item.id || '',
+      goal: item.goal === 'advantage' ? 'advantage' : (item.goal === 'mate' || mateExercise(item) ? 'mate' : ''),
+      startFen: item.fen || currentFen(),
+      grade: onGrade,
+      ok: item.ok || t('pedagogy.moveSolved'),
+      bad: item.bad || t('train.coachMiss'),
+      line: solutie.slice(),
+      flexible: false,
+      coachPlies: 0,
+    }
+    refreshStudyClock()
+    scheduleLiveEval()
+    prepareTrainCoach()
+    return
+  }
+  const line = startLine(item.fen, solutionMaterial(item, item.fen || currentFen()), item)
   continuation = line
   learnerSide = role === 'child' && line.length && !item.accept ? sideToMove(item.fen || currentFen()) : ''
+  const moveTask = Boolean(item.code) && !item.pieceClick && Boolean(line.length || item.correctMove)
   task = {
-    accept: item.accept || null,
+    accept: moveTask ? null : (item.accept || null),
+    pieceClick: false,
+    interaction: moveTask ? 'move' : '',
+    drillCode: item.code || '',
+    expected: line[0] || item.correctMove || '',
+    line: line.slice(),
     expectMove: line.length || item.correctMove ? {
       san: line[currentStepIndex] || line[0] || item.correctMove,
       ok: item.ok,
@@ -3308,8 +4377,8 @@ function armTask(item, onGrade) {
     grade: onGrade,
   }
   refreshStudyClock()
-  if (role !== 'teacher' && task?.expectMove) {
-    openHintDiagram(`task:${item.fen || currentFen()}:${item.prompt || item.correctMove || ''}`)
+  if (role !== 'teacher' && !exam && (task?.expectMove || task?.coach || task?.pieceClick)) {
+    beginGuide(`task:${item.code || item.id || item.fen || item.prompt || ''}`)
   }
 }
 
@@ -3436,6 +4505,9 @@ function teacherEditorHooks() {
       drawBoard()
       adoptFen(fen)
     },
+    orientToFen(fen) {
+      if (validateFen(String(fen || '')).ok) orientBoardToFen(fen)
+    },
     reviewLine(fen, moves) {
       publishLine(fen, moves, true)
     },
@@ -3451,6 +4523,128 @@ function teacherEditorHooks() {
     applyOrientation(orientation) {
       const wantWhite = orientation !== 'black'
       if (interactive.whiteAtBottom !== wantWhite) interactive.flip()
+    },
+    inTrain: () => mode === 'train',
+    async analyzeFen(fen) {
+      const clean = String(fen || '').trim()
+      const check = validateFen(clean)
+      if (!check.ok) throw new Error(check.error || t('fen.invalid'))
+      await engine.ready()
+      const result = await engine.analyze(clean, COACH_SEARCH)
+      const line = result.lines[0]
+      if (!line) return { goal: '', san: '', text: t('train.coachNone') }
+      const described = describeLine(clean, line)
+      const score = described.cp == null
+        ? '—'
+        : `${described.cp > 0 ? '+' : described.cp < 0 ? '-' : ''}${Math.abs(described.cp / 100).toFixed(2)}`
+      const text = described.goal === 'mate'
+        ? t('train.coachMate', { n: described.mateIn, move: described.move || described.san || '—' })
+        : t('train.coachAdvantage', { score, move: described.move || described.san || '—' })
+      return { goal: described.goal, san: described.san, text }
+    },
+    showTrainHierarchy(id) {
+      syncTrainHierarchy(currentTrainOutline(), id)
+    },
+    focusTrainDrill(id) {
+      const node = findTrainNode(id)
+      if (!node) return
+      if (node.exerciseId) openExercise(node.exerciseId)
+      else if (node.fen) openTrainDrill(node)
+    },
+    markTrainSelection,
+    trainPlacement() {
+      const ancestors = [...openExerciseGroups]
+      return {
+        id: '',
+        parentId: ancestors[ancestors.length - 1] || '',
+        afterId: '',
+        ancestors,
+      }
+    },
+    async saveTrainSection(record) {
+      const saved = await api('/api/train-sections', { method: 'POST', body: record })
+      const section = saved?.section
+      if (!section?.id) throw new Error(t('editor.fileFail'))
+      trainSections = Array.isArray(saved.sections) ? saved.sections : trainSections
+      if (record?.parentId) openExerciseGroups.add(record.parentId)
+      openExerciseGroups.add(section.id)
+      renderExerciseList(publishedExercises)
+      syncTrainHierarchy(currentTrainOutline(), section.id)
+      markTrainSelection(section.id)
+      return section
+    },
+    async saveAuthoredExercise(record) {
+      const saved = await api('/api/train-authored', { method: 'POST', body: record })
+      const exercise = saved?.exercise
+      if (!exercise?.id) throw new Error(t('editor.fileFail'))
+      authoredExercises = Array.isArray(saved.exercises) ? saved.exercises : authoredExercises
+      mirrorAuthored({ ...record, ...exercise })
+      return exercise
+    },
+    onAuthoredSaved(record) {
+      if (!record?.id) return
+      for (const id of record.ancestors || []) openExerciseGroups.add(id)
+      if (record.parentId) openExerciseGroups.add(record.parentId)
+      renderExerciseList(publishedExercises)
+      const node = findTrainNode(record.id)
+      if (node) {
+        activeDrill = materializeTrainDrill(node)
+        activeDrillId = node.id
+        activityTitle.textContent = exerciseTitle(node)
+        badge.textContent = node.code || ''
+        if (activeDrill?.prompt) lessonEl.textContent = activeDrill.prompt
+      }
+      document.querySelectorAll('#exercise-list .nav-item').forEach((el) => el.classList.remove('active'))
+      document.querySelector(`[data-drill="${CSS.escape(record.id)}"]`)?.classList.add('active')
+    },
+    async deleteTrainDrill(drill) {
+      const id = drill?.id || ''
+      const code = drill?.code || ''
+      if (!id && !code) return
+      const nextId = adjacentTrainId(id)
+      if (drill.authored) {
+        const saved = await api(`/api/train-authored/${encodeURIComponent(id)}`, { method: 'DELETE' })
+        authoredExercises = Array.isArray(saved?.exercises)
+          ? saved.exercises
+          : authoredExercises.filter((item) => item.id !== id)
+      } else {
+        const saved = await api('/api/train-removed', { method: 'POST', body: { id } })
+        removedTrainIds = new Set(Array.isArray(saved?.ids) ? saved.ids : [...removedTrainIds, id])
+      }
+      forgetTrainDrill(code)
+      if (nextId) expandTrainPath(nextId)
+      renderExerciseList(publishedExercises)
+      const node = nextId ? findTrainNode(nextId) : null
+      if (node?.exerciseId) openExercise(node.exerciseId)
+      else if (node?.fen) openTrainDrill(node)
+      else {
+        activeDrill = null
+        activeDrillId = ''
+      }
+    },
+    onTrainDrillSaved(record) {
+      if (!activeDrill || !record) return
+      if (record.code && activeDrill.code && record.code !== activeDrill.code) return
+      activeDrill = shapeTrainDrill(activeDrill, record)
+      paintDrillTitle(record)
+      if (record.prompt) lessonEl.textContent = record.prompt
+    },
+    renameTrainDrill(record) {
+      paintDrillTitle(record)
+    },
+    previewTrain(record) {
+      const drill = activeDrill
+      if (!drill?.fen) return
+      if (record?.code && drill.code && record.code !== drill.code) return
+      closeTeacherEditor()
+      interactive.draggable = true
+      document.body.classList.add('student')
+      resultEl.replaceChildren()
+      engineLine.textContent = ''
+      presentItem(drill, (correct) => showTaskFeedback(correct, drill))
+      panelTitle.textContent = t('panel.exercises')
+      activityTitle.textContent = exerciseTitle(drill)
+      lessonEl.textContent = drill.prompt || ''
     },
     preview(nextLevel, sub, sectionId, itemIndex) {
       closeTeacherEditor()
@@ -3543,6 +4737,10 @@ function showLessonSteps(lessonId, stepId = 0, options = {}) {
   panelTitle.textContent = tx(level.title)
   activityTitle.textContent = tx(sub.title)
   closeLevels()
+  if (revealChildDiagram(lessonId)) {
+    refreshStudyClock()
+    return
+  }
   if (resume && pedagogySubId() === sub.id) {
     resumePedagogy()
     refreshStudyClock()
@@ -3555,7 +4753,28 @@ function showLessonSteps(lessonId, stepId = 0, options = {}) {
   refreshStudyClock()
 }
 
+function revealChildDiagram(lessonId) {
+  const saved = savedCurriculumDiagram(lessonId)
+  if (saved && (saved.fen || saved.correctMove || saved.text)) {
+    closePedagogy()
+    showPedagogyReturn(true)
+    showTeacherDiagram(saved)
+    return true
+  }
+  const resolved = resolveInteractiveLesson(lessonId, lessonCatalogs(), {
+    title: lessonTitle(lessonId),
+    code: lessonId,
+    fen: '',
+  })
+  const fen = String(resolved?.fen || '').trim()
+  if (!fen || fen === START_FEN) return false
+  showPedagogyReturn(true)
+  showProcedureCourse(resolved)
+  return true
+}
+
 function showMasteryView() {
+  if (mode === 'train') return
   if (role === 'teacher') {
     showTeacherWorkspace(readView().selectedLessonId)
     return
@@ -3639,6 +4858,11 @@ const turnApi = {
     resultEl.replaceChildren()
     setStatus('')
   },
+  dismiss() {
+    hideSuccess()
+    resultEl.replaceChildren()
+    setStatus('')
+  },
   verdict(ok, text) {
     showTaskFeedback(ok, { ok: text, bad: text })
   },
@@ -3652,8 +4876,8 @@ const turnApi = {
       taskActions.append(button)
     }
   },
-  listen(fn) {
-    task = { collect: fn }
+  listen(fn, options = {}) {
+    task = { collect: fn, ...options }
   },
   silence() {
     task = null
@@ -3714,7 +4938,7 @@ mountPiecePath({
     leaveExercise()
     closeLevels()
     if (isMastersMode()) closeMasters()
-    setMode('menu')
+    setMode('analysis')
     document.querySelector('#lesson').hidden = true
     document.querySelector('#procedure-course').hidden = true
     const piece = t(`piece.${exercise.piece}`)
@@ -3756,7 +4980,8 @@ function syncSidebar(next) {
   sidebar.dataset.view = view
   clearSidebarSelection(view)
   paintLevelBadge()
-  if (view !== 'menu' && view !== 'train') return
+  document.querySelector('.shell')?.classList.toggle('menu-on', view === 'menu' && !piecePathActive())
+  if (view !== 'train') return
   const trainMenu = document.querySelector('#train-menu')
   const trainToggle = document.querySelector('#train-toggle')
   if (trainMenu) trainMenu.hidden = false
@@ -3770,10 +4995,10 @@ function clearSidebarSelection(view) {
   const sidebar = document.querySelector('.sidebar')
   if (!sidebar) return
   const drop = view === 'chapters'
-    ? '[data-exercise], #new-exercise, [data-train], #focus-fen'
+    ? '[data-exercise], [data-drill], #new-exercise, [data-train], #focus-fen'
     : view === 'train'
-      ? '[data-exercise], #new-exercise, #curriculum-root .nav-item, #focus-fen'
-      : '#curriculum-root .nav-item, #focus-fen, [data-train]'
+      ? '[data-exercise], [data-drill], #new-exercise, #curriculum-root .nav-item, #focus-fen'
+      : '#curriculum-root .nav-item, #focus-fen, [data-train], [data-drill]'
   sidebar.querySelectorAll(drop).forEach((item) => item.classList.remove('active'))
 }
 
@@ -3797,6 +5022,7 @@ function openTrainMenu() {
 }
 
 function endTrain() {
+  clearGuide()
   train = null
   trainMode = null
   interactive.stop()
@@ -3933,7 +5159,7 @@ function playGameSquare(square) {
 }
 
 function playGradedSquare(square) {
-  if (busy) return
+  if (busy || replyLock || guide?.locked || guide?.playing) return
   let chess
   try {
     chess = new Chess(currentFen())
@@ -4017,7 +5243,10 @@ async function engineReply() {
   const fen = train.chess.fen()
   try {
     await engine.ready()
-    const result = await engine.analyze(fen, analysisOptions())
+    const result = await engine.analyze(fen, {
+      ...analysisOptions(),
+      onInfo: (info) => paintEngineInfo(fen, info),
+    })
     if (!train || train.over) return
     interactive.addEngineTime(side, result.timeMs || 0, { intoClock: false })
     const uci = result.bestMove
@@ -4056,6 +5285,29 @@ function acceptedLine(result, trial) {
   return result.lossCp != null && result.lossCp <= 30
 }
 
+async function replyPuzzle(fen, student) {
+  const token = replyEpoch
+  try {
+    const game = positionChessOf(fen)
+    if (!game || game.isGameOver() || game.turn() === student) return
+    await engine.ready()
+    if (token !== replyEpoch || !train || train.over) return
+    const result = await engine.analyze(fen, COACH_SEARCH)
+    const reply = moveFromUci(fen, result.bestMove)
+    if (!reply || !train || train.over) return
+    scheduleReply(reply, () => {
+      if (!train || train.over) return
+      const side = sideToMove(currentFen())
+      interactive.setTurn(side)
+      setStatus(t('status.toMove', { side: sideName(side) }))
+    }, OPPONENT_REPLY_MS)
+  } catch (err) {
+    if (token !== replyEpoch || !train || train.over) return
+    setStatus(err instanceof Error ? err.message : String(err))
+    interactive.setTurn(student)
+  }
+}
+
 async function gradePlayed(fen, played) {
   if (busy || !train || train.over) return
   busy = true
@@ -4070,18 +5322,38 @@ async function gradePlayed(fen, played) {
     recordAnalysisTime(fen, result)
     showResult(result)
     if (!acceptedLine(result, new Chess(played.after))) {
-      noteHintMiss()
-      showCheer('again')
-      setStatus(t('train.thinkMore'))
+      const line = result.lines?.[0]
+      const moves = line?.pvSan?.length ? line.pvSan.slice(0, 8) : (result.bestMove ? [result.bestMove] : [])
+      const phase = offerGuide({}, {
+        id: guide?.id,
+        fen,
+        moves,
+        note: '',
+      })
+      if (!phase) {
+        noteHintMiss()
+        showCheer('again')
+        setStatus(t('train.thinkMore'))
+      }
       interactive.setTurn(turn)
       return
     }
+    clearGuide()
     showCheer('ok')
+    commitPlayed(played)
     if (train.kind === 'puzzle') {
-      train.over = true
-      interactive.stop()
-      setStatus(t('train.puzzleSolved'))
+      const after = positionChessOf(played.after)
+      if (!after || after.isGameOver()) {
+        train.over = true
+        interactive.stop()
+        setStatus(t('train.puzzleSolved'))
+        lessonEl.textContent = t('train.confirmed', { san: played.san })
+        return
+      }
+      train.over = false
       lessonEl.textContent = t('train.confirmed', { san: played.san })
+      setStatus(t('train.coachGood'))
+      void replyPuzzle(played.after, turn)
       return
     }
     train.index += 1
@@ -4141,10 +5413,9 @@ function loadQuestStep() {
   lessonEl.textContent = step.prompt
   badge.textContent = 'QUEST'
   interactive.lastMove = null
-  fenInput.value = step.fen
-  drawBoard()
+  showPosition(step.fen)
   interactive.setTurn(sideToMove(step.fen))
-  openHintDiagram(`quest:${train.index}`)
+  beginGuide(`quest:${train.index}`)
 }
 
 function minutesField(id, label, value) {
@@ -4272,6 +5543,7 @@ function trainCopy(id) {
 }
 
 function openTrain(id) {
+  clearTrainDrill()
   closeLevels()
   closeMasters()
   const copy = trainCopy(id)
@@ -4314,11 +5586,10 @@ function openTrain(id) {
     fenInput.readOnly = true
     interactive.resetClocks()
     interactive.lastMove = null
-    fenInput.value = PUZZLE_FEN
-    drawBoard()
+    showPosition(PUZZLE_FEN)
     lockEval(true)
     interactive.setTurn('w')
-    openHintDiagram('puzzle')
+    beginGuide(`puzzle:${PUZZLE_FEN}`)
     return
   }
   if (id === 'random') {
@@ -4647,6 +5918,11 @@ async function refreshLessonList(selected = '') {
 }
 
 async function saveCurrentLesson() {
+  const drill = saveBoundTrainDrill()
+  if (drill) {
+    flashLesson(t('editor.updated', { name: drill.code }))
+    return
+  }
   rememberBuiltLesson()
   const lesson = captureLessonDocument()
   if (!lesson) {
@@ -4671,6 +5947,18 @@ function exportBuiltLesson() {
 }
 
 function exportCurrentLesson() {
+  const drill = currentTrainExport()
+  if (drill) {
+    const name = drill.code || drill.id || 'exercitiu'
+    const blob = new Blob([`${JSON.stringify(drill, null, 2)}\n`], { type: 'application/json' })
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(blob)
+    link.download = `${name}.json`
+    link.click()
+    URL.revokeObjectURL(link.href)
+    flashLesson(t('lesson.exported', { id: name }))
+    return
+  }
   rememberBuiltLesson()
   const lesson = captureLessonDocument()
   if (!lesson) {
@@ -4733,6 +6021,7 @@ async function openPackedLesson(lesson) {
 
 onLang(() => {
   refreshHintCoach()
+  paintGuide()
   paintMoveNav()
   paintTestSummary()
   if (piecePathActive()) {
@@ -4747,6 +6036,13 @@ onLang(() => {
   refreshEditorChrome()
   refreshLessonList()
   refreshCurriculum()
+  if (publishedExercises) renderExerciseList(publishedExercises)
+  relabelTrainHierarchy(currentTrainOutline())
+  if (activeDrill) {
+    panelTitle.textContent = t('panel.exercises')
+    activityTitle.textContent = exerciseTitle(activeDrill)
+    lessonEl.textContent = activeDrill.prompt
+  }
   const active = document.querySelector('#curriculum-root .nav-item.active')
   const reopen = trainMode
   if (isPedagogyOpen()) {
@@ -4808,13 +6104,15 @@ function studentPlayHooks(exit) {
   }
 }
 
-function presentEditorExercise(selection, hooks) {
+function presentEditorExercise(selection, hooks, options = {}) {
   if (!selection?.levelId || !selection.subId) return false
   const level = getLevels().find((item) => item.id === selection.levelId)
   const sub = level?.subchapters?.find((item) => item.id === selection.subId)
   if (!level || !sub) return false
   const target = focusSavedExercise(document.querySelector('#levels'), level, sub, hooks, selection.sectionId, selection.itemIndex)
   if (!target) return false
+  const own = typeof target === 'object' && (String(target.fen || '').trim() || String(target.correctMove || '').trim() || String(target.text || '').trim())
+  if (options.ownDiagram && !own) return false
   panelTitle.textContent = tx(level.title)
   activityTitle.textContent = tx(sub.title)
   hooks.play(target)
@@ -4822,6 +6120,7 @@ function presentEditorExercise(selection, hooks) {
 }
 
 function openLevelSelector(focusId) {
+  if (mode === 'train') return
   showPedagogyReturn(false)
   closePedagogy()
   const hooks = {
@@ -4873,17 +6172,33 @@ loadMasters(document.querySelector('#masters')).catch((error) => {
 
 document.querySelectorAll('.modes .mode').forEach((button) => {
   button.addEventListener('click', () => {
-    if (button.dataset.mode !== 'menu') leavePiecePath()
+    leavePiecePath()
+    if (button.dataset.mode !== 'train') clearTrainDrill()
     setMode(button.dataset.mode)
+    if (mode === 'menu') {
+      clearTask()
+      endTrain()
+      leaveExercise()
+      closeLevels()
+      closeMasters()
+      activityTitle.textContent = t('modeTitle.menu')
+      panelTitle.textContent = t('modeTitle.menu')
+      showLesson('menu')
+      return
+    }
     if (mode === 'learn') {
       clearTask()
       endTrain()
       leaveExercise()
       closeLevels()
+      if (isTeacherEditor()) closeTeacherEditor()
       openMasters(turnApi, {
         prepare() {
           if (!interactive.whiteAtBottom) interactive.flip()
         },
+        isTeacher: () => role === 'teacher',
+        saveExercise: (body) => api('/api/masters-authored', { method: 'POST', body }),
+        deleteExercise: (id) => api(`/api/masters-authored/${encodeURIComponent(id)}`, { method: 'DELETE' }),
       })
       return
     }
@@ -4900,14 +6215,24 @@ document.querySelectorAll('.modes .mode').forEach((button) => {
     if (isMastersMode()) clearTask()
     closeMasters()
     closeLevels()
-    if (mode === 'train') openTrainMenu()
+    if (mode === 'train') {
+      openTrainMenu()
+      if (activeDrillId) document.querySelector(`[data-drill="${activeDrillId}"]`)?.classList.add('active')
+    }
     if (task || exam || solver || train) return
+    activityTitle.textContent = t(`modeTitle.${mode}`)
     panelTitle.textContent = t(`modeTitle.${mode}`)
     showLesson(mode)
   })
 })
 
-document.querySelectorAll('.nav-item:not(.sub):not(.nav-parent)').forEach((button) => {
+document.querySelectorAll('[data-home]').forEach((button) => {
+  button.addEventListener('click', () => {
+    document.querySelector(`.modes .mode[data-mode="${button.dataset.home}"]`)?.click()
+  })
+})
+
+document.querySelectorAll('.nav-item:not(.sub):not(.nav-parent):not([data-home])').forEach((button) => {
   button.addEventListener('click', () => {
     leavePiecePath()
     clearTask()
@@ -4942,8 +6267,12 @@ liveFen = historyFENs[0]
 paintMoveNav()
 
 document.querySelector('#flip').addEventListener('click', () => {
+  const fen = currentFen()
   interactive.flip()
+  fenInput.value = fen
   drawBoard()
+  const turn = document.querySelector('#ed-turn')
+  if (turn) turn.value = sideToMove(fen)
 })
 
 for (const field of ['#procedure-definition', '#procedure-prompt', '#procedure-line', '#procedure-bad']) {
@@ -5011,6 +6340,8 @@ fenInput.addEventListener('blur', () => {
   saveOpenProcedure({ toast: true, onlyIfChanged: true })
 })
 fenInput.addEventListener('input', () => {
+  const next = currentFen()
+  if (validateFen(next).ok && fenPlacement(next) !== fenPlacement(liveFen)) orientBoardToFen(next)
   drawBoard()
   if (!applyingHistory && validateFen(currentFen()).ok) adoptFen(currentFen())
   if (!studentPlay()) return
@@ -5040,17 +6371,25 @@ let role = 'child'
 document.body.classList.add('student')
 let continuation = []
 let solutie = []
+let lineBranches = []
 let currentStepIndex = 0
 let stepFen = ''
 let lineAttempts = 3
+let guide = null
+let guideToken = 0
 let replyTimer = 0
 let replyLock = false
+let coachBusy = false
+let coachEpoch = 0
+let coachBook = null
+let coachReady = Promise.resolve()
 let replyEpoch = 0
 
 function studentPlay() {
   return document.body.classList.contains('student')
 }
 let solver = null
+let draftingExercise = false
 let exerciseCatalog = null
 let savingAttempt = false
 
@@ -5070,6 +6409,7 @@ function solving() {
 function leaveExercise() {
   solver = null
   solverEl.hidden = true
+  solverEl.classList.remove('is-finished')
   teacherEl.hidden = true
   fenInput.readOnly = false
   lockEval(false)
@@ -5214,6 +6554,7 @@ function paintAttempt(item) {
   }
   submitAttemptButton.disabled = item.closed || left <= 0
   retryAttemptButton.hidden = !item.canRetry
+  solverEl.classList.toggle('is-finished', Boolean(item.closed))
   fenInput.readOnly = true
   lockEval(true)
 }
@@ -5230,7 +6571,8 @@ function showChild(item) {
 }
 
 function showTeacher(item) {
-  solver = item?.id ? { id: item.id, editing: true } : { id: null, editing: true }
+  if (item?.id) draftingExercise = false
+  solver = item?.id && !draftingExercise ? { id: item.id, editing: true } : { id: null, editing: true }
   solverEl.hidden = true
   teacherEl.hidden = false
   fenInput.readOnly = false
@@ -5258,43 +6600,519 @@ function showTeacher(item) {
   }
 }
 
-function renderExerciseList(items) {
-  const list = document.querySelector('#exercise-list')
-  list.replaceChildren()
-  if (!items.length) {
-    const empty = document.createElement('p')
-    empty.className = 'submenu-label'
-    empty.textContent = t('nav.noExercise')
-    list.append(empty)
-    return
+const openExerciseGroups = new Set()
+let publishedExercises = null
+let authoredExercises = []
+let trainSections = []
+let removedTrainIds = new Set()
+let activeDrillId = ''
+let activeDrill = null
+
+function pruneRemoved(nodes) {
+  const kept = []
+  for (const node of nodes || []) {
+    if (removedTrainIds.has(node.id)) continue
+    if (node.children) {
+      const children = pruneRemoved(node.children)
+      if (!children.length && !node.fen && !node.exerciseId && !node.authoredSection) continue
+      kept.push({ ...node, children })
+    } else kept.push(node)
   }
-  for (const item of items) {
+  return kept
+}
+
+function visibleTrainTree(apiItems = publishedExercises || []) {
+  return pruneRemoved(trainExerciseTree(apiItems, authoredExercises, trainSections))
+}
+
+function currentTrainOutline() {
+  const map = (node) => ({
+    id: node.id,
+    title: exerciseTitle(node),
+    code: node.code || '',
+    drill: Boolean(node.fen || node.exerciseId),
+    authoredSection: Boolean(node.authoredSection),
+    children: (node.children || []).map(map),
+  })
+  return visibleTrainTree().map(map)
+}
+
+function markTrainSelection(id) {
+  const path = []
+  const walk = (nodes, trail) => {
+    for (const node of nodes || []) {
+      const next = [...trail, node.id]
+      if (node.id === id) {
+        path.push(...next)
+        return true
+      }
+      if (walk(node.children, next)) return true
+    }
+    return false
+  }
+  walk(currentTrainOutline(), [])
+  for (const groupId of path) {
+    openExerciseGroups.add(groupId)
+    const button = document.querySelector(`[data-exercise-group="${CSS.escape(groupId)}"]`)
+    const menu = button?.parentElement?.querySelector(':scope > .submenu')
+    if (menu) menu.hidden = false
+    if (button) {
+      button.classList.add('open')
+      button.setAttribute('aria-expanded', 'true')
+    }
+  }
+  document.querySelectorAll('#exercise-list .nav-item').forEach((node) => node.classList.remove('active'))
+  const drill = document.querySelector(`[data-drill="${CSS.escape(id)}"]`)
+  const group = document.querySelector(`[data-exercise-group="${CSS.escape(id)}"]`)
+  ;(drill || group)?.classList.add('active')
+}
+
+function selectTrainCategory(id) {
+  if (role !== 'teacher' || !id) return
+  teacherEl.hidden = true
+  if (!isTeacherEditor()) openTeacherEditor(teacherEditorHooks())
+  else resumeTeacherEditor()
+  pinTrainScreen()
+  syncTrainHierarchy(currentTrainOutline(), id)
+  document.querySelectorAll('#exercise-list .nav-item').forEach((node) => node.classList.remove('active'))
+  document.querySelector(`[data-exercise-group="${CSS.escape(id)}"]`)?.classList.add('active')
+}
+
+function paintDrillTitle(record) {
+  const title = String(record?.title || '').trim()
+  if (!title) return
+  if (activeDrill && record.code && activeDrill.code === record.code) {
+    activeDrill = { ...activeDrill, title, section: record.section || activeDrill.section }
+    activityTitle.textContent = title
+  }
+  const id = record.id || (activeDrill?.code === record.code ? activeDrill.id : '')
+  if (!id) return
+  const strong = document.querySelector(`[data-drill="${CSS.escape(id)}"] strong`)
+  if (strong) strong.textContent = title
+}
+
+function exerciseTitle(node) {
+  if (node.titleKey) return t(node.titleKey)
+  const saved = node.code ? trainDrillRecord(node.code) : null
+  return saved?.title || node.title || ''
+}
+
+function renderExerciseNode(node) {
+  if (node.exerciseId || node.fen) {
     const button = document.createElement('button')
     button.type = 'button'
     button.className = 'nav-item sub'
-    button.dataset.exercise = item.id
-    if (solver?.id === item.id) button.classList.add('active')
     const title = document.createElement('strong')
-    title.textContent = `${item.code} · ${item.title}`
+    title.textContent = exerciseTitle(node)
+    button.append(title)
+    if (node.exerciseId) {
+      button.dataset.exercise = node.exerciseId
+      if (solver?.id === node.exerciseId) button.classList.add('active')
+      const meta = document.createElement('span')
+      meta.textContent = t('attempt.level', { difficulty: node.difficulty, level: node.level }) + (node.published ? '' : t('attempt.draft'))
+      button.append(meta)
+      button.addEventListener('click', (event) => {
+        event.preventDefault()
+        event.stopPropagation()
+        openExercise(node.exerciseId)
+      })
+      return button
+    }
+    button.dataset.drill = node.id
+    if (activeDrillId === node.id) button.classList.add('active')
     const meta = document.createElement('span')
-    meta.textContent = t('attempt.level', { difficulty: item.difficulty, level: item.level }) + (item.published ? '' : t('attempt.draft'))
-    button.append(title, meta)
-    button.addEventListener('click', () => openExercise(item.id))
-    list.append(button)
+    meta.textContent = node.code
+    button.append(meta)
+    button.addEventListener('click', (event) => {
+      event.preventDefault()
+      event.stopPropagation()
+      openTrainDrill(node)
+    })
+    return button
+  }
+
+  const group = document.createElement('div')
+  group.className = 'nav-group exercise-fold'
+  const button = document.createElement('button')
+  button.type = 'button'
+  button.className = 'nav-item nav-parent sub'
+  button.dataset.exerciseGroup = node.id
+  const title = document.createElement('strong')
+  title.textContent = exerciseTitle(node)
+  button.append(title)
+  const menu = document.createElement('div')
+  menu.className = 'submenu'
+  const open = openExerciseGroups.has(node.id)
+  menu.hidden = !open
+  button.classList.toggle('open', open)
+  button.setAttribute('aria-expanded', String(open))
+  button.addEventListener('click', () => {
+    const next = menu.hidden
+    menu.hidden = !next
+    button.classList.toggle('open', next)
+    button.setAttribute('aria-expanded', String(next))
+    if (next) openExerciseGroups.add(node.id)
+    else openExerciseGroups.delete(node.id)
+    selectTrainCategory(node.id)
+  })
+  for (const child of node.children || []) menu.append(renderExerciseNode(child))
+  group.append(button, menu)
+  return group
+}
+
+function renderExerciseList(items) {
+  const list = document.querySelector('#exercise-list')
+  if (!list) return
+  const apiItems = Array.isArray(items) ? items : (Array.isArray(publishedExercises) ? publishedExercises : [])
+  list.replaceChildren()
+  for (const node of visibleTrainTree(apiItems)) list.append(renderExerciseNode(node))
+  paintSolvedDrills()
+}
+
+function findTrainNode(id) {
+  let found = null
+  const walk = (nodes) => {
+    for (const node of nodes || []) {
+      if (node.id === id) {
+        found = node
+        return
+      }
+      if (node.children) walk(node.children)
+    }
+  }
+  walk(visibleTrainTree())
+  return found
+}
+
+function mirrorAuthored(record) {
+  if (!record?.code) return
+  let store = {}
+  try {
+    const data = JSON.parse(localStorage.getItem('chesscoach.trainDrills') || '{}')
+    if (data && typeof data === 'object') store = data
+  } catch {
+    store = {}
+  }
+  const move = String(record.move || '').trim()
+  store[record.code] = {
+    id: record.id,
+    code: record.code,
+    fen: record.fen,
+    title: record.title || '',
+    prompt: record.prompt || '',
+    note: record.note || '',
+    move,
+    pgn: record.pgn || '',
+    goal: record.goal === 'mate' || record.goal === 'advantage' ? record.goal : '',
+    square: /^[a-h][1-8]$/i.test(move) ? move.toLowerCase() : '',
+    level: '',
+    chapter: '',
+    section: record.section || record.code,
+  }
+  localStorage.setItem('chesscoach.trainDrills', JSON.stringify(store))
+}
+
+function firstTrainDrillId(nodes) {
+  for (const node of nodes || []) {
+    if (node.fen || node.exerciseId) return node.id
+    const nested = firstTrainDrillId(node.children)
+    if (nested) return nested
+  }
+  return ''
+}
+
+const TRAIN_SOLVED_KEY = 'chesscoach.trainSolved'
+const SUCCESS_ADVANCE_MS = 3000
+let advanceTimer = 0
+
+function readSolvedDrills() {
+  try {
+    const data = JSON.parse(localStorage.getItem(TRAIN_SOLVED_KEY) || '[]')
+    return new Set(Array.isArray(data) ? data.filter((id) => typeof id === 'string' && id) : [])
+  } catch {
+    return new Set()
   }
 }
 
+function paintSolvedDrills() {
+  const ids = readSolvedDrills()
+  document.querySelectorAll('#exercise-list [data-drill]').forEach((button) => {
+    const solved = ids.has(button.dataset.drill)
+    button.classList.toggle('is-solved', solved)
+    let mark = button.querySelector(':scope > .drill-check')
+    if (solved && !mark) {
+      mark = document.createElement('span')
+      mark.className = 'drill-check'
+      mark.textContent = '✓'
+      mark.setAttribute('aria-hidden', 'true')
+      button.append(mark)
+    }
+    if (!solved && mark) mark.remove()
+  })
+}
+
+function rememberSolvedDrill(id) {
+  if (!id) return
+  const ids = readSolvedDrills()
+  ids.add(id)
+  localStorage.setItem(TRAIN_SOLVED_KEY, JSON.stringify([...ids]))
+  paintSolvedDrills()
+}
+
+function trainDrillOrder(nodes = visibleTrainTree(), out = []) {
+  for (const node of nodes || []) {
+    if (node.fen || node.exerciseId) out.push(node)
+    if (node.children?.length) trainDrillOrder(node.children, out)
+  }
+  return out
+}
+
+function nextTrainNode(id) {
+  const order = trainDrillOrder()
+  const index = order.findIndex((node) => node.id === id || node.exerciseId === id)
+  if (index < 0) return null
+  return order[index + 1] || null
+}
+
+function openResolvedTrainNode(node) {
+  if (!node) return
+  const id = node.id || node.exerciseId || ''
+  expandTrainPath(id)
+  if (node.exerciseId && !node.fen) openExercise(node.exerciseId)
+  else {
+    const fresh = findTrainNode(node.id)
+    if (fresh) openTrainDrill(fresh)
+  }
+  markTrainSelection(id)
+}
+
+function queueSuccessAdvance() {
+  clearTimeout(advanceTimer)
+  advanceTimer = 0
+  if (role !== 'child' || exam) return
+  if (mode === 'train' && activeDrillId) {
+    const from = activeDrillId
+    rememberSolvedDrill(from)
+    if (!nextTrainNode(from)) return
+    advanceTimer = setTimeout(() => {
+      advanceTimer = 0
+      if (role !== 'child' || mode !== 'train' || activeDrillId !== from) return
+      const box = document.querySelector('#success')
+      if (box?.hidden) return
+      const next = nextTrainNode(from)
+      if (next) openResolvedTrainNode(next)
+    }, SUCCESS_ADVANCE_MS)
+    return
+  }
+  if (!canAdvanceExercise()) return
+  advanceTimer = setTimeout(() => {
+    advanceTimer = 0
+    if (role !== 'child' || exam) return
+    const box = document.querySelector('#success')
+    if (box?.hidden) return
+    advanceExercise()
+  }, SUCCESS_ADVANCE_MS)
+}
+
+function adjacentTrainId(id) {
+  let found = ''
+  const walk = (nodes) => {
+    const list = nodes || []
+    const index = list.findIndex((node) => node.id === id)
+    if (index >= 0) {
+      const rest = [...list.slice(index + 1), ...list.slice(0, index).reverse()]
+      found = firstTrainDrillId(rest)
+      return true
+    }
+    for (const node of list) {
+      if (!node.children || !walk(node.children)) continue
+      if (!found) found = firstTrainDrillId(list.filter((item) => item !== node))
+      return true
+    }
+    return false
+  }
+  walk(visibleTrainTree())
+  return found
+}
+
+function expandTrainPath(id) {
+  const walk = (nodes, trail) => {
+    for (const node of nodes || []) {
+      const next = [...trail, node.id]
+      if (node.id === id) {
+        for (const groupId of next) openExerciseGroups.add(groupId)
+        return true
+      }
+      if (walk(node.children, next)) return true
+    }
+    return false
+  }
+  walk(visibleTrainTree(), [])
+}
+
+function forgetTrainDrill(code) {
+  if (!code) return
+  let store = {}
+  try {
+    const data = JSON.parse(localStorage.getItem('chesscoach.trainDrills') || '{}')
+    if (data && typeof data === 'object') store = data
+  } catch {
+    store = {}
+  }
+  if (!Object.prototype.hasOwnProperty.call(store, code)) return
+  delete store[code]
+  localStorage.setItem('chesscoach.trainDrills', JSON.stringify(store))
+}
+
+async function readTrainCollection(apiPath, filePath, key) {
+  try {
+    const data = await api(apiPath)
+    if (Array.isArray(data?.[key])) return data[key]
+  } catch {
+    /* python -m http.server nu are /api; fișierele din curriculum rămân sursa. */
+  }
+  try {
+    const response = await fetch(filePath, { cache: 'no-store' })
+    if (!response.ok) return []
+    const data = await response.json()
+    return Array.isArray(data?.[key]) ? data[key] : []
+  } catch {
+    return []
+  }
+}
+
+async function refreshAuthored() {
+  authoredExercises = await readTrainCollection('/api/train-authored', 'curriculum/train-authored.json', 'exercises')
+  trainSections = await readTrainCollection('/api/train-sections', 'curriculum/train-sections.json', 'sections')
+  const removed = await readTrainCollection('/api/train-removed', 'curriculum/train-removed.json', 'ids')
+  removedTrainIds = new Set(removed.filter((id) => typeof id === 'string' && id))
+  renderExerciseList(publishedExercises)
+  return authoredExercises
+}
+
+function clearTrainDrill() {
+  activeDrill = null
+  activeDrillId = ''
+}
+
+function pinTrainScreen() {
+  if (mode !== 'train') setMode('train')
+  else syncSidebar('train')
+  closeLevels()
+  closePedagogy()
+  closeMasters()
+  showPedagogyReturn(false)
+  document.querySelector('.shell')?.classList.remove('menu-on', 'levels-on', 'masters-on')
+  curriculumLessonId = null
+  studentEvalStep = ''
+}
+
+function materializeTrainDrill(item) {
+  const code = item?.code || item?.id
+  const saved = trainDrillRecord(code)
+  if (!saved || (saved.code && code && saved.code !== code)) return item
+  return shapeTrainDrill(item, saved)
+}
+
+function drillContext(item) {
+  const title = exerciseTitle(item)
+  const code = item.code || item.id || ''
+  let parents = null
+  const walk = (nodes, trail) => {
+    for (const node of nodes || []) {
+      const same = node.id === item.id || (item.id && node.exerciseId === item.id) || (item.exerciseId && node.exerciseId === item.exerciseId)
+      if (same) {
+        parents = trail
+        return
+      }
+      if (node.children) walk(node.children, [...trail, { id: node.id, title: exerciseTitle(node) }])
+    }
+  }
+  walk(visibleTrainTree(), [])
+  const titles = (parents || []).map((node) => node.title)
+  return {
+    id: item.id || item.exerciseId || code,
+    code,
+    fen: item.fen,
+    title,
+    prompt: item.prompt || item.note || '',
+    move: item.correctMove || item.square || item.solution || '',
+    square: item.pieceClick === false ? '' : (item.square || ''),
+    level: titles[0] || t('panel.exercises'),
+    chapter: titles[1] || titles[0] || title,
+    section: code ? `${code} · ${title}` : title,
+    parentId: parents?.length ? parents[parents.length - 1].id : '',
+    afterId: item.authored ? (item.afterId || '') : (item.id || ''),
+    ancestors: (parents || []).map((node) => node.id),
+    authored: Boolean(item.authored),
+  }
+}
+
+function unlockTrainDrill(item) {
+  document.body.classList.remove('student')
+  teacherEl.hidden = true
+  interactive.draggable = true
+  fenInput.readOnly = false
+  lockEval(false)
+  if (!isTeacherEditor()) openTeacherEditor(teacherEditorHooks())
+  else resumeTeacherEditor()
+  const seeded = seedTeacherDrill(drillContext(item))
+  if (seeded?.prompt) lessonEl.textContent = seeded.prompt
+}
+
+function openTrainDrill(item) {
+  hideSuccess()
+  endTrain()
+  leavePiecePath()
+  leaveExercise()
+  pinTrainScreen()
+  clearTask()
+  activeDrill = null
+  item = materializeTrainDrill(item)
+  activeDrill = item
+  activeDrillId = item.id
+  document.querySelectorAll('#exercise-list .nav-item').forEach((node) => node.classList.remove('active'))
+  document.querySelector(`[data-drill="${item.id}"]`)?.classList.add('active')
+  panelTitle.textContent = t('panel.exercises')
+  activityTitle.textContent = exerciseTitle(item)
+  badge.textContent = item.code || ''
+  lessonEl.textContent = item.prompt
+  if (role === 'teacher') {
+    showPosition(item.fen)
+    unlockTrainDrill(item)
+  } else {
+    interactive.draggable = true
+    presentItem(item, (correct) => showTaskFeedback(correct, item))
+  }
+  pinTrainScreen()
+  document.querySelector(`[data-drill="${item.id}"]`)?.classList.add('active')
+  panelTitle.textContent = t('panel.exercises')
+  activityTitle.textContent = exerciseTitle(item)
+  document.querySelector('.stage')?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+  setStatus('')
+}
+
 async function refreshExercises() {
-  const data = await api(`/api/exercises?role=${role}`)
-  renderExerciseList(data.exercises)
-  return data.exercises
+  try {
+    const data = await api(`/api/exercises?role=${role}`)
+    publishedExercises = Array.isArray(data?.exercises) ? data.exercises : []
+  } catch (err) {
+    if (!Array.isArray(publishedExercises)) publishedExercises = []
+    renderExerciseList(publishedExercises)
+    throw err
+  }
+  renderExerciseList(publishedExercises)
+  return publishedExercises
 }
 
 async function openExercise(id) {
   hideSuccess()
   endTrain()
+  clearTrainDrill()
+  pinTrainScreen()
   const item = await api(`/api/exercises/${id}?role=${role}`)
   clearTask()
+  activeDrillId = ''
   document.querySelectorAll('.nav-item').forEach((node) => node.classList.remove('active'))
   document.querySelector(`[data-exercise="${id}"]`)?.classList.add('active')
   panelTitle.textContent = t('panel.exercises')
@@ -5305,14 +7123,35 @@ async function openExercise(id) {
   resultEl.replaceChildren()
   engineLine.textContent = ''
   showPosition(item.fen)
-  if (role === 'teacher') showTeacher(item)
-  else showChild(item)
+  if (role === 'teacher') {
+    showTeacher(item)
+    unlockTrainDrill(item)
+  } else showChild(item)
+  pinTrainScreen()
+  document.querySelector(`[data-exercise="${id}"]`)?.classList.add('active')
+  panelTitle.textContent = t('panel.exercises')
+  activityTitle.textContent = item.title
+  document.querySelector('.stage')?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
   setStatus('')
 }
 
 function startNewExercise() {
   endTrain()
   clearTask()
+  draftingExercise = false
+  solver = { id: null, editing: true }
+  teacherEl.hidden = true
+  document.querySelector('.shell')?.classList.remove('menu-on')
+  if (!isTeacherEditor()) openTeacherEditor(teacherEditorHooks())
+  pinTrainScreen()
+  if (startNewEditorExercise()) {
+    document.querySelectorAll('.nav-item').forEach((node) => node.classList.remove('active'))
+    document.querySelector('#new-exercise').classList.add('active')
+    panelTitle.textContent = t('panel.exercises')
+    activityTitle.textContent = t('teacher.newTitle')
+    badge.textContent = t('teacher.newBadge')
+    return
+  }
   document.querySelectorAll('.nav-item').forEach((node) => node.classList.remove('active'))
   document.querySelector('#new-exercise').classList.add('active')
   panelTitle.textContent = t('panel.exercises')
@@ -5445,9 +7284,11 @@ async function saveExercise(event) {
   }
   setStatus(t('teacher.saving'))
   try {
-    const saved = solver?.id
-      ? await api(`/api/exercises/${solver.id}`, { method: 'PUT', body })
-      : await api('/api/exercises', { method: 'POST', body })
+    const create = draftingExercise || !solver?.id
+    const saved = create
+      ? await api('/api/exercises', { method: 'POST', body })
+      : await api(`/api/exercises/${solver.id}`, { method: 'PUT', body })
+    draftingExercise = false
     await refreshExercises()
     await openExercise(saved.id)
     setStatus(t('teacher.saved'))
@@ -5468,21 +7309,30 @@ document.querySelectorAll('.role').forEach((button) => {
     document.querySelector('#new-exercise').hidden = role !== 'teacher'
     setCurriculumStudent(role === 'child')
     document.body.classList.toggle('student', role !== 'teacher')
-    if (role === 'child' && isTeacherEditor()) {
+    if (isMastersMode()) {
+      refreshMasters()
+      paintSidebarToggle()
+      return
+    }
+    if (role === 'child' && isTeacherEditor() && !(mode === 'train' && activeDrill)) {
       const savedMove = document.querySelector('#ed-move')?.value.trim()
       const savedPgn = document.querySelector('#ed-pgn')?.value.trim()
       const sectionNow = editorSelection()?.sectionId
+      const selection = flushEditor()
+      closeTeacherEditor()
+      interactive.draggable = true
+      document.body.classList.add('student')
+      resultEl.replaceChildren()
+      engineLine.textContent = ''
+      if (presentEditorExercise(selection, studentPlayHooks(), { ownDiagram: true })) {
+        paintSidebarToggle()
+        return
+      }
       if ((sectionNow === 'practice' || sectionNow === 'evaluation') && savedMove) {
         const testing = sectionNow === 'evaluation'
         const maxAttempts = Number(document.querySelector('#ed-attempts')?.value) || 3
         const timeLimitSec = Number(document.querySelector('#ed-time')?.value) || 0
         const scoreWeight = Number(document.querySelector('#ed-weight')?.value) || 1
-        const selection = flushEditor()
-        closeTeacherEditor()
-        interactive.draggable = true
-        document.body.classList.add('student')
-        resultEl.replaceChildren()
-        engineLine.textContent = ''
         const shown = presentEditorExercise(selection, studentPlayHooks())
         if (!shown && currentFen()) {
           const start = document.querySelector('#ed-fen')?.value.trim() || currentFen()
@@ -5539,9 +7389,25 @@ document.querySelectorAll('.role').forEach((button) => {
       closeLevels()
       closePedagogy()
       interactive.draggable = true
-      openTeacherEditor(teacherEditorHooks())
-      const activeLesson = document.querySelector('#curriculum-root .nav-item.active')?.dataset.module
-      if (activeLesson) syncEditorToLesson(activeLesson)
+      fenInput.readOnly = false
+      if (mode === 'train' && activeDrill) unlockTrainDrill(activeDrill)
+      else {
+        openTeacherEditor(teacherEditorHooks())
+        const activeLesson = document.querySelector('#curriculum-root .nav-item.active')?.dataset.module
+        if (activeLesson) syncEditorToLesson(activeLesson)
+      }
+    } else if (mode === 'train' && activeDrill) {
+      const drill = materializeTrainDrill(activeDrill)
+      activeDrill = drill
+      closeTeacherEditor()
+      interactive.draggable = true
+      document.body.classList.add('student')
+      resultEl.replaceChildren()
+      engineLine.textContent = ''
+      presentItem(drill, (correct) => showTaskFeedback(correct, drill))
+      panelTitle.textContent = t('panel.exercises')
+      activityTitle.textContent = exerciseTitle(drill)
+      lessonEl.textContent = drill.prompt
     } else {
       const savedMove = document.querySelector('#ed-move')?.value.trim()
       const savedPgn = document.querySelector('#ed-pgn')?.value.trim()
@@ -5589,8 +7455,14 @@ document.querySelectorAll('.role').forEach((button) => {
 document.querySelector('#sidebar-toggle').addEventListener('click', toggleSidebar)
 paintSidebarToggle()
 document.querySelector('#teacher').addEventListener('submit', saveExercise)
+document.querySelector('#new-exercise')?.addEventListener('click', (event) => {
+  event.preventDefault()
+  event.stopPropagation()
+  startNewExercise()
+})
 bindTeacherEditor()
 mountStudyClock(document.querySelector('.topbar'), studyFocusKey)
+document.querySelector('#guide-retry')?.addEventListener('click', retryGuide)
 mountHintCoach({
   text: t,
   fen: currentFen,
@@ -5645,6 +7517,8 @@ document.querySelector('#ex-delete').addEventListener('click', async () => {
 })
 
 async function bootExercises() {
+  renderExerciseList([])
+  await refreshAuthored()
   try {
     exerciseCatalog = await api('/api/catalog')
     fillSelect(
@@ -5664,13 +7538,28 @@ async function bootExercises() {
     const motifOptions = exerciseCatalog.motifs.map((item) => ({ value: item.code, label: item.title }))
     fillSelect(document.querySelector('#ex-motif'), motifOptions)
     fillSelect(motifInput, motifOptions, t('motif.choose'))
+  } catch (err) {
+    setStatus(err instanceof Error ? err.message : String(err))
+  }
+  try {
     await refreshExercises()
   } catch (err) {
+    if (!Array.isArray(publishedExercises)) {
+      publishedExercises = []
+      renderExerciseList(publishedExercises)
+    }
     setStatus(err instanceof Error ? err.message : String(err))
   }
 }
 
 bootExercises()
+mountWelcome({
+  onApplyRole(nextRole) {
+    const button = document.querySelector(`.roles .role[data-role="${nextRole}"]`)
+    if (!button || button.classList.contains('active')) return
+    button.click()
+  },
+})
 engine.ready().then(() => {
   if (!statusEl.textContent || statusEl.dataset.loading === '1') {
     statusEl.dataset.loading = ''

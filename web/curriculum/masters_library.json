@@ -335,6 +335,201 @@
             "en": "f4 opens in front of the rook on e1. The piece is ready, then the break.",
             "fr": "f4 ouvre devant la tour en e1. La pièce est prête, puis la rupture."
           }
+        },
+        {
+          "lessonId": "kasparov-3",
+          "title": {
+            "ro": "Adams – Kasparov, Linares 2005",
+            "en": "Adams – Kasparov, Linares 2005",
+            "fr": "Adams – Kasparov, Linares 2005"
+          },
+          "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+          "learner": "b",
+          "moves": [
+            {
+              "san": "e4",
+              "comment": {
+                "ro": "Adams deschide cu e4. Kasparov va răspunde pe flancul damei.",
+                "en": "Adams opens with e4. Kasparov will answer on the queenside.",
+                "fr": "Adams ouvre par e4. Kasparov répondra à l’aile dame."
+              }
+            },
+            {
+              "san": "c5",
+              "comment": {
+                "ro": "c5 este Siciliana. Negrul deschide coloana c, pe care va veni mai târziu atacul.",
+                "en": "c5 is the Sicilian. Black opens the c-file, where the attack will come later.",
+                "fr": "c5 est la Sicilienne. Les noirs ouvrent la colonne c, où viendra plus tard l’attaque."
+              }
+            },
+            "Nf3",
+            {
+              "san": "d6",
+              "comment": {
+                "ro": "d6 ține centrul și pregătește ...a6 și ...e6. Structura Najdorf începe aici.",
+                "en": "d6 holds the centre and prepares ...a6 and ...e6. The Najdorf structure starts here.",
+                "fr": "d6 tient le centre et prépare ...a6 et ...e6. La structure Najdorf commence ici."
+              }
+            },
+            "d4",
+            {
+              "san": "cxd4",
+              "comment": {
+                "ro": "cxd4 schimbă pionul de pe c. Coloana c se deschide spre regele care va sta pe flancul damei.",
+                "en": "cxd4 trades the c-pawn. The c-file opens toward the king that will sit on the queenside.",
+                "fr": "cxd4 échange le pion c. La colonne c s’ouvre vers le roi qui se placera à l’aile dame."
+              }
+            },
+            "Nxd4",
+            "Nf6",
+            "Nc3",
+            {
+              "san": "a6",
+              "comment": {
+                "ro": "a6 este mutarea Najdorf. Oprește Nb5 și pregătește ...b5.",
+                "en": "a6 is the Najdorf move. It stops Nb5 and prepares ...b5.",
+                "fr": "a6 est le coup Najdorf. Il empêche Nb5 et prépare ...b5."
+              }
+            },
+            "Be3",
+            "e6",
+            "Be2",
+            {
+              "san": "Qc7",
+              "comment": {
+                "ro": "Dama vine pe c7, pe coloana deschisă, și susține ...b5.",
+                "en": "The queen comes to c7, on the open file, and supports ...b5.",
+                "fr": "La dame vient en c7, sur la colonne ouverte, et soutient ...b5."
+              }
+            },
+            "Qd2",
+            {
+              "san": "b5",
+              "comment": {
+                "ro": "b5 înaintează pe flancul unde Adams își va pune regele.",
+                "en": "b5 advances on the wing where Adams will put his king.",
+                "fr": "b5 avance sur l’aile où Adams va placer son roi."
+              }
+            },
+            "a3",
+            "Bb7",
+            "f3",
+            "Nc6",
+            "O-O-O",
+            {
+              "san": "b4",
+              "comment": {
+                "ro": "b4 este ruptura. Pionul deschide coloana în fața regelui alb, deja rocat.",
+                "en": "b4 is the break. The pawn opens the file in front of the white king, already castled.",
+                "fr": "b4 est la rupture. Le pion ouvre la colonne devant le roi blanc, déjà roqué."
+              }
+            },
+            "axb4",
+            {
+              "san": "Nxb4",
+              "comment": {
+                "ro": "Nxb4 pune calul lângă rege. Din schimbul de pe b4 a rămas piesa, nu doar pionul.",
+                "en": "Nxb4 puts the knight next to the king. The piece remains from the trade on b4, not only the pawn.",
+                "fr": "Nxb4 place le cavalier près du roi. La pièce reste de l’échange en b4, pas seulement le pion."
+              }
+            },
+            "g4",
+            "Be7",
+            "g5",
+            "Nd7",
+            "h4",
+            {
+              "san": "Nc5",
+              "comment": {
+                "ro": "Calul a făcut ocolul Nf6–d7–c5. De pe c5 privește spre rege și spre e4.",
+                "en": "The knight took the route Nf6–d7–c5. From c5 it looks toward the king and toward e4.",
+                "fr": "Le cavalier a fait le détour Nf6–d7–c5. De c5 il regarde le roi et e4."
+              }
+            },
+            "Kb1",
+            {
+              "san": "Rb8",
+              "comment": {
+                "ro": "Turnul vine pe coloana b, pe jumătate deschisă, în spatele rupturii.",
+                "en": "The rook comes to the half-open b-file, behind the break.",
+                "fr": "La tour vient sur la colonne b, demi-ouverte, derrière la rupture."
+              }
+            },
+            "h5",
+            "O-O",
+            "g6",
+            "Bf6",
+            "Rdg1",
+            "Ba8",
+            "Bg5",
+            {
+              "san": "Be5",
+              "comment": {
+                "ro": "Be5 așază nebunul în centru, pe diagonala care merge spre regele alb.",
+                "en": "Be5 places the bishop in the centre, on the diagonal that runs toward the white king.",
+                "fr": "Be5 place le fou au centre, sur la diagonale qui mène vers le roi blanc."
+              }
+            },
+            "gxh7+",
+            "Kxh7",
+            "Nb3",
+            {
+              "san": "Nxc2",
+              "comment": {
+                "ro": "Nxc2 intră lângă rege. Calul nu este luat: rămâne în tabără și susține dama.",
+                "en": "Nxc2 steps in next to the king. The knight is not taken: it stays in the camp and supports the queen.",
+                "fr": "Nxc2 entre près du roi. Le cavalier n’est pas pris : il reste dans le camp et soutient la dame."
+              }
+            },
+            "Nxc5",
+            {
+              "san": "Na3+",
+              "comment": {
+                "ro": "Na3+ dă șah și îl trimite pe rege pe a2.",
+                "en": "Na3+ gives check and sends the king to a2.",
+                "fr": "Na3+ donne échec et envoie le roi en a2."
+              }
+            },
+            "Ka2",
+            {
+              "san": "Qxc5",
+              "comment": {
+                "ro": "Qxc5 recuperează calul. Dama intră și ea lângă rege.",
+                "en": "Qxc5 wins the knight back. The queen also enters next to the king.",
+                "fr": "Qxc5 récupère le cavalier. La dame entre elle aussi près du roi."
+              }
+            },
+            "Na4",
+            {
+              "san": "Nc2",
+              "comment": {
+                "ro": "Nc2 readuce calul lângă regele de pe a2. Dama și calul lucrează împreună.",
+                "en": "Nc2 brings the knight back next to the king on a2. The queen and the knight work together.",
+                "fr": "Nc2 ramène le cavalier près du roi en a2. La dame et le cavalier travaillent ensemble."
+              }
+            },
+            "Kb1",
+            {
+              "san": "Qa3",
+              "comment": {
+                "ro": "Qa3 așază dama lângă rege, împreună cu calul de pe c2. Adams cedează.",
+                "en": "Qa3 places the queen next to the king, together with the knight on c2. Adams resigns.",
+                "fr": "Qa3 place la dame près du roi, avec le cavalier en c2. Adams abandonne."
+              }
+            }
+          ],
+          "pgn": "[Event \"Linares\"]\n[Site \"Linares ESP\"]\n[Date \"2005.03.08\"]\n[EventDate \"?\"]\n[Round \"12\"]\n[Result \"0-1\"]\n[White \"Michael Adams\"]\n[Black \"Garry Kasparov\"]\n[ECO \"B90\"]\n[WhiteElo \"?\"]\n[BlackElo \"?\"]\n[PlyCount \"52\"]\n\n1.e4 c5 2.Nf3 d6 3.d4 cxd4 4.Nxd4 Nf6 5.Nc3 a6 6.Be3 e6 7.Be2 Qc7 8.Qd2 b5 9.a3 Bb7 10.f3 Nc6 11.O-O-O b4 12.axb4 Nxb4 13.g4 Be7 14.g5 Nd7 15.h4 Nc5 16.Kb1 Rb8 17.h5 O-O 18.g6 Bf6 19.Rdg1 Ba8 20.Bg5 Be5 21.gxh7+ Kxh7 22.Nb3 Nxc2 23.Nxc5 Na3+ 24.Ka2 Qxc5 25.Na4 Nc2 26.Kb1 Qa3 0-1",
+          "question": {
+            "ro": "Kasparov joacă cu negrul contra lui Adams. Urmează mutările lui.",
+            "en": "Kasparov plays Black against Adams. Follow his moves.",
+            "fr": "Kasparov joue avec les noirs contre Adams. Suis ses coups."
+          },
+          "correctMove": "c5",
+          "goldenRule": {
+            "ro": "Adams a cedat după Qa3. Ruptura b4 a adus dama și calul lângă rege.",
+            "en": "Adams resigned after Qa3. The b4 break brought the queen and the knight next to the king.",
+            "fr": "Adams a abandonné après Qa3. La rupture b4 a amené la dame et le cavalier près du roi."
+          }
         }
       ],
       "continent": "europa"

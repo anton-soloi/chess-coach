@@ -1,21 +1,24 @@
-// Antrenament tactic: fiecare diagramă pornește cu 3 încercări, sau cu 4
-// dacă diagrama anterioară a fost rezolvată cu indiciu.
-// La 0 dispare contorul și apare butonul „Indiciu”. După indiciu, butonul
-// dispare, săgeata gri rămâne, iar diagrama este marcată rezolvată cu indiciu.
+// Indiciu adaptiv pe diagramă.
+// Prima diagramă pornește cu 3 încercări. Fiecare mutare greșită scade contorul.
+// La 0 dispare textul și apare butonul „Indiciu”. Indiciul desenează săgeata gri,
+// marchează usedHintThisPuzzle și lasă contorul la 0.
+// Diagrama următoare: indiciu folosit → 3 + 1; altfel max(3, pragul anterior − 1).
+// Butonul se ascunde, săgeata se șterge, contorul revine cu noul prag.
 
 const FIRST = 3
-const AFTER_HINT = 4
 
 let hooks = {}
 let threshold = FIRST
 let puzzleId = ''
 let remaining = FIRST
-let usedHint = false
+let usedHintThisPuzzle = false
 let arrow = null
 let busy = false
 
-export function nextHintThreshold(usedHintThisPuzzle) {
-  return usedHintThisPuzzle ? AFTER_HINT : FIRST
+export function nextHintThreshold(usedHint, previous = FIRST) {
+  if (usedHint) return FIRST + 1
+  const current = Number.isFinite(previous) ? previous : FIRST
+  return Math.max(FIRST, current - 1)
 }
 
 export function hintPhase(triesLeft, usedHintThisPuzzle) {
@@ -38,9 +41,9 @@ export function openHintDiagram(id) {
     paint()
     return
   }
-  if (puzzleId) threshold = nextHintThreshold(usedHint, threshold)
+  if (puzzleId) threshold = nextHintThreshold(usedHintThisPuzzle, threshold)
   puzzleId = id
-  usedHint = false
+  usedHintThisPuzzle = false
   remaining = threshold
   arrow = null
   busy = false
@@ -49,7 +52,7 @@ export function openHintDiagram(id) {
 }
 
 export function noteHintMiss() {
-  if (!puzzleId || usedHint || remaining <= 0 || busy) return
+  if (!puzzleId || usedHintThisPuzzle || remaining <= 0 || busy) return
   remaining -= 1
   paint()
 }
@@ -67,7 +70,7 @@ export function refreshHintCoach() {
 }
 
 async function requestHint() {
-  if (!puzzleId || busy || usedHint || remaining > 0) return
+  if (!puzzleId || busy || usedHintThisPuzzle || remaining > 0) return
   const fen = hooks.fen?.()
   if (!fen) return
   busy = true
@@ -81,7 +84,7 @@ async function requestHint() {
       return
     }
     arrow = { from, to }
-    usedHint = true
+    usedHintThisPuzzle = true
     remaining = 0
     hooks.onArrow?.()
   } catch (err) {
@@ -97,8 +100,9 @@ function paint() {
   const count = box?.querySelector('.attempt-count')
   const button = box?.querySelector('.attempt-hint-btn')
   if (!box || !count || !button) return
+  if (box.dataset.guide === '1') return
   const active = Boolean(puzzleId) && hooks.active?.() !== false
-  const phase = hintPhase(remaining, usedHint)
+  const phase = hintPhase(remaining, usedHintThisPuzzle)
   box.hidden = !active || phase === 'solved'
   count.hidden = phase !== 'count'
   button.hidden = phase !== 'hint'
@@ -107,8 +111,8 @@ function paint() {
   button.textContent = hooks.text?.('attempt.hint') || 'Indiciu'
   box.dataset.threshold = String(threshold)
   box.dataset.remaining = String(remaining)
-  box.dataset.used = usedHint ? 'true' : 'false'
+  box.dataset.used = usedHintThisPuzzle ? 'true' : 'false'
   box.dataset.phase = phase
-  box.dataset.solved = usedHint ? 'hint' : ''
+  box.dataset.solved = usedHintThisPuzzle ? 'hint' : ''
   box.dataset.puzzle = puzzleId
 }

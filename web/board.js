@@ -96,6 +96,7 @@ export class InteractiveBoard {
   }
 
   flip() {
+    // Doar orientarea desenului. Câmpurile rămân a1–h8, iar FEN-ul nu se schimbă.
     this.whiteAtBottom = !this.whiteAtBottom
     this.#placeClocks()
   }
@@ -213,7 +214,9 @@ export class InteractiveBoard {
     const placed = placementOf(this.fen)
     if (!placed) return null
 
-    const files = this.whiteAtBottom ? 'abcdefgh' : 'hgfedcba'
+    // FEN stays standard: the first field is rank 8, files a–h. Black's view
+    // drops rank 8 to the bottom of the screen and keeps a on the left.
+    const files = 'abcdefgh'
     const ranks = this.whiteAtBottom ? [8, 7, 6, 5, 4, 3, 2, 1] : [1, 2, 3, 4, 5, 6, 7, 8]
     this.#fileRow(files)
     for (const rank of ranks) {
@@ -255,12 +258,13 @@ export class InteractiveBoard {
           piece.src = `pieces/cburnett/${square.color}${square.type.toUpperCase()}.svg`
           cell.append(piece)
         }
-        cell.addEventListener('click', () => {
+        cell.addEventListener('click', (event) => {
           if (this.suppressClick) {
             this.suppressClick = false
             return
           }
-          this.onSquare?.(name)
+          const picked = event.currentTarget?.dataset?.square || name
+          this.onSquare?.(picked)
         })
         this.boardEl.append(cell)
       }

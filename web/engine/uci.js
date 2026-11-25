@@ -1,5 +1,21 @@
 // Parsează liniile UCI ale Stockfish. Scorul este din perspectiva părții care mută.
 
+// Scorul curent, chiar dacă linia încă nu are variație principală.
+export function parseScoreLine(line) {
+  if (!line.startsWith('info ') || line.includes(' currmove ')) return null
+  if (line.includes(' lowerbound') || line.includes(' upperbound')) return null
+  const score = /(?:^|\s)score (cp|mate) (-?\d+)/.exec(line)
+  if (!score) return null
+  const depth = /(?:^|\s)depth (\d+)/.exec(line)
+  const time = /(?:^|\s)time (\d+)/.exec(line)
+  return {
+    kind: score[1],
+    value: Number(score[2]),
+    depth: depth ? Number(depth[1]) : 0,
+    timeMs: time ? Number(time[1]) : 0,
+  }
+}
+
 export function parseInfoLine(line) {
   if (!line.startsWith('info ') || line.includes(' currmove ')) return null
   if (line.includes(' lowerbound') || line.includes(' upperbound')) return null

@@ -81,7 +81,7 @@ export function sanTokens(text) {
       && !/^(?:mate|mat|check|șah|sah|échec|echec)$/i.test(token))
 }
 
-function solutionText(text) {
+function unwrapSolution(text) {
   if (Array.isArray(text)) return text.join(' ')
   let raw = String(text || '').trim()
   if (raw.startsWith('[')) {
@@ -92,7 +92,61 @@ function solutionText(text) {
       raw = raw.replace(/[\[\]"]/g, ' ')
     }
   }
-  return raw.split(/\s*(?:\/|\bsau\b|\bor\b)\s*/i)[0]
+  return raw
+}
+
+function solutionText(text) {
+  return unwrapSolution(text).split(/\s*(?:\/|\bsau\b|\bor\b)\s*/i)[0]
+}
+
+function expandParens(text) {
+  const source = String(text || '').replace(/\{[^}]*\}/g, ' ').replace(/\s+/g, ' ').trim()
+  if (!source.includes('(')) return source ? [source] : []
+  const lines = []
+  const walk = (rest) => {
+    const match = rest.match(/^(.*?)\(([^()]*)\)(.*)$/)
+    if (!match) {
+      const line = rest.replace(/[()]/g, ' ').replace(/\s+/g, ' ').trim()
+      if (line) lines.push(line)
+      return
+    }
+    const before = match[1].trim()
+    const inside = match[2].trim()
+    const after = match[3].trim()
+    walk(`${before} ${after}`.replace(/\s+/g, ' ').trim())
+    const prefix = before.split(/\s+/).filter(Boolean)
+    prefix.pop()
+    if (inside) walk(`${prefix.join(' ')} ${inside} ${after}`.replace(/\s+/g, ' ').trim())
+  }
+  walk(source)
+  return lines
+}
+
+export function solutionLines(fen, text) {
+  const branches = solutionBranches(text)
+  const seeds = branches.length ? branches : [String(text || '').trim()]
+  const lines = []
+  for (const seed of seeds) {
+    const line = solutionMoves(fen, seed)
+    if (line.length) lines.push(line)
+  }
+  const playable = (line) => line.every((token) => /^[a-h][1-8][a-h][1-8][qrbn]?$/i.test(String(token)))
+  return lines.filter((line, index) => !lines.some((other, otherIndex) => otherIndex !== index
+    && playable(other)
+    && other.length > line.length
+    && line.every((token, step) => token === other[step])))
+}
+
+export function solutionBranches(text) {
+  const chunks = unwrapSolution(text).split(/\s*(?:\/|\bsau\b|\bor\b)\s*/i).map((part) => part.trim()).filter(Boolean)
+  const lines = []
+  for (const chunk of chunks) lines.push(...expandParens(chunk))
+  const unique = []
+  for (const line of lines) {
+    const clean = line.replace(/\s+/g, ' ').trim()
+    if (clean && !unique.includes(clean)) unique.push(clean)
+  }
+  return unique
 }
 
 // Linia completă, în ordinea din soluție: mutarea elevului, răspunsul, mutarea următoare.
@@ -167,6 +221,24 @@ function bareMove(text) {
 function moveUci(move) {
   if (!move?.from || !move?.to) return ''
   return `${move.from}${move.to}${move.promotion || ''}`.toLowerCase()
+}
+
+function normalizePromotionText(text) {
+  let body = String(text || '').trim()
+  if (!body) return body
+  body = body.replace(/^([a-h][1-8][a-h][1-8])c(?=[+#†‡!?]*$)/i, '$1n')
+  body = body.replace(/=c(?=[+#†‡!?]*$)/i, '=N')
+  body = body.replace(/^([a-h][x×:])?([a-h][1-8])c(?=[+#†‡!?]*$)/i, (_, cap, dest) => `${cap || ''}${dest}=N`)
+  body = body.replace(/^([a-h][x×:])?([a-h][1-8])n(?=[+#†‡!?]*$)/i, (_, cap, dest) => `${cap || ''}${dest}=N`)
+  return body
+}
+
+function promotionLetter(text) {
+  const normalized = normalizePromotionText(text)
+  const uci = uciToken(normalized)
+  if (uci[4]) return uci[4]
+  const equal = normalized.match(/=([QRBNqrbn])(?=[+#†‡!?]*$)/)
+  return equal ? equal[1].toLowerCase() : ''
 }
 
 function uciToken(text) {
@@ -286,7 +358,7 @@ function unique(list) {
 }
 
 export function playTypedMove(chess, text) {
-  const trimmed = String(text || '').trim().replace(/^\d+\.(?:\.\.)?/, '')
+  const trimmed = normalizePromotionText(String(text || '').trim().replace(/^\d+\.(?:\.\.)?/, ''))
   if (!trimmed) throw new Error('Invalid move: ')
   const compact = trimmed.replace(/[+#†‡!?]/g, '').replace(/-/g, '')
   if (/^[a-h][1-8][a-h][1-8][qrbn]?$/i.test(compact)) {
@@ -331,8 +403,110 @@ export function playTypedMove(chess, text) {
   throw last || new Error(`Invalid move: ${trimmed}`)
 }
 
+function moveIsLegal(fen, move) {
+  try {
+    playTypedMove(new Chess(fen), move)
+    return true
+  } catch {
+    return false
+  }
+}
+
+// Poziție legală pentru editor: exact un rege alb și unul negru, pionii nu stau
+// pe rândurile 1 sau 8, iar regele culorii care NU este la mutare nu este în șah.
+// Șahul la mutare este legal. Orientarea vizuală a tablei nu intră în calcul.
+export function legalPosition(fen) {
+  const text = String(fen || '').trim()
+  const parts = text.split(/\s+/)
+  const ranks = (parts[0] || '').split('/')
+  const turn = parts[1] === 'b' ? 'b' : (parts[1] === 'w' ? 'w' : '')
+  if (!turn || ranks.length !== 8) return false
+  const map = new Map()
+  for (let rankIndex = 0; rankIndex < 8; rankIndex += 1) {
+    let file = 0
+    let previousNumber = false
+    for (const symbol of ranks[rankIndex]) {
+      if (symbol >= '1' && symbol <= '8') {
+        if (previousNumber) return false
+        file += Number(symbol)
+        previousNumber = true
+        continue
+      }
+      previousNumber = false
+      if (!/^[prnbqkPRNBQK]$/.test(symbol) || file > 7) return false
+      map.set('abcdefgh'[file] + (8 - rankIndex), {
+        type: symbol.toLowerCase(),
+        color: symbol === symbol.toUpperCase() ? 'w' : 'b',
+      })
+      file += 1
+    }
+    if (file !== 8) return false
+  }
+  const kings = { w: '', b: '' }
+  for (const [square, piece] of map) {
+    if (piece.type === 'p' && (square[1] === '1' || square[1] === '8')) return false
+    if (piece.type !== 'k') continue
+    if (kings[piece.color]) return false
+    kings[piece.color] = square
+  }
+  if (!kings.w || !kings.b) return false
+  const idle = turn === 'w' ? 'b' : 'w'
+  try {
+    const chess = new Chess(`${parts[0]} ${turn} - - 0 1`, { skipValidation: true })
+    return !chess.isAttacked(kings[idle], turn)
+  } catch {
+    return false
+  }
+}
+
+function fenWithTurn(fen, turn) {
+  const parts = String(fen || '').trim().split(/\s+/)
+  if (parts.length < 2 || (turn !== 'w' && turn !== 'b')) return ''
+  const next = parts.slice()
+  next[1] = turn
+  return next.join(' ')
+}
+
+// O mutare reală (SAN sau câmp-câmp), legală pentru partea din FEN sau pentru cealaltă.
+// Un singur câmp, cum este h8, nu este o mutare.
+export function movePlayable(fen, moveText) {
+  const current = String(fen || '').trim()
+  const move = String(moveText || '').trim()
+  if (!current || !move || /^[a-h][1-8]$/i.test(move)) return false
+  if (moveIsLegal(current, move)) return true
+  const other = fenWithTurn(current, current.split(/\s+/)[1] === 'b' ? 'w' : 'b')
+  return Boolean(other) && moveIsLegal(other, move)
+}
+
+// Păstrează poziția și schimbă doar culoarea la mutare, dacă soluția e legală doar pentru cealaltă parte.
+export function fenAlignedToMove(fen, moveText) {
+  const current = String(fen || '').trim()
+  const move = String(moveText || '').trim()
+  if (!current || !move || /^[a-h][1-8]$/i.test(move)) return current
+  if (moveIsLegal(current, move)) return current
+  const other = fenWithTurn(current, current.split(/\s+/)[1] === 'b' ? 'w' : 'b')
+  return other && moveIsLegal(other, move) ? other : current
+}
+
+export function promotionForSquare(fen, from, to, texts) {
+  const list = Array.isArray(texts) ? texts : [texts]
+  for (const text of list) {
+    const promo = promotionLetter(text)
+    if (!promo) continue
+    const dest = destinationOf(normalizePromotionText(text))
+    if (dest && dest !== to) continue
+    try {
+      playTypedMove(new Chess(fen), `${from}${to}${promo}`)
+      return promo
+    } catch {
+      // Promovarea din text nu este legală din acest câmp.
+    }
+  }
+  return ''
+}
+
 export function sameMove(played, expected) {
-  const want = String(expected || '').trim()
+  const want = normalizePromotionText(String(expected || '').trim())
   if (!want || !played?.from || !played?.to) return false
   const uci = moveUci(played)
   if (uciToken(want) && uciToken(want) === uci) return true

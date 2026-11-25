@@ -340,6 +340,7 @@ export function setCurriculumStudent(value) {
 
 export function refreshCurriculum() {
   if (!rootEl) return
+  const paths = document.querySelector('[data-sidebar="paths"]')
   const open = new Set(
     [...rootEl.querySelectorAll('.submenu')].filter((menu) => !menu.hidden).map((menu) => menu.id),
   )
@@ -347,15 +348,27 @@ export function refreshCurriculum() {
   const firstPaint = rootEl.childElementCount === 0
   rootEl.replaceChildren()
   const currentIds = new Set(currentLevelModuleIds())
-  visibleModules().forEach((module, index) => {
+  allModules().forEach((module, index) => {
     const menuId = `${module.moduleId}-menu`
-    const expanded = expandFirst || firstPaint ? index === 0 : open.has(menuId)
+    const expanded = expandFirst
+      ? currentIds.has(module.moduleId)
+      : firstPaint
+        ? (currentIds.size ? currentIds.has(module.moduleId) : index === 0)
+        : open.has(menuId)
     const group = renderModule(module, expanded)
-    if (curriculumStudent && currentIds.has(module.moduleId)) group.classList.add('current-level')
+    if (currentIds.has(module.moduleId)) group.classList.add('current-level')
     rootEl.append(group)
   })
+  placePiecePaths(paths)
   if (active) rootEl.querySelector(`[data-module="${active}"]`)?.classList.add('active')
   paintLevelBadge()
+}
+
+function placePiecePaths(paths) {
+  if (!paths) return
+  const menu = document.getElementById('pion-menu')
+  if (menu) menu.prepend(paths)
+  else document.querySelector('.sidebar')?.append(paths)
 }
 
 export function paintLevelBadge() {
@@ -544,24 +557,27 @@ function moduleMap() {
   return all
 }
 
-function visibleModules() {
+function allModules() {
   const all = moduleMap()
-  if (!curriculumStudent) {
-    const ids = []
-    const seen = new Set()
-    for (const level of levelIndex) {
-      for (const id of level.modules || []) {
-        if (seen.has(id)) continue
-        seen.add(id)
-        ids.push(id)
-      }
+  const ids = []
+  const seen = new Set()
+  for (const level of levelIndex) {
+    for (const id of level.modules || []) {
+      if (seen.has(id)) continue
+      seen.add(id)
+      ids.push(id)
     }
-    for (const id of all.keys()) {
-      if (!seen.has(id)) ids.push(id)
-    }
-    return ids.map((id) => all.get(id)).filter(Boolean)
   }
-  return currentLevelModuleIds().map((id) => all.get(id)).filter(Boolean)
+  for (const id of all.keys()) {
+    if (!seen.has(id)) ids.push(id)
+  }
+  return ids.map((id) => all.get(id)).filter(Boolean)
+}
+
+function visibleModules() {
+  if (!curriculumStudent) return allModules()
+  const allowed = new Set(currentLevelModuleIds())
+  return allModules().filter((module) => allowed.has(module.moduleId))
 }
 
 function collect(module) {
@@ -1216,6 +1232,11 @@ function renderModule(module, open) {
     }
   }
   toggle.addEventListener('click', () => {
+    const level = levelForModule(module.moduleId)
+    if (level && level.id !== activeLevel) {
+      setCurriculumLevel(level.id)
+      return
+    }
     const next = menu.hasAttribute('hidden')
     menu.toggleAttribute('hidden', !next)
     toggle.classList.toggle('open', next)

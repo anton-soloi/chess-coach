@@ -47,8 +47,11 @@ export function getAvatarPath(gender, level, state) {
 }
 
 export function bindGenderSelector(root = document) {
-  const group = root.querySelector?.('.avatar-gender') || root
-  const buttons = group.querySelectorAll?.('[data-gender]') || []
+  const group = root.classList?.contains('avatar-gender')
+    ? root
+    : root.querySelector?.('.avatar-gender')
+  if (!group) return
+  const buttons = group.querySelectorAll('[data-gender]')
   const paint = () => {
     const gender = readUserGender()
     buttons.forEach((button) => {

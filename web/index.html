@@ -3,26 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Chess Coach</title>
+  <title>CAÏSSA'S WISDOM</title>
+  <link rel="icon" href="assets/caissa-wisdom-logo.jpg" type="image/jpeg">
+  <link rel="apple-touch-icon" href="assets/caissa-wisdom-logo.jpg">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="topbar">
-    <div class="brand">Chess Coach</div>
+    <div class="brand">
+      <button type="button" id="welcome-open" class="brand-logo" data-open-welcome="top" aria-controls="welcome" aria-expanded="false">
+        <img src="assets/caissa-wisdom-logo.jpg" alt="CAÏSSA'S WISDOM" width="40" height="40" title="Bun venit" aria-label="Bun venit">
+      </button>
+    </div>
+    <div class="welcome-nav">
+      <button type="button" id="profile-open" class="lang-btn" data-open-profile aria-controls="profile" aria-expanded="false" data-welcome-text="profile">Profil</button>
+      <button type="button" id="profile-hello" class="profile-hello" data-open-profile hidden></button>
+    </div>
     <nav class="modes" data-i18n-aria="nav.modes">
       <button type="button" class="mode" data-mode="menu" data-i18n="modes.menu">MENIU</button>
-      <button type="button" class="mode" data-mode="train" data-i18n="modes.train">TRAIN</button>
-      <button type="button" class="mode active" data-mode="analysis" data-i18n="modes.analysis">Niveluri de Măiestrie</button>
-      <button type="button" class="mode" data-mode="learn" data-i18n="modes.learn">ÎNVĂȚĂM DE LA…</button>
+      <button type="button" class="mode" data-mode="train" data-i18n="modes.train" hidden>TRAIN</button>
+      <button type="button" class="mode active" data-mode="analysis" data-i18n="modes.analysis" hidden>Măiestrie</button>
+      <button type="button" class="mode" data-mode="learn" data-i18n="modes.learn" hidden>ÎNVĂȚĂM DE LA…</button>
     </nav>
-    <div class="roles" role="group" data-i18n-aria="role.group">
-      <button type="button" class="mode role active" data-role="child" data-i18n="role.child">Copil</button>
-      <button type="button" class="mode role" data-role="teacher" data-i18n="role.teacher">Profesor</button>
-    </div>
-    <div class="avatar-gender" role="group" data-i18n-aria="avatar.group">
-      <button type="button" class="lang-btn" data-gender="boy" data-i18n="avatar.boy" aria-pressed="true">Băiat</button>
-      <button type="button" class="lang-btn" data-gender="girl" data-i18n="avatar.girl" aria-pressed="false">Fată</button>
-    </div>
     <div class="lang" role="group" data-i18n-aria="lang.group">
       <button type="button" class="lang-btn active" data-lang="ro" aria-pressed="true">🇷🇴 RO</button>
       <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">🇬🇧 EN</button>
@@ -36,10 +38,75 @@
     <time id="study-clock" class="study-clock" data-i18n-aria="clock.label"></time>
   </header>
 
+  <div id="welcome" class="welcome" hidden>
+    <div class="welcome-sheet">
+      <figure class="welcome-banner">
+        <img id="welcome-banner" alt="CAÏSSA’S WISDOM — călătoria în șah începe" src="assets/Ca%C3%AFssa%20Wisdom_%20Chess%20Journey%20Begins.png">
+      </figure>
+      <button type="button" id="welcome-enter" class="welcome-enter" data-welcome-text="enter">Începem călătoria!</button>
+      <p id="welcome-hello" class="welcome-hello" hidden></p>
+      <div id="welcome-cards" class="welcome-cards"></div>
+    </div>
+  </div>
+
+  <div id="profile" class="welcome profile-sheet" hidden>
+    <form id="welcome-profile" class="welcome-profile">
+      <img id="welcome-logo" class="welcome-logo" src="assets/caissa-wisdom-logo.jpg" width="76" height="76" alt="CAÏSSA'S WISDOM">
+      <div class="welcome-profile-body">
+        <h2 id="welcome-profile-title" data-welcome-text="profileTitle">Profil / Înregistrare</h2>
+        <p class="welcome-lead" data-welcome-text="profileLead">Opțional. Poți intra în aplicație fără profil și îl poți completa oricând.</p>
+        <div class="welcome-fields">
+          <label class="field" for="profile-name">
+            <span data-welcome-text="name">Nume / poreclă</span>
+            <input id="profile-name" name="profileName" type="text" maxlength="48" autocomplete="nickname">
+          </label>
+          <label class="field" for="profile-age">
+            <span data-welcome-text="age">Vârstă (opțional)</span>
+            <input id="profile-age" name="profileAge" type="number" inputmode="numeric" min="1" max="120" step="1">
+          </label>
+          <fieldset>
+            <legend data-welcome-text="role">Rol</legend>
+            <div class="roles" role="group" data-i18n-aria="role.group">
+              <button type="button" class="mode role active" data-role="child" data-i18n="role.child">Copil</button>
+              <button type="button" class="mode role" data-role="teacher" data-i18n="role.teacher">Profesor</button>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend data-welcome-text="gender">Gen / avatar</legend>
+            <label><input type="radio" name="profileGender" value="boy"> <span data-welcome-text="boy">Băiat</span></label>
+            <label><input type="radio" name="profileGender" value="girl"> <span data-welcome-text="girl">Fată</span></label>
+            <label><input type="radio" name="profileGender" value="" checked> <span data-welcome-text="unset">Necompletat</span></label>
+            <img id="profile-avatar" class="welcome-avatar" alt="" hidden>
+          </fieldset>
+        </div>
+        <p class="welcome-role-hint" data-welcome-text="roleHint">Rolul se aplică imediat și rămâne în profilul salvat.</p>
+        <div class="welcome-profile-actions">
+          <button type="submit" id="profile-save">Salvează profilul</button>
+          <button type="button" id="profile-reset" data-welcome-text="reset">Resetează profilul</button>
+        </div>
+        <p id="welcome-status" class="welcome-status" role="status"></p>
+      </div>
+    </form>
+  </div>
+
   <div class="shell">
     <nav class="sidebar" data-view="chapters" data-i18n-aria="nav.activities">
       <button type="button" id="sidebar-toggle" class="sidebar-toggle" hidden aria-expanded="true">‹</button>
       <p id="level-badge" class="level-badge" hidden></p>
+      <div class="nav-group" data-sidebar="home">
+        <button type="button" class="nav-item" data-home="train">
+          <strong data-i18n="home.train">Train</strong>
+          <span data-i18n="home.trainHint">Quest, puzzle, partidă clasică și tabla de șah.</span>
+        </button>
+        <button type="button" class="nav-item" data-home="analysis">
+          <strong data-i18n="home.analysis">Măiestrie</strong>
+          <span data-i18n="home.analysisHint">Capitolele și lecțiile, jucate pe tablă.</span>
+        </button>
+        <button type="button" class="nav-item" data-home="learn">
+          <strong data-i18n="home.learn">Învățăm de la…</strong>
+          <span data-i18n="home.learnHint">Maeștri: stil, semnătură și exerciții.</span>
+        </button>
+      </div>
       <div class="nav-group" data-sidebar="games">
         <button type="button" class="nav-item nav-parent" id="train-toggle" aria-expanded="false" aria-controls="train-menu">
           <strong data-i18n="nav.train">Train</strong>
@@ -58,13 +125,17 @@
       <div class="nav-group" data-sidebar="exercises">
         <button type="button" class="nav-item nav-parent open" id="exercise-toggle" aria-expanded="true" aria-controls="exercise-menu">
           <strong data-i18n="nav.exercises">Exerciții</strong>
-          <span data-i18n="nav.exercisesHint">Mutare, explicație și motiv. Trei încercări.</span>
+          <span data-i18n="nav.exercisesHint">Șah, mat, tactică, finaluri și sacrificii.</span>
         </button>
         <div class="submenu" id="exercise-menu">
           <button type="button" class="nav-item sub" id="new-exercise" hidden data-i18n="nav.newExercise">Exercițiu nou</button>
           <div id="exercise-list"></div>
         </div>
       </div>
+      <button type="button" class="nav-item" id="focus-fen" data-sidebar="fen">
+        <strong data-i18n="nav.fen">Poziție din FEN</strong>
+        <span data-i18n="nav.fenHint">Lipește o poziție și analizeaz-o cu motorul.</span>
+      </button>
       <div class="nav-group" data-sidebar="paths">
         <button type="button" class="nav-item nav-parent open" id="path-toggle" aria-expanded="true" aria-controls="path-menu">
           <strong data-i18n="path.title">Mutarea pieselor</strong>
@@ -73,14 +144,10 @@
         <div class="submenu" id="path-menu"></div>
       </div>
       <div id="curriculum-root" data-sidebar="chapters"></div>
-      <button type="button" class="nav-item" id="focus-fen" data-sidebar="chapters">
-        <strong data-i18n="nav.fen">Poziție din FEN</strong>
-        <span data-i18n="nav.fenHint">Lipește o poziție și analizeaz-o cu motorul.</span>
-      </button>
     </nav>
 
     <section class="stage central-panel">
-      <div id="activity-title" class="activity">Niveluri de Măiestrie</div>
+      <div id="activity-title" class="activity">Măiestrie</div>
       <div id="fen-bar" class="fen-bar" hidden>
         <label for="board-fen" data-i18n="editor.pasteFen">Introdu/Lipește codul FEN</label>
         <div class="fen-bar-row">
@@ -112,6 +179,15 @@
         <div id="interactive-board" class="interactive-board">
           <div class="board-frame">
             <div id="board" class="board" role="grid" data-i18n-aria="board.aria"></div>
+            <div id="lesson-promote" class="lesson-promote" hidden>
+              <p data-i18n="path.promote">Alege piesa de promovare.</p>
+              <div class="lesson-promote-choices">
+                <button type="button" data-promote="q"><img src="pieces/cburnett/wQ.svg" alt=""><span data-i18n="piece.q">damă</span></button>
+                <button type="button" data-promote="r"><img src="pieces/cburnett/wR.svg" alt=""><span data-i18n="piece.r">turn</span></button>
+                <button type="button" data-promote="b"><img src="pieces/cburnett/wB.svg" alt=""><span data-i18n="piece.b">nebun</span></button>
+                <button type="button" data-promote="n"><img src="pieces/cburnett/wN.svg" alt=""><span data-i18n="piece.n">cal</span></button>
+              </div>
+            </div>
             <div id="board-zones" class="board-zones" hidden>
               <span class="zone-line zone-h"></span>
               <span class="zone-line zone-v"></span>
@@ -156,9 +232,30 @@
               </svg>
             </button>
           </div>
+          <div class="floating-board-tools" aria-label="Unelte tablă">
+            <button type="button" id="flip" data-i18n-title="flip">↻</button>
+          </div>
+          <div id="master-comment" class="board-comment" hidden>
+            <div class="board-comment-bar">
+              <button type="button" id="master-prev" aria-label="Înapoi">‹</button>
+              <span id="master-move-label"></span>
+              <button type="button" id="master-next" aria-label="Înainte">›</button>
+              <button type="button" id="master-edit">Editează comentariul</button>
+            </div>
+            <p id="master-comment-text"></p>
+            <form id="master-comment-form" hidden>
+              <textarea id="master-comment-input" rows="2"></textarea>
+              <button type="submit">Salvează comentariul</button>
+            </form>
+          </div>
         </div>
         <aside id="palette-black" class="piece-dock" hidden data-i18n-aria="editor.blackPieces"></aside>
         </div>
+      </div>
+      <div id="attempt-hint" class="attempt-hint" hidden>
+        <p id="attempt-count" class="attempt-count"></p>
+        <button type="button" id="guide-retry" class="attempt-hint-btn" hidden>Încearcă din nou</button>
+        <button type="button" id="attempt-hint-btn" class="attempt-hint-btn" hidden>Indiciu</button>
       </div>
       <div id="move-nav" class="move-nav" role="group" data-i18n-aria="replay.group">
         <button type="button" id="nav-start" data-i18n-aria="replay.start" data-i18n-title="replay.start">|&lt;</button>
@@ -174,27 +271,10 @@
         <span id="eval-readout" class="eval-readout">—</span>
         <div class="eval-track" aria-hidden="true"><div id="eval-fill" class="eval-fill"></div></div>
       </div>
-      <div class="under">
-        <button id="flip" type="button" data-i18n-title="flip">↻</button>
-        <div id="attempt-hint" class="attempt-hint" hidden>
-          <p id="attempt-count" class="attempt-count"></p>
-          <button type="button" id="attempt-hint-btn" class="attempt-hint-btn" hidden>Indiciu</button>
-        </div>
-      </div>
     </section>
 
     <aside class="side">
-      <div id="lesson-load" class="lesson-load">
-        <label class="field" for="lesson-pick">
-          <span data-i18n="lesson.load">Încarcă Lecția</span>
-          <select id="lesson-pick"></select>
-        </label>
-        <label class="field" for="lesson-file">
-          <span data-i18n="lesson.file">Fișier JSON</span>
-          <input id="lesson-file" type="file" accept="application/json,.json">
-        </label>
-      </div>
-      <h2 id="panel-title" data-i18n="panel.analysis">Niveluri de Măiestrie</h2>
+      <h2 id="panel-title">Măiestrie</h2>
       <section id="piece-path" class="panel-block" hidden>
         <p id="piece-path-goal"></p>
         <p id="piece-path-moves"></p>
@@ -211,125 +291,151 @@
           <button type="button" id="piece-path-next" hidden data-i18n="path.next">Nivelul următor</button>
         </div>
       </section>
-      <form id="curriculum-editor" class="panel-block" hidden>
-        <h3 data-i18n="editor.title">Editor de lecții</h3>
-        <label class="field" for="ed-level"><span data-i18n="editor.level">Nivel</span>
-          <select id="ed-level"></select>
-        </label>
-        <label class="field" for="ed-sub"><span data-i18n="editor.subchapter">Subcapitol</span>
-          <select id="ed-sub"></select>
-        </label>
-        <label class="field" for="ed-section"><span data-i18n="editor.section">Secțiune</span>
-          <select id="ed-section">
-            <option value="learn" data-i18n="editor.learn">1. Noțiunea</option>
-            <option value="examples" selected data-i18n="editor.examples">2. Exemple</option>
-            <option value="practice" data-i18n="editor.practice">3. Antrenament</option>
-            <option value="evaluation" data-i18n="editor.evaluation">4. Evaluare / Test</option>
-          </select>
-        </label>
-        <label class="field" for="ed-text"><span data-i18n="editor.text">Explicație</span>
-          <textarea id="ed-text" rows="8"></textarea>
-        </label>
-        <label class="check" for="ed-eval-bar">
-          <input type="checkbox" id="ed-eval-bar">
-          <span data-i18n="editor.showEval">Arată bara de evaluare elevului în acest pas</span>
-        </label>
-        <div class="task-actions lesson-toolbar">
-          <button type="button" id="ed-save" data-i18n="editor.save">Salvează Modificările</button>
-          <button type="button" id="lesson-save" data-i18n="lesson.save">Salvează Lecția</button>
-          <button type="button" id="lesson-export" data-i18n="lesson.export">Export JSON File</button>
+      <form id="curriculum-editor" class="panel-block teacher-desk" hidden>
+        <div class="desk-tabs" role="tablist">
+          <button type="button" class="desk-tab" data-desk="edit" aria-selected="true" data-i18n="editor.tabEdit">Exercițiu</button>
+          <button type="button" class="desk-tab" data-desk="lesson" aria-selected="false" data-i18n="editor.tabLesson">Lecție</button>
+          <button type="button" class="desk-tab" data-desk="audio" aria-selected="false" data-i18n="editor.tabAudio">Audio</button>
         </div>
-        <section id="lesson-builder" class="lesson-builder">
-          <h3 data-i18n="builder.title">Constructor de lecție</h3>
-          <p class="builder-lead" data-i18n="builder.lead">Mută piesele liber: linia și PGN-ul se scriu singure. Redă audio, sau pune pe pauză, apoi desenează și alege avatarul: reperul cade pe secunda curentă.</p>
-          <p id="builder-pgn" class="builder-pgn" data-i18n="builder.noLine">Nicio mutare înregistrată.</p>
-          <div class="builder-states" role="group" data-i18n-aria="builder.states">
-            <button type="button" data-avatar-state="idle" aria-pressed="true" data-i18n="builder.idle">Așteaptă</button>
-            <button type="button" data-avatar-state="talking" aria-pressed="false" data-i18n="builder.talking">Vorbește</button>
-            <button type="button" data-avatar-state="pointing" aria-pressed="false" data-i18n="builder.pointing">Arată</button>
-            <button type="button" data-avatar-state="thinking" aria-pressed="false" data-i18n="builder.thinking">Gândește</button>
+        <div class="desk-pane" data-desk-pane="edit">
+          <label class="field" for="ed-level"><span data-i18n="editor.level">Nivel</span>
+            <select id="ed-level"></select>
+          </label>
+          <label class="field" for="ed-sub"><span data-i18n="editor.subchapter">Capitol</span>
+            <select id="ed-sub"></select>
+          </label>
+          <label class="field" for="ed-section"><span data-i18n="editor.section">Secțiune</span>
+            <select id="ed-section">
+              <option value="learn" data-i18n="editor.learn">1. Noțiunea</option>
+              <option value="examples" selected data-i18n="editor.examples">2. Exemple</option>
+              <option value="practice" data-i18n="editor.practice">3. Antrenament</option>
+              <option value="evaluation" data-i18n="editor.evaluation">4. Evaluare / Test</option>
+            </select>
+          </label>
+          <label class="field" for="ed-title"><span data-i18n="teacher.title">Titlu</span>
+            <input id="ed-title" spellcheck="false">
+          </label>
+          <label class="field" for="ed-text"><span data-i18n="editor.text">Enunț</span>
+            <textarea id="ed-text" rows="2"></textarea>
+          </label>
+          <div id="ed-form" hidden>
+            <label class="field" for="ed-note"><span data-i18n="editor.note">Ce trebuie să observe</span>
+              <textarea id="ed-note" rows="2"></textarea>
+            </label>
+            <label class="field" for="ed-move"><span data-i18n="editor.move">Mutarea corectă</span>
+              <input id="ed-move" spellcheck="false">
+            </label>
+            <div id="ed-engine" class="train-engine-row" hidden>
+              <button type="button" id="ed-analyze" data-i18n="editor.analyze">Analizează cu Stockfish</button>
+              <p id="ed-eval" class="builder-pgn" hidden></p>
+            </div>
+            <label class="field" for="ed-fen"><span data-i18n="editor.fen">FEN</span>
+              <textarea id="ed-fen" rows="2" spellcheck="false"></textarea>
+            </label>
+            <p id="builder-pgn" class="builder-pgn" data-i18n="builder.noLine">Nicio mutare înregistrată.</p>
           </div>
-          <label class="field" for="builder-script"><span data-i18n="builder.script">Text rostit</span>
-            <textarea id="builder-script" rows="2"></textarea>
-          </label>
-          <label class="field" for="builder-audio"><span data-i18n="builder.audio">Fișier MP3</span>
-            <input id="builder-audio" type="file" accept="audio/mpeg,audio/mp3,.mp3">
-          </label>
-          <label class="field" for="builder-audio-url"><span data-i18n="builder.audioUrl">Adresa audio în lecție</span>
-            <input id="builder-audio-url" spellcheck="false" placeholder="/assets/audio/lectie.mp3">
-          </label>
-          <p id="builder-clock" class="builder-clock">0.0 s</p>
-          <div class="task-actions">
-            <button type="button" id="builder-play" data-i18n="builder.play">Redă audio</button>
-            <button type="button" id="builder-record" aria-pressed="false" data-i18n="builder.record">Înregistrează timeline</button>
-            <button type="button" id="builder-mark" data-i18n="builder.mark">Marchează momentul</button>
-            <button type="button" id="builder-clear" data-i18n="builder.clear">Șterge timeline</button>
+          <div class="editor-actions">
+            <button type="button" id="lesson-export" data-i18n="lesson.export">Export JSON</button>
+            <button type="button" id="ed-delete" data-i18n="editor.remove">Șterge</button>
+            <button type="button" id="ed-preview" data-i18n="editor.preview">Previzualizează ca elev</button>
+            <button type="button" id="ed-save" class="primary" data-i18n="teacher.save">Salvează</button>
           </div>
-          <ol id="builder-cues" class="builder-cues"></ol>
-          <button type="button" id="builder-export" class="builder-export" data-i18n="builder.export">Export JSON</button>
-        </section>
-        <div class="editor-list-head">
-          <span data-i18n="editor.listTitle">Exercițiile temei</span>
-          <button type="button" id="ed-new" data-i18n="editor.newExercise">Exercițiu nou</button>
         </div>
-        <ol id="ed-list" class="editor-list"></ol>
-        <select id="ed-item" hidden></select>
-        <div id="ed-form" hidden>
-        <label class="field" for="ed-note"><span data-i18n="editor.note">Ce trebuie să observe</span>
-          <textarea id="ed-note" rows="2"></textarea>
-        </label>
-        <label class="field" for="ed-move"><span data-i18n="editor.move">Mutarea corectă</span>
-          <input id="ed-move" spellcheck="false">
-        </label>
-        <div id="ed-record-row" class="task-actions" hidden>
-          <button type="button" id="ed-record" aria-pressed="false">Înregistrează soluția</button>
+        <div class="desk-pane" data-desk-pane="lesson" hidden>
+          <div id="lesson-load" class="lesson-load">
+            <label class="field" for="lesson-pick">
+              <span data-i18n="lesson.load">Încarcă Lecția</span>
+              <select id="lesson-pick"></select>
+            </label>
+            <label class="field" for="lesson-file">
+              <span data-i18n="lesson.file">Fișier JSON</span>
+              <input id="lesson-file" type="file" accept="application/json,.json">
+            </label>
+            <button type="button" id="lesson-save" data-i18n="lesson.save">Salvează Lecția</button>
+          </div>
+          <div class="editor-list-head">
+            <span data-i18n="editor.listTitle">Exercițiile temei</span>
+            <button type="button" id="ed-new" data-i18n="editor.newExercise">Exercițiu nou</button>
+          </div>
+          <ol id="ed-list" class="editor-list"></ol>
+          <select id="ed-item" hidden></select>
+          <label class="check" for="ed-eval-bar">
+            <input type="checkbox" id="ed-eval-bar">
+            <span data-i18n="editor.showEval">Arată bara de evaluare elevului în acest pas</span>
+          </label>
+          <label class="field" for="ed-difficulty"><span data-i18n="editor.difficulty">Dificultate</span>
+            <select id="ed-difficulty">
+              <option value="basic" data-i18n="pedagogy.band.basic">Bază</option>
+              <option value="medium" data-i18n="pedagogy.band.medium">Mediu</option>
+              <option value="advanced" data-i18n="pedagogy.band.advanced">Avansat</option>
+            </select>
+          </label>
+          <label class="field" for="ed-turn"><span data-i18n="editor.turn">La mutare</span>
+            <select id="ed-turn">
+              <option value="w" data-i18n="side.white">Alb</option>
+              <option value="b" data-i18n="side.black">Negru</option>
+            </select>
+          </label>
+          <p id="ed-legal" class="ed-legal" hidden></p>
+          <div id="ed-record-row" class="task-actions" hidden>
+            <button type="button" id="ed-record" aria-pressed="false">Înregistrează soluția</button>
+          </div>
+          <div id="ed-test-params" class="test-params" hidden>
+            <label class="field" for="ed-attempts"><span data-i18n="editor.testAttempts">Încercări maxime</span>
+              <input id="ed-attempts" type="number" min="1" max="20" value="3">
+            </label>
+            <label class="field" for="ed-time"><span data-i18n="editor.testTime">Timp limită (secunde, 0 = fără limită)</span>
+              <input id="ed-time" type="number" min="0" max="3600" step="1" value="0">
+            </label>
+            <label class="field" for="ed-weight"><span data-i18n="editor.testWeight">Pondere</span>
+              <input id="ed-weight" type="number" min="1" max="100" value="1">
+            </label>
+          </div>
+          <details id="ed-pgn-box" class="pgn-fold">
+            <summary data-i18n="editor.pgnOptional">PGN (opțional)</summary>
+            <label class="field" for="ed-pgn">
+              <textarea id="ed-pgn" rows="3" spellcheck="false" data-i18n-aria="editor.pgn"></textarea>
+            </label>
+          </details>
+          <div class="editor-actions">
+            <button type="button" id="ed-empty" data-i18n="editor.empty">Tabla goală</button>
+            <button type="button" id="ed-start" data-i18n="editor.start">Poziția inițială</button>
+            <button type="button" id="ed-add">Adaugă exercițiu</button>
+            <button type="button" id="ed-export" data-i18n="editor.exportDb">Exportă baza de date (Backup JSON)</button>
+            <button type="button" id="ed-import" data-i18n="editor.importDb">Importă baza de date JSON</button>
+            <input id="ed-import-file" type="file" accept="application/json,.json" hidden>
+          </div>
         </div>
-        <div id="ed-test-params" class="test-params" hidden>
-          <label class="field" for="ed-attempts"><span data-i18n="editor.testAttempts">Încercări maxime</span>
-            <input id="ed-attempts" type="number" min="1" max="20" value="3">
-          </label>
-          <label class="field" for="ed-time"><span data-i18n="editor.testTime">Timp limită (secunde, 0 = fără limită)</span>
-            <input id="ed-time" type="number" min="0" max="3600" step="1" value="0">
-          </label>
-          <label class="field" for="ed-weight"><span data-i18n="editor.testWeight">Pondere</span>
-            <input id="ed-weight" type="number" min="1" max="100" value="1">
-          </label>
-        </div>
-        <label class="field" for="ed-difficulty"><span data-i18n="editor.difficulty">Dificultate</span>
-          <select id="ed-difficulty">
-            <option value="basic" data-i18n="pedagogy.band.basic">Bază</option>
-            <option value="medium" data-i18n="pedagogy.band.medium">Mediu</option>
-            <option value="advanced" data-i18n="pedagogy.band.advanced">Avansat</option>
-          </select>
-        </label>
-        <label class="field" for="ed-fen"><span data-i18n="editor.pasteFen">Introdu/Lipește codul FEN</span>
-          <textarea id="ed-fen" rows="3" spellcheck="false"></textarea>
-        </label>
-        <details id="ed-pgn-box" class="pgn-fold">
-          <summary data-i18n="editor.pgnOptional">PGN (opțional)</summary>
-          <label class="field" for="ed-pgn">
-            <textarea id="ed-pgn" rows="3" spellcheck="false" data-i18n-aria="editor.pgn"></textarea>
-          </label>
-        </details>
-        <label class="field" for="ed-turn"><span data-i18n="editor.turn">La mutare</span>
-          <select id="ed-turn">
-            <option value="w" data-i18n="side.white">Alb</option>
-            <option value="b" data-i18n="side.black">Negru</option>
-          </select>
-        </label>
-        <div class="task-actions">
-          <button type="button" id="ed-empty" data-i18n="editor.empty">Tabla goală</button>
-          <button type="button" id="ed-start" data-i18n="editor.start">Poziția inițială</button>
-          <button type="button" id="ed-add">Adaugă exercițiu</button>
-          <button type="button" id="ed-delete" data-i18n="editor.remove">Șterge exercițiul</button>
-          <button type="button" id="ed-export" data-i18n="editor.exportDb">Exportă baza de date (Backup JSON)</button>
-          <button type="button" id="ed-import" data-i18n="editor.importDb">Importă baza de date JSON</button>
-          <input id="ed-import-file" type="file" accept="application/json,.json" hidden>
-          <button type="button" id="ed-preview" data-i18n="editor.preview">Previzualizează ca elev</button>
-        </div>
+        <div class="desk-pane" data-desk-pane="audio" hidden>
+          <section id="lesson-builder" class="lesson-builder">
+            <div class="builder-states" role="group" data-i18n-aria="builder.states">
+              <button type="button" data-avatar-state="idle" aria-pressed="true" data-i18n="builder.idle">Așteaptă</button>
+              <button type="button" data-avatar-state="talking" aria-pressed="false" data-i18n="builder.talking">Vorbește</button>
+              <button type="button" data-avatar-state="pointing" aria-pressed="false" data-i18n="builder.pointing">Arată</button>
+              <button type="button" data-avatar-state="thinking" aria-pressed="false" data-i18n="builder.thinking">Gândește</button>
+            </div>
+            <label class="field" for="builder-script"><span data-i18n="builder.script">Text rostit</span>
+              <textarea id="builder-script" rows="2"></textarea>
+            </label>
+            <label class="field" for="builder-audio"><span data-i18n="builder.audio">Fișier MP3</span>
+              <input id="builder-audio" type="file" accept="audio/mpeg,audio/mp3,.mp3">
+            </label>
+            <label class="field" for="builder-audio-url"><span data-i18n="builder.audioUrl">Adresa audio în lecție</span>
+              <input id="builder-audio-url" spellcheck="false" placeholder="/assets/audio/lectie.mp3">
+            </label>
+            <p id="builder-clock" class="builder-clock">0.0 s</p>
+            <div class="task-actions">
+              <button type="button" id="builder-play" data-i18n="builder.play">Redă audio</button>
+              <button type="button" id="builder-record" aria-pressed="false" data-i18n="builder.record">Înregistrează timeline</button>
+              <button type="button" id="builder-mark" data-i18n="builder.mark">Marchează momentul</button>
+              <button type="button" id="builder-clear" data-i18n="builder.clear">Șterge timeline</button>
+            </div>
+            <ol id="builder-cues" class="builder-cues"></ol>
+            <button type="button" id="builder-export" class="builder-export" data-i18n="builder.export">Export JSON</button>
+          </section>
         </div>
       </form>
-      <p id="lesson" data-i18n="blurb.menu">Introdu mutarea, explică alegerea și selectează motivul tactic. Ai trei încercări.</p>
+      <p id="lesson">Alege o secțiune. Limba se schimbă din bara de sus; rolul și antrenorul, din Profil.</p>
       <section id="pgn-import" class="panel-block pgn-import" hidden>
         <label class="field" for="pgn-text">
           <span data-i18n="pgn.paste">Textul partidei</span>
@@ -485,6 +591,30 @@
     </aside>
     <section id="masters" class="masters"></section>
     <section id="levels" class="levels"></section>
+    <section id="home-menu" class="home-menu">
+      <div class="home-page">
+        <h2 data-i18n="home.title">Meniu</h2>
+        <p data-i18n="home.lead">Alege o secțiune. Limba se schimbă din bara de sus; rolul și antrenorul, din Profil.</p>
+        <div class="home-cards">
+          <button type="button" class="home-card" data-home="train">
+            <strong data-i18n="home.train">Train</strong>
+            <span data-i18n="home.trainHint">Quest, puzzle, partidă clasică și tabla de șah.</span>
+          </button>
+          <button type="button" class="home-card" data-home="analysis">
+            <strong data-i18n="home.analysis">Măiestrie</strong>
+            <span data-i18n="home.analysisHint">Capitolele și lecțiile, jucate pe tablă.</span>
+          </button>
+          <button type="button" class="home-card" data-home="learn">
+            <strong data-i18n="home.learn">Învățăm de la…</strong>
+            <span data-i18n="home.learnHint">Maeștri: stil, semnătură și exerciții.</span>
+          </button>
+          <button type="button" class="home-card" data-open-welcome="top">
+            <strong data-welcome-text="open">Bun venit</strong>
+            <span data-welcome-text="homeHint">Viziune, misiune și profilul tău.</span>
+          </button>
+        </div>
+      </div>
+    </section>
   </div>
 
   <footer class="statusbar">

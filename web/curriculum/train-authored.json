@@ -1,0 +1,1720 @@
+{
+  "exercises": [
+    {
+      "id": "cx-001",
+      "code": "CX-001",
+      "parentId": "pillsbury",
+      "afterId": "pillsbury-2",
+      "ancestors": [
+        "mate-2",
+        "pillsbury"
+      ],
+      "title": "Pillsbury's mate #3",
+      "fen": "5rk1/5p1p/8/8/3R4/2B5/3K4/8 w - - 0 1",
+      "prompt": "",
+      "note": "Poziția regelui negru in raport cu poziția nebunul alb din c3",
+      "move": "Rg4#",
+      "pgn": ""
+    },
+    {
+      "id": "cx-002",
+      "code": "CX-002",
+      "parentId": "pillsbury",
+      "afterId": "pillsbury-2",
+      "ancestors": [
+        "mate-2",
+        "pillsbury"
+      ],
+      "title": "Pillbury mate #4",
+      "fen": "5rk1/prpn1p1p/1p3p1B/8/3P4/1P2Pq2/P4P1P/R3K2R w - - 0 1",
+      "prompt": "Albul mută și dă mat în 5 mutări.",
+      "note": "Observați poziția specifică matului lui Pillsbury",
+      "move": "Rg1+",
+      "pgn": ""
+    },
+    {
+      "id": "cx-003",
+      "code": "CX-003",
+      "parentId": "pillsbury",
+      "afterId": "cx-003",
+      "ancestors": [
+        "mate-2",
+        "pillsbury"
+      ],
+      "title": "Pillsbury mate #5",
+      "fen": "1k1r2r1/ppp2p1p/2nqb2Q/4p3/2B5/2BP4/PPP2PPP/R4RK1 b - - 0 1",
+      "prompt": "Negrul mută și câștigă folosind tema matului Pillsbury.",
+      "note": "La 1....Bd5 atac dublu 2. Qh3 (aproape forțat. (altfel după 2. Qxd6 urmează matului lui Pillsbury) 2....Qh6 după care albul pierde dama (3. Bxd5 forțat și 3...Qxh3+-)",
+      "move": "Bd5",
+      "pgn": ""
+    },
+    {
+      "id": "cx-004",
+      "code": "CX-004",
+      "parentId": "pillsbury",
+      "afterId": "cx-004",
+      "ancestors": [
+        "mate-2",
+        "pillsbury"
+      ],
+      "title": "Pillsbury mate #6",
+      "fen": "1r3rk1/2pn1ppp/p2b4/8/8/2BP4/PPP2P1P/2KR2R1 w - - 0 1",
+      "prompt": "Albul mută și folosind tiparul matului lui Pillsbury dă mat în 4 mutări.",
+      "note": "Observați poziția tipică pentru matul lui Pillsbury.\nPuteți folosi șahul dublu?",
+      "move": "Rxg7+",
+      "pgn": ""
+    },
+    {
+      "id": "cx-005",
+      "code": "CX-005",
+      "parentId": "pillsbury",
+      "afterId": "cx-004",
+      "ancestors": [
+        "mate-2",
+        "pillsbury"
+      ],
+      "title": "Pillsbury mate #7",
+      "fen": "2b2r1k/1p2qp1p/p1r2b2/3pB1Q1/4P2P/7B/PPP5/1K3RR1 w - - 0 1",
+      "prompt": "Albul, folosind tiparul de mat al lui Pillsbury, dă mat în câteva mutări",
+      "note": "Coloana g stăpânită de alb",
+      "move": "Qg7+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-006",
+      "code": "CX-006",
+      "parentId": "pillsbury",
+      "afterId": "cx-005",
+      "ancestors": [
+        "mate-2",
+        "pillsbury"
+      ],
+      "title": "Pillsbury mate #8",
+      "fen": "6k1/p4p1p/1p2p1p1/1Q6/3r3q/5B1b/PP3P1P/R4RK1 b - - 0 1",
+      "prompt": "negrul muta, folosind tiparul de mat al lui Pillsbury, da mat.",
+      "note": "Coloana g este semideschis[",
+      "move": "Qg4+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-007",
+      "code": "CX-007",
+      "parentId": "pillsbury",
+      "afterId": "cx-005",
+      "ancestors": [
+        "mate-2",
+        "pillsbury"
+      ],
+      "title": "Pillsbury mate #9",
+      "fen": "5rk1/p2r1ppp/Q7/8/3BnP2/P3Pq2/5PRP/R6K w - - 0 1",
+      "prompt": "Albul la mutare, folosind tiparul de mat al lui Pillsbury, da mat.",
+      "note": "Observa'i coloana semideschisă g aflată în stăpânirea albului.",
+      "move": "Qe2",
+      "pgn": "",
+      "goal": "advantage"
+    },
+    {
+      "id": "cx-008",
+      "code": "CX-008",
+      "parentId": "pillsbury",
+      "afterId": "cx-005",
+      "ancestors": [
+        "mate-2",
+        "pillsbury"
+      ],
+      "title": "Pillsbury mate #10",
+      "fen": "2rqnrk1/pp3ppp/1b1p4/3p2Q1/2n1P3/3B1P2/PB2NP1P/R5RK w - - 0 1",
+      "prompt": "Albul la mutare, folosind tiparul de mat al lui Pillsbury, da mat.",
+      "note": "Coloana g este stăpânită de alb. În plus diagonala a1-h8 este supravegheată de nebunul alb de la b2",
+      "move": "Qxg7+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-009",
+      "code": "CX-009",
+      "parentId": "boden",
+      "afterId": "boden-1",
+      "ancestors": [
+        "mate-2",
+        "boden"
+      ],
+      "title": "Boden's mate #1",
+      "fen": "2kr4/3p4/8/8/5B2/8/8/5BK1 w - - 0 1",
+      "prompt": "Samuel Standidge Boden (1826-1882) a fost un jucător de șah profesionist.\n\nTiparul de mat \"Boden's Mate\" a fost denumit așa după ce acesta a apărut într-unul din partidele sale, Schulder–Boden, London 1853.\n\nÎn limbaj colocvial se mai numește si tiparul de șah-mat executat cu doi nebuni pe diagonale încrucișate (în formă de „X”)",
+      "note": "",
+      "move": "Ba6#",
+      "pgn": "",
+      "goal": "",
+      "section": "CX-009 · Boden's mate #1"
+    },
+    {
+      "id": "cx-010",
+      "code": "CX-010",
+      "parentId": "boden",
+      "afterId": "boden-3",
+      "ancestors": [
+        "mate-2",
+        "boden"
+      ],
+      "title": "Boden's Mate #4",
+      "section": "CX-010 · Boden's Mate #4",
+      "fen": "1bkr3r/1p1n1ppp/p1p5/1N1p4/3P4/6BP/PP3PP1/2R2BK1 w - - 0 1",
+      "prompt": "Albul mută și câștigă",
+      "note": "Poziția caracteristică matului lui Boden",
+      "move": "",
+      "pgn": "",
+      "goal": ""
+    },
+    {
+      "id": "cx-011",
+      "code": "CX-011",
+      "parentId": "boden",
+      "afterId": "cx-010",
+      "ancestors": [
+        "mate-2",
+        "boden"
+      ],
+      "title": "Boden's Mate #5",
+      "section": "",
+      "fen": "2kr3r/pp1nbq2/2p1p2p/5bp1/3PN3/5QB1/PPP3PP/K2R1B1R w - - 0 1",
+      "prompt": "Albul mută și câștigă",
+      "note": "Configurația favorabilă matului lui Boden",
+      "move": "",
+      "pgn": "",
+      "goal": ""
+    },
+    {
+      "id": "cx-012",
+      "code": "CX-012",
+      "parentId": "boden",
+      "afterId": "cx-010",
+      "ancestors": [
+        "mate-2",
+        "boden"
+      ],
+      "title": "Boden's Mate #6",
+      "section": "",
+      "fen": "2q3kb/prpn1p1n/3p2pB/2p1p3/2N5/2P4P/PPQ2PP1/4RBK1 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Configurația favorabilă matului lui Boden",
+      "move": "Kxd6",
+      "pgn": "",
+      "goal": ""
+    },
+    {
+      "id": "cx-013",
+      "code": "CX-013",
+      "parentId": "boden",
+      "afterId": "cx-012",
+      "ancestors": [
+        "mate-2",
+        "boden"
+      ],
+      "title": "Boden's Mate #7",
+      "section": "",
+      "fen": "2kr3r/1p1n2pp/2p2pb1/p7/2B1p3/PPR1P1BP/2Pq1PQ1/1K5R w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Configurația favorabilă matului lui Boden",
+      "move": "",
+      "pgn": "",
+      "goal": ""
+    },
+    {
+      "id": "cx-014",
+      "code": "CX-014",
+      "parentId": "boden",
+      "afterId": "cx-013",
+      "ancestors": [
+        "mate-2",
+        "boden"
+      ],
+      "title": "Boden's Mate #8",
+      "section": "",
+      "fen": "7b/pqp2k1p/2bpp1pB/4P2R/1r3P2/1B4QP/2P4K/8 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Configurația favorabilă matului lui Boden",
+      "move": "",
+      "pgn": "",
+      "goal": ""
+    },
+    {
+      "id": "cx-015",
+      "code": "CX-015",
+      "parentId": "boden",
+      "afterId": "cx-013",
+      "ancestors": [
+        "mate-2",
+        "boden"
+      ],
+      "title": "Boden's Mate #9",
+      "section": "",
+      "fen": "2kr2r1/1ppn4/2p1pq1p/b7/N7/5QB1/1PP2P1P/R4BK1 w - - 0 1",
+      "prompt": "",
+      "note": "",
+      "move": "",
+      "pgn": "",
+      "goal": ""
+    },
+    {
+      "id": "cx-016",
+      "code": "CX-016",
+      "parentId": "boden",
+      "afterId": "cx-013",
+      "ancestors": [
+        "mate-2",
+        "boden"
+      ],
+      "title": "Boden's Mate #10",
+      "section": "",
+      "fen": "4RK1R/1BQ1NPPP/8/1PP4p/1P1n4/p1q5/b4pp1/1kb1r3 b - - 0 1",
+      "prompt": "Negru mută",
+      "note": "",
+      "move": "",
+      "pgn": "",
+      "goal": ""
+    },
+    {
+      "id": "cx-017",
+      "code": "CX-017",
+      "parentId": "balestra",
+      "afterId": "balestra-1",
+      "ancestors": [
+        "mate-2",
+        "balestra"
+      ],
+      "title": "Balaestra Mate #2",
+      "section": "CX-017 · Balaestra Mate #2",
+      "fen": "3B4/5Q2/8/4k3/3np3/8/8/7K w - - 0 1",
+      "prompt": "Majoritatea problemelor pe care le vei întâlni având ca tema matul Balestra au dama dând mai multe șahuri pentru a stabili condițiile optime unui mat dat de nebun. \n\nOdată ce dama acoperă pătratele cheie de evadare ale regelui, unele căi ar putea fi blocate de piesele propriului rege, un nebun se năpustește pentru a da lovitura de grație. \n\nO observație cheie este că în poziția finală dama și nebunul acționează pe culori diferite și există de obicei două pătrate între damă și nebun. 3",
+      "note": "",
+      "move": "Bc7#",
+      "pgn": "",
+      "goal": ""
+    },
+    {
+      "id": "cx-018",
+      "code": "CX-018",
+      "parentId": "balestra",
+      "afterId": "cx-017",
+      "ancestors": [
+        "mate-2",
+        "balestra"
+      ],
+      "title": "Balestra Mate #3",
+      "section": "CX-018 · Balestra Mate #3",
+      "fen": "rn1r4/2qb1Q1p/2p4k/p1P1pp2/1P2B3/P7/5PPP/3R1RK1 w - - 0 1",
+      "prompt": "Florea, Dan vs. Roederer, Kai\n1-0 Oberliga Baden 9596 Germany 05 Nov 1995 Round: 2.6 ECO: E48\n\nAlbul mută",
+      "note": "",
+      "move": "Qf6+",
+      "pgn": "",
+      "goal": ""
+    },
+    {
+      "id": "cx-019",
+      "code": "CX-019",
+      "parentId": "balestra",
+      "afterId": "cx-018",
+      "ancestors": [
+        "mate-2",
+        "balestra"
+      ],
+      "title": "Balestra Mate #4",
+      "section": "CX-019 · Balestra Mate #4",
+      "fen": "1Q6/3B4/3p1p1k/1p1Pp1n1/2p3P1/2P5/1P4PK/4q3 w - - 0 1",
+      "prompt": "Wahlbom, Magnus vs. Fridh, Anton\n1-0 SWE-ch Skelleftea 1972 Round: 9 ECO: C97\nAlbul mută",
+      "note": "",
+      "move": "Qf8+",
+      "pgn": "",
+      "goal": ""
+    },
+    {
+      "id": "cx-020",
+      "code": "CX-020",
+      "parentId": "balestra",
+      "afterId": "cx-018",
+      "ancestors": [
+        "mate-2",
+        "balestra"
+      ],
+      "title": "Balestra Mate #5",
+      "section": "CX-020 · Balestra Mate #5",
+      "fen": "3rk3/5p2/p1R1p3/2QpPP2/7K/5q2/Pb2N3/8 b - - 0 1",
+      "prompt": "Niedermaier, Hans vs. Kraeussling, Andreas\n0-1 Bayern-chA 64th Wildflecken 1993 Round: 3 ECO: B22\n\nNegrul mută",
+      "note": "evaluați toate șahurile, capturile și amenințarile înainte de a muta.",
+      "move": "Bxe5",
+      "pgn": "",
+      "goal": "advantage"
+    },
+    {
+      "id": "cx-021",
+      "code": "CX-021",
+      "parentId": "balestra",
+      "afterId": "cx-020",
+      "ancestors": [
+        "mate-2",
+        "balestra"
+      ],
+      "title": "Balestra Mate #6",
+      "section": "",
+      "fen": "8/5pbk/4p3/4P1pK/3P4/1Q2BP1P/5Pq1/8 b - - 0 1",
+      "prompt": "Prakash, GB. vs. Prasad, Devaki V\n0-1 IND-ch New Delhi 06 Jun 2001 Round: 9 ECO: D85\n\nNugrul mută",
+      "note": "",
+      "move": "Qxh3+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-022",
+      "code": "CX-022",
+      "parentId": "balestra",
+      "afterId": "cx-020",
+      "ancestors": [
+        "mate-2",
+        "balestra"
+      ],
+      "title": "balestra Mate #7",
+      "section": "CX-022 · balestra Mate #7",
+      "fen": "r4kr1/1p2ppb1/p4qpp/2p5/2B1P3/1Q1P1n1P/PP3PKP/R1B2R2 b - - 0 1",
+      "prompt": "Murphy, Benjamin vs. Egan, Bill\n0-1 AUS-chT II Australia 1995 Round: 2 ECO: A34\n\nNegru mută",
+      "note": "",
+      "move": "",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-023",
+      "code": "CX-023",
+      "parentId": "balestra",
+      "afterId": "cx-020",
+      "ancestors": [
+        "mate-2",
+        "balestra"
+      ],
+      "title": "Balestra Mate #8",
+      "section": "",
+      "fen": "8/3kP3/3b1Qp1/1q4B1/6P1/2p5/5P2/6K1 w - - 0 1",
+      "prompt": "Yanofsky, Daniel Abraham vs. Reshevsky, Samuel Herman\n1-0 Dallas Dallas 1957 ECO: C97\n\nAlbul mută",
+      "note": "",
+      "move": "e8=Q+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-024",
+      "code": "CX-024",
+      "parentId": "balestra",
+      "afterId": "cx-023",
+      "ancestors": [
+        "mate-2",
+        "balestra"
+      ],
+      "title": "Balestra Mate #9",
+      "section": "",
+      "fen": "8/3kP3/3b1Qp1/1q4B1/6P1/2p5/5P2/6K1 w - - 0 1",
+      "prompt": "Abdusattorov, Nodirbek vs. Golizadeh, Asghar\n1-0 Early Titled Tuesday intern op Chess.com INT 08 Feb 2022 Round: 1 ECO: B92\n\nAlbul mută",
+      "note": "",
+      "move": "e8=Q+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-025",
+      "code": "CX-025",
+      "parentId": "balestra",
+      "afterId": "cx-023",
+      "ancestors": [
+        "mate-2",
+        "balestra"
+      ],
+      "title": "Balestra Mate #10",
+      "section": "",
+      "fen": "8/R5Q1/5n1p/1p1Pk3/1Pp3B1/2q3P1/3p1PK1/4r3 w - - 0 1",
+      "prompt": "Areshchenko, Alexander vs. Bocharov, Dmitry\n1-0 EU-ch 9th Plovdiv 01 May 2008 Round: 10 ECO: C41\n\nAlbul mută",
+      "note": "",
+      "move": "Qe7+",
+      "pgn": "",
+      "goal": "advantage"
+    },
+    {
+      "id": "cx-026",
+      "code": "CX-026",
+      "parentId": "balestra",
+      "afterId": "cx-025",
+      "ancestors": [
+        "mate-2",
+        "balestra"
+      ],
+      "title": "Balestra Mate #11",
+      "section": "",
+      "fen": "rnbqkbnr/ppp2ppp/8/3pP3/4P3/8/PPPP2PP/RNBQKBNR b - - 0 1",
+      "prompt": "Ruszin, Anna vs. Kiraly, Zoltan\n0-1 HUN-chT2 Szechenyi 0203 Hungary 06 Apr 2003 Round: 10 ECO: C31\n\nNegrul mută",
+      "note": "",
+      "move": "Qh4+",
+      "pgn": "[Event \"?\"]\n[Site \"?\"]\n[Date \"????.??.??\"]\n[Round \"?\"]\n[White \"?\"]\n[Black \"?\"]\n[Result \"*\"]\n[SetUp \"1\"]\n[FEN \"rnbqkbnr/ppp2ppp/8/3pp3/4PP2/8/PPPP2PP/RNBQKBNR w - - 0 1\"]\n\n1. fxe5 *",
+      "goal": "advantage"
+    },
+    {
+      "id": "cx-027",
+      "code": "CX-027",
+      "parentId": "arabian",
+      "afterId": "arabian-3",
+      "ancestors": [
+        "mate-2",
+        "arabian"
+      ],
+      "title": "Arabian Mate #4",
+      "section": "",
+      "fen": "7k/5p2/4bNpp/4P3/3R4/8/5K2/r7 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparl de mat",
+      "move": "Rd8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-028",
+      "code": "CX-028",
+      "parentId": "arabian",
+      "afterId": "arabian-3",
+      "ancestors": [
+        "mate-2",
+        "arabian"
+      ],
+      "title": "Arabian Mate #5",
+      "section": "",
+      "fen": "5r2/4Qpkp/5Np1/6P1/5n2/5q2/5P2/4R1K1 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat",
+      "move": "QXf8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-029",
+      "code": "CX-029",
+      "parentId": "arabian",
+      "afterId": "cx-028",
+      "ancestors": [
+        "mate-2",
+        "arabian"
+      ],
+      "title": "Arabian Mate#6",
+      "section": "",
+      "fen": "6k1/2RN2bp/q2p4/8/8/8/6PP/5RK1 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat.",
+      "move": "Rf8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-030",
+      "code": "CX-030",
+      "parentId": "arabian",
+      "afterId": "cx-028",
+      "ancestors": [
+        "mate-2",
+        "arabian"
+      ],
+      "title": "Arabian Mate#7",
+      "section": "",
+      "fen": "6k1/p2nr2p/4N1p1/2PpQ3/1p1P4/2q4P/6P1/5RK1 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat",
+      "move": "QB8+",
+      "pgn": "",
+      "goal": ""
+    },
+    {
+      "id": "cx-031",
+      "code": "CX-031",
+      "parentId": "arabian",
+      "afterId": "cx-028",
+      "ancestors": [
+        "mate-2",
+        "arabian"
+      ],
+      "title": "Arabina Mate#8",
+      "section": "CX-031 · Arabina Mate#8",
+      "fen": "3Q4/6k1/1p4pR/4n3/4P3/6P1/2r2r1P/3R2K1 b - - 0 1",
+      "prompt": "Negrul mută",
+      "note": "Tiparul de mat",
+      "move": "Nf3+",
+      "pgn": "",
+      "goal": ""
+    },
+    {
+      "id": "cx-032",
+      "code": "CX-032",
+      "parentId": "arabian",
+      "afterId": "cx-028",
+      "ancestors": [
+        "mate-2",
+        "arabian"
+      ],
+      "title": "Arabian Mate#9",
+      "section": "",
+      "fen": "6rk/1q3prp/p3pN2/1p2n3/8/1N2P1Rb/PPQ4P/3R2K1 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat",
+      "move": "Qxh7+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-033",
+      "code": "CX-033",
+      "parentId": "arabian",
+      "afterId": "cx-032",
+      "ancestors": [
+        "mate-2",
+        "arabian"
+      ],
+      "title": "Arabian Mat#10",
+      "section": "",
+      "fen": "7k/Q4R2/5n1p/3p1p1q/P2P1B2/4PnPP/1r4B1/R6K b - - 0 1",
+      "prompt": "Negrul mută",
+      "note": "Tiparul de mat",
+      "move": "Qxh3+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-034",
+      "code": "CX-034",
+      "parentId": "arabian",
+      "afterId": "cx-032",
+      "ancestors": [
+        "mate-2",
+        "arabian"
+      ],
+      "title": "Arabian Mate#11",
+      "section": "",
+      "fen": "7k/Q4R2/5n1p/3p1p1q/P2P1B2/4PnPP/1r4B1/R6K b - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat.",
+      "move": "Qxh3+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-035",
+      "code": "CX-035",
+      "parentId": "arabian",
+      "afterId": "cx-034",
+      "ancestors": [
+        "mate-2",
+        "arabian"
+      ],
+      "title": "Arabian Mate#12",
+      "section": "CX-035 · Arabian Mate#12",
+      "fen": "r2q3k/1p3rb1/6p1/p1Np3P/3p3P/PP1P1N1n/4PP2/2RQRK2 b - - 0 1",
+      "prompt": "Negrul mută",
+      "note": "Tiparul de mat.",
+      "move": "Qxh4",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-036",
+      "code": "CX-036",
+      "parentId": "arabian",
+      "afterId": "cx-034",
+      "ancestors": [
+        "mate-2",
+        "arabian"
+      ],
+      "title": "Arabian mate#13",
+      "section": "",
+      "fen": "8/rp5k/2pp4/q3pP2/4N3/1P6/1PP4r/1KR3R1 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat.",
+      "move": "Nf6+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-037",
+      "code": "CX-037",
+      "parentId": "arabian",
+      "afterId": "cx-034",
+      "ancestors": [
+        "mate-2",
+        "arabian"
+      ],
+      "title": "Arabian Mate#14",
+      "section": "",
+      "fen": "k6r/5pp1/2N5/3p4/8/P2P1b1p/5P1P/4R1K1 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat",
+      "move": "Re7",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-038",
+      "code": "CX-038",
+      "parentId": "arabian",
+      "afterId": "cx-034",
+      "ancestors": [
+        "mate-2",
+        "arabian"
+      ],
+      "title": "Arabian Mate#15",
+      "section": "CX-038 · Arabian Mate#15",
+      "fen": "2k5/2p5/6r1/1p5P/8/2N1Qn2/5PRP/7K b - - 0 1",
+      "prompt": "Negrul mută",
+      "note": "Tiparul de mat.",
+      "move": "Qxh2+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-039",
+      "code": "CX-039",
+      "parentId": "anastasia",
+      "afterId": "anastasia-4",
+      "ancestors": [
+        "mate",
+        "anastasia"
+      ],
+      "title": "Anastasia's Mate#5",
+      "section": "",
+      "fen": "3q1r2/p3N1pk/1p3p2/2p1R1p1/2PnR3/1P4P1/P4PKP/8 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat",
+      "move": "Rh4+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-040",
+      "code": "CX-040",
+      "parentId": "anastasia",
+      "afterId": "anastasia-4",
+      "ancestors": [
+        "mate",
+        "anastasia"
+      ],
+      "title": "Anastasia Mate#6",
+      "section": "",
+      "fen": "5rk1/5ppp/8/5N2/4Q3/6P1/1q3PK1/R7 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "tiparul de mat",
+      "move": "Ne7+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-041",
+      "code": "CX-041",
+      "parentId": "anastasia",
+      "afterId": "anastasia-4",
+      "ancestors": [
+        "mate",
+        "anastasia"
+      ],
+      "title": "Anastasia Mate#7",
+      "section": "",
+      "fen": "1r3rk1/5ppp/4n3/5N2/8/6P1/5PK1/R6R w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat",
+      "move": "Ne7+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-042",
+      "code": "CX-042",
+      "parentId": "anastasia",
+      "afterId": "anastasia-4",
+      "ancestors": [
+        "mate",
+        "anastasia"
+      ],
+      "title": "Anastasia Mate#8",
+      "section": "",
+      "fen": "b2r1rk1/pqp2ppp/1p6/3N4/2PRQ3/1P4P1/P4P1P/4R1K1 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat",
+      "move": "Ne7+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-043",
+      "code": "CX-043",
+      "parentId": "anastasia",
+      "afterId": "anastasia-4",
+      "ancestors": [
+        "mate",
+        "anastasia"
+      ],
+      "title": "Anastasia Mate#9",
+      "section": "",
+      "fen": "r2r2k1/6pp/4n3/3N4/8/5R2/5PK1/7R w - - 0 1",
+      "prompt": "Albul muta",
+      "note": "Tiparul de mat",
+      "move": "Ne7+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-044",
+      "code": "CX-044",
+      "parentId": "anastasia",
+      "afterId": "anastasia-4",
+      "ancestors": [
+        "mate",
+        "anastasia"
+      ],
+      "title": "Anastasia Mate#10",
+      "section": "",
+      "fen": "1q3rk1/5ppp/4n3/5N2/8/R7/5PPP/1Q4K1 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat",
+      "move": "Ne7+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-045",
+      "code": "CX-045",
+      "parentId": "anastasia",
+      "afterId": "anastasia-4",
+      "ancestors": [
+        "mate",
+        "anastasia"
+      ],
+      "title": "Anastasia Mate#11",
+      "section": "",
+      "fen": "r1b2rk1/p4ppp/1qp5/1n1p1N2/3P4/R1R5/1P1B1PPP/1Q4K1 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat",
+      "move": "Ne7+",
+      "pgn": "",
+      "goal": "advantage"
+    },
+    {
+      "id": "cx-046",
+      "code": "CX-046",
+      "parentId": "anastasia",
+      "afterId": "anastasia-4",
+      "ancestors": [
+        "mate",
+        "anastasia"
+      ],
+      "title": "Anastasia Mate#12",
+      "section": "",
+      "fen": "5k2/1r1p2pQ/1q3n2/6N1/8/8/1P6/1K2R3 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat",
+      "move": "Qh8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-047",
+      "code": "CX-047",
+      "parentId": "blind-swine",
+      "afterId": "blind-swine-3",
+      "ancestors": [
+        "mate",
+        "blind-swine"
+      ],
+      "title": "Blind Swine Mate #4",
+      "section": "CX-047 · Blind Swine Mate #4",
+      "fen": "r2r2k1/ppp1q1n1/3p2p1/3P1pP1/3Q1P1R/6N1/PPP5/2K4R w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat",
+      "move": "Rh8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-048",
+      "code": "CX-048",
+      "parentId": "blind-swine",
+      "afterId": "cx-047",
+      "ancestors": [
+        "mate",
+        "blind-swine"
+      ],
+      "title": "Blind Swine Mate #5",
+      "section": "",
+      "fen": "r4r1k/1R2R1p1/p1p4p/2P5/3P4/5pPq/5P1P/1Q4K1 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat",
+      "move": "Qh7+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-049",
+      "code": "CX-049",
+      "parentId": "blind-swine",
+      "afterId": "cx-048",
+      "ancestors": [
+        "mate",
+        "blind-swine"
+      ],
+      "title": "Blind Swine Mate #6",
+      "section": "",
+      "fen": "5rk1/R2R3p/6p1/5p2/5P2/6QP/1qr3PK/8 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat",
+      "move": "Qb3+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-050",
+      "code": "CX-050",
+      "parentId": "blind-swine",
+      "afterId": "cx-048",
+      "ancestors": [
+        "mate",
+        "blind-swine"
+      ],
+      "title": "Blind Swine Mate #7",
+      "section": "",
+      "fen": "1r2rbk1/R2R2pp/8/1p1b4/2p2Q2/Bn1n3P/5PP1/6K1 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat",
+      "move": "Qxf8+",
+      "pgn": "",
+      "goal": "advantage"
+    },
+    {
+      "id": "cx-051",
+      "code": "CX-051",
+      "parentId": "blind-swine",
+      "afterId": "cx-050",
+      "ancestors": [
+        "mate",
+        "blind-swine"
+      ],
+      "title": "Blind Swine Mate #8",
+      "section": "",
+      "fen": "rn1kr3/1p1b2R1/5p2/8/8/qP4Q1/2P5/1K1R4 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat",
+      "move": "Qxb8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-052",
+      "code": "CX-052",
+      "parentId": "blind-swine",
+      "afterId": "cx-050",
+      "ancestors": [
+        "mate",
+        "blind-swine"
+      ],
+      "title": "Blind Swine Mate #9",
+      "section": "",
+      "fen": "2br2r1/kp2R2R/pN6/3P3p/7P/P4p2/1P4P1/6K1 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat.",
+      "move": "Nxc8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-053",
+      "code": "CX-053",
+      "parentId": "blind-swine",
+      "afterId": "cx-050",
+      "ancestors": [
+        "mate",
+        "blind-swine"
+      ],
+      "title": "Blind Swine Mate #10",
+      "section": "",
+      "fen": "5nrk/pp2RQp1/2p4p/5r2/3P4/P1P5/5PRK/1q6 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat",
+      "move": "Qxg8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-054",
+      "code": "CX-054",
+      "parentId": "blind-swine",
+      "afterId": "cx-050",
+      "ancestors": [
+        "mate",
+        "blind-swine"
+      ],
+      "title": "Blind Swine Mate #11",
+      "section": "",
+      "fen": "r6k/2R3RN/3p1p2/3r1pb1/2b5/p5P1/3P3P/7K w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat.",
+      "move": "Nf8",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-055",
+      "code": "CX-055",
+      "parentId": "back-rank",
+      "afterId": "back-rank-4",
+      "ancestors": [
+        "mate",
+        "back-rank"
+      ],
+      "title": "Back-Rank Mate #5",
+      "section": "",
+      "fen": "rr4k1/1q3ppp/8/8/8/4R3/p3RPPP/4Q1K1 w - - 0 1",
+      "prompt": "Albul mută. Alehin Gun",
+      "note": "Tiparul de mat.",
+      "move": "Re8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-056",
+      "code": "CX-056",
+      "parentId": "back-rank",
+      "afterId": "back-rank-4",
+      "ancestors": [
+        "mate",
+        "back-rank"
+      ],
+      "title": "Back-Rank Mate #6",
+      "section": "",
+      "fen": "6k1/ppp2ppp/8/8/8/8/PPP1rPPP/2KR4 w - - 0 1",
+      "prompt": "Albul mută.",
+      "note": "Tiparul de mat.",
+      "move": "Rd8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-057",
+      "code": "CX-057",
+      "parentId": "back-rank",
+      "afterId": "back-rank-4",
+      "ancestors": [
+        "mate",
+        "back-rank"
+      ],
+      "title": "Back-Rank Mate #7",
+      "section": "",
+      "fen": "2r3k1/1b3ppp/8/8/2P5/1P1Q2Pq/P4P1P/3R2K1 w - - 0 1",
+      "prompt": "Albul mută.",
+      "note": "Tiparul de mat.",
+      "move": "Qd8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-058",
+      "code": "CX-058",
+      "parentId": "back-rank",
+      "afterId": "cx-057",
+      "ancestors": [
+        "mate",
+        "back-rank"
+      ],
+      "title": "Back-Rank Mate #8",
+      "section": "",
+      "fen": "6k1/5ppp/6q1/3b4/8/8/R1r2PPP/R5K1 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat.",
+      "move": "Ra8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-059",
+      "code": "CX-059",
+      "parentId": "back-rank",
+      "afterId": "cx-057",
+      "ancestors": [
+        "mate",
+        "back-rank"
+      ],
+      "title": "Back-Rank Mate #9",
+      "section": "",
+      "fen": "2r3k1/pp3ppp/2r5/8/8/8/PPPR1PPP/2KR4 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat.",
+      "move": "Rd8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-060",
+      "code": "CX-060",
+      "parentId": "back-rank",
+      "afterId": "cx-057",
+      "ancestors": [
+        "mate",
+        "back-rank"
+      ],
+      "title": "Back-Rank Mate #10",
+      "section": "",
+      "fen": "6k1/pp3ppp/2p3b1/5q2/7b/8/PPPQ2PP/2KR4 w - - 0 1",
+      "prompt": "Albul mută.",
+      "note": "Tiparul de mat.",
+      "move": "Qd8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-061",
+      "code": "CX-061",
+      "parentId": "back-rank",
+      "afterId": "cx-060",
+      "ancestors": [
+        "mate",
+        "back-rank"
+      ],
+      "title": "Back-Rank Mate #11",
+      "section": "",
+      "fen": "1r4k1/3q1ppp/pr6/8/2P5/4Q3/P3RPPP/4R1K1 w - - 0 1",
+      "prompt": "Albul mută. Tunul lui Alehin",
+      "note": "Tiparul de mat",
+      "move": "Qe8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-062",
+      "code": "CX-062",
+      "parentId": "back-rank",
+      "afterId": "cx-060",
+      "ancestors": [
+        "mate",
+        "back-rank"
+      ],
+      "title": "Back-Rank Mate#12",
+      "section": "",
+      "fen": "rn4k1/1bp2ppp/pp3bq1/8/2B2B1n/2N2N2/PP3PPP/3QR1K1 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat.",
+      "move": "Re8#",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-063",
+      "code": "CX-063",
+      "parentId": "back-rank",
+      "afterId": "cx-060",
+      "ancestors": [
+        "mate",
+        "back-rank"
+      ],
+      "title": "Back-Rank Mate #13",
+      "section": "",
+      "fen": "6k1/3b1ppp/8/7q/6n1/8/5PPP/2Q1R1K1 w - - 0 1",
+      "prompt": "Albul mută. Supraincarcarea.",
+      "note": "Tiparul de mat.",
+      "move": "Qc8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-064",
+      "code": "CX-064",
+      "parentId": "back-rank",
+      "afterId": "cx-060",
+      "ancestors": [
+        "mate",
+        "back-rank"
+      ],
+      "title": "Back-Rank Mate #14",
+      "section": "",
+      "fen": "5k2/ppp2pp1/2qnp3/6B1/6P1/5P2/PPP1r3/2KR3R w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat.",
+      "move": "Rh8#",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-065",
+      "code": "CX-065",
+      "parentId": "back-rank",
+      "afterId": "cx-064",
+      "ancestors": [
+        "mate",
+        "back-rank"
+      ],
+      "title": "Back-Rank Mate #15",
+      "section": "",
+      "fen": "2rr2k1/1q3ppp/p7/1p6/7Q/8/PP2RPPP/4R1K1 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat.",
+      "move": "Qxd8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-066",
+      "code": "CX-066",
+      "parentId": "back-rank",
+      "afterId": "cx-064",
+      "ancestors": [
+        "mate",
+        "back-rank"
+      ],
+      "title": "Back-Rank Mate #16",
+      "section": "",
+      "fen": "rnRr2k1/pp3ppp/8/1Q6/3q4/8/PP3PPP/4K2R w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat.",
+      "move": "Qe8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-067",
+      "code": "CX-067",
+      "parentId": "back-rank",
+      "afterId": "cx-066",
+      "ancestors": [
+        "mate",
+        "back-rank"
+      ],
+      "title": "Back-Rank Mate #17",
+      "section": "",
+      "fen": "6k1/ppp2rpp/8/8/3q4/1B6/PPP2PPP/2K1R3 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat.",
+      "move": "Re8#",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-068",
+      "code": "CX-068",
+      "parentId": "hook",
+      "afterId": "hook-3",
+      "ancestors": [
+        "mate",
+        "hook"
+      ],
+      "title": "Hook Mate #4",
+      "section": "",
+      "fen": "8/Qp4pk/2p3b1/5p1p/3B3P/1P4P1/P1P1rnBK/3r4 b - - 0 1",
+      "prompt": "Negrul mută",
+      "note": "Tiparul de mat.",
+      "move": "Ng4+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-069",
+      "code": "CX-069",
+      "parentId": "hook",
+      "afterId": "hook-3",
+      "ancestors": [
+        "mate",
+        "hook"
+      ],
+      "title": "Hook Mate #5",
+      "section": "",
+      "fen": "7k/7p/q4p1N/8/3R4/8/8/1KB5 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat.",
+      "move": "Rd8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-070",
+      "code": "CX-070",
+      "parentId": "hook",
+      "afterId": "hook-3",
+      "ancestors": [
+        "mate",
+        "hook"
+      ],
+      "title": "Hook Mate #6",
+      "section": "",
+      "fen": "4k3/R3p2p/3pN1p1/1p1K4/1P3P2/6rP/8/8 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat.",
+      "move": "Ra8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-071",
+      "code": "CX-071",
+      "parentId": "hook",
+      "afterId": "cx-070",
+      "ancestors": [
+        "mate",
+        "hook"
+      ],
+      "title": "Hook Mate #7",
+      "section": "",
+      "fen": "5Bk1/1p3pp1/2p2n1p/4rq2/P3p3/2Q2nP1/BPP1RPKP/5R2 b - - 0 1",
+      "prompt": "Negrul mută",
+      "note": "Tiparul de mat.",
+      "move": "Qh3+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-072",
+      "code": "CX-072",
+      "parentId": "hook",
+      "afterId": "cx-070",
+      "ancestors": [
+        "mate",
+        "hook"
+      ],
+      "title": "Hook Mate #8",
+      "section": "",
+      "fen": "1r4k1/2R5/3p4/3P2B1/p1p4p/2b2RnP/P5P1/6K1 b - - 0 1",
+      "prompt": "Negrul mută",
+      "note": "Tiparul de mat.",
+      "move": "Rb1+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-073",
+      "code": "CX-073",
+      "parentId": "hook",
+      "afterId": "cx-070",
+      "ancestors": [
+        "mate",
+        "hook"
+      ],
+      "title": "Hook Mate #9",
+      "section": "",
+      "fen": "5rk1/1p4pp/1p4r1/3R4/1P3b2/P5nP/1Q4P1/6K1 b - - 0 1",
+      "prompt": "Negrul mută",
+      "note": "Tiparul de mat.",
+      "move": "Be3+",
+      "pgn": "",
+      "goal": "advantage"
+    },
+    {
+      "id": "cx-074",
+      "code": "CX-074",
+      "parentId": "hook",
+      "afterId": "cx-073",
+      "ancestors": [
+        "mate",
+        "hook"
+      ],
+      "title": "Hook Mate #10",
+      "section": "",
+      "fen": "2kr4/2p5/p5n1/1p2p3/1P2P1P1/1PP1KN2/7r/1R3R2 b - - 0 1",
+      "prompt": "Negrul mută",
+      "note": "Tiparul de mat.",
+      "move": "Rd3+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-075",
+      "code": "CX-075",
+      "parentId": "hook",
+      "afterId": "cx-073",
+      "ancestors": [
+        "mate",
+        "hook"
+      ],
+      "title": "Hook Mate #11",
+      "section": "",
+      "fen": "8/4pk1p/3rNrp1/1Q1Pbp2/8/4PBP1/q4PP1/1R3K2 w - - 0 1",
+      "prompt": "Albul muită",
+      "note": "Tiparul de mat.",
+      "move": "Qe8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-076",
+      "code": "CX-076",
+      "parentId": "hook",
+      "afterId": "cx-073",
+      "ancestors": [
+        "mate",
+        "hook"
+      ],
+      "title": "Hook Mate #12",
+      "section": "",
+      "fen": "4r1k1/1p3p1p/p4n2/2pP2p1/P1P1np2/1P5R/2Q3PP/4N2K b - - 0 1",
+      "prompt": "Negrul mută",
+      "note": "Tiparul de mat.",
+      "move": "Ng3+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-077",
+      "code": "CX-077",
+      "parentId": "hook",
+      "afterId": "cx-073",
+      "ancestors": [
+        "mate",
+        "hook"
+      ],
+      "title": "Hook Mate #13",
+      "section": "",
+      "fen": "2b1Q3/1kp5/p1Nb4/3P4/1P5p/p6P/K3R1P1/5q2 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat",
+      "move": "Qxc8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-078",
+      "code": "CX-078",
+      "parentId": "hook",
+      "afterId": "cx-073",
+      "ancestors": [
+        "mate",
+        "hook"
+      ],
+      "title": "Hook Mate #14",
+      "section": "",
+      "fen": "6r1/R4Qpk/5pNp/3P3P/8/2P5/pq3PPK/1b6 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat.",
+      "move": "Qxg8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-079",
+      "code": "CX-079",
+      "parentId": "hook",
+      "afterId": "cx-073",
+      "ancestors": [
+        "mate",
+        "hook"
+      ],
+      "title": "Hook Mate #15",
+      "section": "",
+      "fen": "8/R5p1/1pp1k2p/8/1P2Np2/1P2nP1P/P5PK/2r5 b - - 0 1",
+      "prompt": "Negrul mută",
+      "note": "Tiparul de mat.",
+      "move": "Nf1+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-080",
+      "code": "CX-080",
+      "parentId": "smothered",
+      "afterId": "smothered-4",
+      "ancestors": [
+        "mate",
+        "smothered"
+      ],
+      "title": "Smothered Mate #5",
+      "section": "",
+      "fen": "r1k1r3/ppp1b1pp/2n1N3/6B1/2qp2Q1/8/PPP2PPP/R5K1 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat.",
+      "move": "Nf8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-081",
+      "code": "CX-081",
+      "parentId": "smothered",
+      "afterId": "smothered-4",
+      "ancestors": [
+        "mate",
+        "smothered"
+      ],
+      "title": "Smothered Mate #6",
+      "section": "",
+      "fen": "4r2k/1p1b1Qbp/1n4p1/p5N1/P7/1B6/1P1q2PP/3R3K w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat.",
+      "move": "Qg8+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-082",
+      "code": "CX-082",
+      "parentId": "smothered",
+      "afterId": "smothered-4",
+      "ancestors": [
+        "mate",
+        "smothered"
+      ],
+      "title": "Smothered Mate #7",
+      "section": "",
+      "fen": "r1b1N3/pp2k1pp/1bn5/8/2BqnB2/8/PPP3PP/R2Q1R1K b - - 0 1",
+      "prompt": "Negrul mută",
+      "note": "Tiparul de mat.",
+      "move": "Qg1+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-083",
+      "code": "CX-083",
+      "parentId": "smothered",
+      "afterId": "smothered-4",
+      "ancestors": [
+        "mate",
+        "smothered"
+      ],
+      "title": "Smothered Mate #8",
+      "section": "",
+      "fen": "r3r1k1/1p3pp1/8/8/P2Q1Pn1/6R1/1P2q1PP/R6K b - - 0 1",
+      "prompt": "Negrul mută",
+      "note": "Tiparul de mat.",
+      "move": "Qe1+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-084",
+      "code": "CX-084",
+      "parentId": "smothered",
+      "afterId": "cx-083",
+      "ancestors": [
+        "mate",
+        "smothered"
+      ],
+      "title": "Smothered Mate #9",
+      "section": "",
+      "fen": "r3r3/pkp4p/2p2Q2/1Pq2P2/1B6/2P5/P4nPP/R4RK1 b - - 0 1",
+      "prompt": "Negrul mută",
+      "note": "Tiparul de mat.",
+      "move": "Nh3+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-085",
+      "code": "CX-085",
+      "parentId": "smothered",
+      "afterId": "cx-084",
+      "ancestors": [
+        "mate",
+        "smothered"
+      ],
+      "title": "Smothered Mate #10",
+      "section": "",
+      "fen": "6k1/pp3rp1/8/3Q2N1/2PPn3/2P1q1P1/P5PP/5R1K b - - 0 1",
+      "prompt": "Negrul mută",
+      "note": "Tiparul de mat",
+      "move": "Nf2+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-086",
+      "code": "CX-086",
+      "parentId": "section-001",
+      "afterId": "",
+      "ancestors": [
+        "mate",
+        "section-001"
+      ],
+      "title": "#1",
+      "section": "CX-086 · #1",
+      "fen": "5r1k/6p1/8/8/8/1B6/8/1K1R4 w - - 0 1",
+      "prompt": "♟️ ÎN CE CONSTĂ MATUL LUI GRECO?\n\nMatul lui Greco este un procedeu tactic în care dama sau turnul dă mat pe coloana h, în timp ce nebunul controlează un câmp important de fugă al regelui advers.\n\nDe obicei, regele este prins în propriul său refugiu, iar pionii și piesele care ar trebui să-l apere ajung să-i blocheze posibilitățile de evadare.\n\n    Elementele esențiale sunt:\n\n    Deschiderea coloanei către regele advers.\n\n     Coordonarea damei sau turnului cu nebunul.\n\n     Controlul câmpurilor de fugă ale regelui.\n\n     Uneori, sacrificarea unei piese pentru a deschide coloana decisivă.",
+      "note": "Schema de reținut:\n1. Nebunul controlează câmpul de fugă al regelui.\n2. Pionul propriu limitează alte câmpuri de fugă.\n3. Dama sau turnul pătrunde pe coloana catre regele advers.\n4. Sacrificiul poate fi mijlocul prin care deschidem coloana.",
+      "move": "Rh1#",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-087",
+      "code": "CX-087",
+      "parentId": "section-001",
+      "afterId": "cx-086",
+      "ancestors": [
+        "mate",
+        "section-001"
+      ],
+      "title": "#2",
+      "section": "CX-087 · #2",
+      "fen": "3q3k/2R3p1/N6p/4p3/4nr2/3p4/5bPP/2Q2R1K b - - 0 1",
+      "prompt": "Negrul mută",
+      "note": "Tiparul de mat",
+      "move": "Ng3+",
+      "pgn": "",
+      "goal": ""
+    },
+    {
+      "id": "cx-088",
+      "code": "CX-088",
+      "parentId": "section-001",
+      "afterId": "cx-087",
+      "ancestors": [
+        "mate",
+        "section-001"
+      ],
+      "title": "#3",
+      "section": "CX-088 · #3",
+      "fen": "1r3rk1/5pp1/1q1p4/p1p4B/P4P2/3Q4/1PP5/1K5R w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat",
+      "move": "Qh7+",
+      "pgn": "",
+      "goal": ""
+    },
+    {
+      "id": "cx-089",
+      "code": "CX-089",
+      "parentId": "section-001",
+      "afterId": "cx-088",
+      "ancestors": [
+        "mate",
+        "section-001"
+      ],
+      "title": "#4",
+      "section": "CX-089 · #4",
+      "fen": "2rq1b1k/1p1n2p1/p2p2p1/5p2/2Q5/P3RB2/1P3PP1/1N4K1 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat.",
+      "move": "Qg8+",
+      "pgn": "",
+      "goal": ""
+    },
+    {
+      "id": "cx-090",
+      "code": "CX-090",
+      "parentId": "section-001",
+      "afterId": "cx-088",
+      "ancestors": [
+        "mate",
+        "section-001"
+      ],
+      "title": "#5",
+      "section": "CX-090 · #5",
+      "fen": "1r3b1k/p3N1pp/1p6/2n3P1/2B4P/P7/1P6/1K5R w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat",
+      "move": "Ng6+",
+      "pgn": "[Event \"?\"]\n[Site \"?\"]\n[Date \"????.??.??\"]\n[Round \"?\"]\n[White \"?\"]\n[Black \"?\"]\n[Result \"*\"]\n[SetUp \"1\"]\n[FEN \"1r3b1k/p5p1/1p4p1/2n3P1/2B4P/P7/1P6/1K5R w - - 0 1\"]\n\n1. h5 gxh5 2. Rxh5# *",
+      "goal": ""
+    },
+    {
+      "id": "cx-091",
+      "code": "CX-091",
+      "parentId": "section-001",
+      "afterId": "cx-088",
+      "ancestors": [
+        "mate",
+        "section-001"
+      ],
+      "title": "#6",
+      "section": "CX-091 · #6",
+      "fen": "r1rq1bk1/p4pp1/Q7/2p5/3p1P2/P2B1PP1/6K1/R3R3 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat.",
+      "move": "Qg6",
+      "pgn": "",
+      "goal": ""
+    },
+    {
+      "id": "cx-092",
+      "code": "CX-092",
+      "parentId": "section-001",
+      "afterId": "cx-088",
+      "ancestors": [
+        "mate",
+        "section-001"
+      ],
+      "title": "#7",
+      "section": "CX-092 · #7",
+      "fen": "1qrr1bk1/6pp/1p3p2/2pp1P2/4nR1Q/P6P/1PN3P1/4RB1K w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat.",
+      "move": "Rexe4",
+      "pgn": "",
+      "goal": ""
+    },
+    {
+      "id": "cx-093",
+      "code": "CX-093",
+      "parentId": "section-001",
+      "afterId": "cx-088",
+      "ancestors": [
+        "mate",
+        "section-001"
+      ],
+      "title": "#8",
+      "section": "CX-093 · #8",
+      "fen": "1r1r1bk1/2p3pp/1q1p4/p3p3/Rp3N2/5B2/2P2PPP/2Q3K1 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat",
+      "move": "Bd5+",
+      "pgn": "",
+      "goal": ""
+    },
+    {
+      "id": "cx-094",
+      "code": "CX-094",
+      "parentId": "section-001",
+      "afterId": "cx-088",
+      "ancestors": [
+        "mate",
+        "section-001"
+      ],
+      "title": "#9",
+      "section": "",
+      "fen": "r5k1/1p5p/6p1/2nPp3/b5P1/1qB1PQ2/1P1R1P2/1K4R1 b - - 0 1",
+      "prompt": "Negru mută",
+      "note": "tiparul de mat.",
+      "move": "Qa2+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-095",
+      "code": "CX-095",
+      "parentId": "section-001",
+      "afterId": "cx-089",
+      "ancestors": [
+        "mate",
+        "section-001"
+      ],
+      "title": "#10",
+      "section": "",
+      "fen": "2b3k1/P6p/6p1/2b5/1p6/8/2rq1nPP/RR3QK1 b - - 0 1",
+      "prompt": "Negrul mută",
+      "note": "Tiparul de mat",
+      "move": "Ne4+",
+      "pgn": "",
+      "goal": "mate"
+    },
+    {
+      "id": "cx-096",
+      "code": "CX-096",
+      "parentId": "section-001",
+      "afterId": "cx-089",
+      "ancestors": [
+        "mate",
+        "section-001"
+      ],
+      "title": "#11",
+      "section": "",
+      "fen": "r1b2rk1/pp4p1/2n1p2p/5pNQ/2B5/2q5/P4PPP/4RRK1 w - - 0 1",
+      "prompt": "Albul mută",
+      "note": "Tiparul de mat",
+      "move": "Rxe6",
+      "pgn": "",
+      "goal": "mate"
+    }
+  ]
+}

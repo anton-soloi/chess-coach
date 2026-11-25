@@ -143,7 +143,7 @@ function squareCell(square, whiteAtBottom) {
   const file = 'abcdefgh'.indexOf(square[0])
   const rank = Number(square[1])
   return {
-    col: whiteAtBottom ? file : 7 - file,
+    col: file,
     row: whiteAtBottom ? 8 - rank : rank - 1,
   }
 }

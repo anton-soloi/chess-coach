@@ -207,7 +207,7 @@ function boardWhiteAtBottom() {
 function center(square, whiteAtBottom) {
   const file = square.charCodeAt(0) - 97
   const rank = Number(square[1])
-  const col = whiteAtBottom ? file : 7 - file
+  const col = file
   const row = whiteAtBottom ? 8 - rank : rank - 1
   return { x: col + 0.5, y: row + 0.5 }
 }
@@ -297,12 +297,14 @@ function paintPanel() {
   const next = document.querySelector('#piece-path-next')
   const promote = document.querySelector('#piece-path-promote')
   if (goal) {
+    goal.hidden = Boolean(session.done)
     goal.textContent = t('path.goal', {
       piece: t(`piece.${session.level.piece}`),
       n: String(session.level.stars.length),
     })
   }
   if (moves) {
+    moves.hidden = Boolean(session.done)
     moves.textContent = t('path.moves', {
       n: String(session.moves),
       best: session.optimal == null ? '—' : String(session.optimal),
