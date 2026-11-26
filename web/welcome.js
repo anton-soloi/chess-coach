@@ -2,7 +2,7 @@
 // Textele scurte se editează doar din obiectul WELCOME.copy.
 
 import { lang, onLang } from './i18n.js'
-import { getAvatarPath, writeUserGender } from './avatar-profile.js'
+import { getAvatarPath, readUserGender, writeUserGender } from './avatar-profile.js'
 
 export const WELCOME = {
   storageKey: 'chesscoach.profile',
@@ -33,6 +33,9 @@ export const WELCOME = {
       boy: 'Băiat',
       girl: 'Fată',
       unset: 'Necompletat',
+      registered: 'Profil înregistrat',
+      registeredEnter: 'Intră cu profilul și istoricul salvat.',
+      registeredMeta: '{name} · {role}',
       save: 'Salvează profilul',
       update: 'Salvează modificările',
       reset: 'Resetează profilul',
@@ -72,6 +75,9 @@ export const WELCOME = {
       boy: 'Boy',
       girl: 'Girl',
       unset: 'Not set',
+      registered: 'Registered profile',
+      registeredEnter: 'Enter with the saved profile and history.',
+      registeredMeta: '{name} · {role}',
       save: 'Save profile',
       update: 'Save changes',
       reset: 'Reset profile',
@@ -111,6 +117,9 @@ export const WELCOME = {
       boy: 'Garçon',
       girl: 'Fille',
       unset: 'Non renseigné',
+      registered: 'Profil enregistré',
+      registeredEnter: 'Entrer avec le profil et l’historique enregistrés.',
+      registeredMeta: '{name} · {role}',
       save: 'Enregistrer le profil',
       update: 'Enregistrer les modifications',
       reset: 'Réinitialiser le profil',
@@ -184,6 +193,7 @@ export function mountWelcome(options = {}) {
     })
   })
   document.querySelector('#profile-reset')?.addEventListener('click', onReset)
+  document.querySelector('#profile-registered')?.addEventListener('click', enterRegistered)
   document.addEventListener('keydown', (event) => {
     if (event.key !== 'Escape') return
     if (document.querySelector('#theme-dialog:not([hidden]), #test-summary:not([hidden])')) return
@@ -274,8 +284,25 @@ function openProfile() {
   paint()
   requestAnimationFrame(() => {
     root.scrollTop = 0
-    document.querySelector('#profile-name')?.focus({ preventScroll: true })
+    const entry = readProfile() ? '#profile-registered' : '#profile-name'
+    document.querySelector(entry)?.focus({ preventScroll: true })
   })
+}
+
+function enterRegistered() {
+  const profile = readProfile()
+  if (!profile) return
+  fillForm(profile)
+  if ((profile.gender === 'boy' || profile.gender === 'girl') && readUserGender() !== profile.gender) {
+    writeUserGender(profile.gender)
+  }
+  holdWelcome = true
+  try {
+    hooks.onApplyRole?.(profile.role)
+  } finally {
+    holdWelcome = false
+  }
+  closeProfile()
 }
 
 function closeProfile() {
@@ -409,6 +436,7 @@ function paint() {
   })
   const saveBtn = document.querySelector('#profile-save')
   if (saveBtn) saveBtn.textContent = readProfile() ? text.update : text.save
+  paintRegistered(text)
   paintCards(text)
   paintHello(text)
   paintAvatar()
@@ -429,6 +457,23 @@ function paintCards(text) {
     card.append(title, body)
     host.append(card)
   }
+}
+
+function paintRegistered(text) {
+  const button = document.querySelector('#profile-registered')
+  if (!button) return
+  const profile = readProfile()
+  const meta = document.querySelector('#profile-registered-meta')
+  button.hidden = !profile
+  if (!profile) {
+    if (meta) meta.textContent = ''
+    button.removeAttribute('aria-label')
+    return
+  }
+  const role = profile.role === 'teacher' ? text.teacher : text.child
+  const line = text.registeredMeta.replaceAll('{name}', profile.name).replaceAll('{role}', role)
+  if (meta) meta.textContent = line
+  button.setAttribute('aria-label', `${text.registered}. ${line}. ${text.registeredEnter}`)
 }
 
 function paintHello(text) {

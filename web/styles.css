@@ -2868,6 +2868,35 @@ body:not(.student) .side:has(#curriculum-editor:not([hidden])) > #teacher {
   width: min(760px, 100%);
 }
 
+.profile-registered {
+  display: grid;
+  gap: 2px;
+  width: 100%;
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid rgba(226, 182, 87, 0.85);
+  border-radius: 12px;
+  background: rgba(226, 182, 87, 0.14);
+  color: #f3eadc;
+  font: inherit;
+  font-size: 0.86rem;
+  line-height: 1.35;
+  text-align: left;
+  cursor: pointer;
+}
+
+.profile-registered strong {
+  color: #f6dc9a;
+  font-size: 1rem;
+}
+
+.profile-registered:hover,
+.profile-registered:focus-visible {
+  background: rgba(226, 182, 87, 0.24);
+}
+
+.profile-registered[hidden] { display: none; }
+
 .welcome-sheet {
   width: min(960px, calc(100% - 32px));
   margin: 0 auto;
